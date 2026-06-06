@@ -1,0 +1,174 @@
+<!-- EL HTML PARA LOS RESULTADOS DE LA BUSQUEDA -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Book Wellness</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/BusquedaDeLibros.css') }}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- BARRA SUPERIOR -->
+    <div class="top-bar">
+
+        <div class="left-section">
+
+            <div class="logo-container">
+
+                <div class="books-logo">
+                    <div class="book book-1"></div>
+                    <div class="book book-2"></div>
+                    <div class="book book-3"></div>
+                </div>
+
+                <div class="logo-text">
+                    <span class="book-title">Book</span>
+                    <span class="wellness-title">Wellness</span>
+                </div>
+
+            </div>
+
+            <div class="menu-container">
+
+                <button class="curve-btn">
+                    Estadística
+                </button>
+
+                <button class="curve-btn">
+                    Objetivos
+                </button>
+
+                <button class="curve-btn">
+                    Notas
+                </button>
+
+            </div>
+
+        </div>
+
+        <button class="user-btn">
+
+            <div class="user-icon">
+                <div class="user-head"></div>
+                <div class="user-body"></div>
+            </div>
+
+        </button>
+
+    </div>
+
+    <div class="top-divider"></div>
+
+    <div class="main-layout">
+
+        <div class="main-content">
+
+            <!-- BUSCADOR -->
+            <div class="reading-tools">
+
+                <button class="tool-btn">
+                    Filtro
+                </button>
+
+                <button class="tool-btn">
+                    Ordenar
+                </button>
+
+                <form action="/buscar" method="GET">
+
+                    <div class="search-box">
+
+                        <span class="search-icon">
+                            🔍
+                        </span>
+
+                        <input
+                            type="text"
+                            name="q"
+                            placeholder="¿Qué deseas leer hoy?"
+                            required
+                        >
+
+                    </div>
+
+                </form>
+
+            </div>
+
+            <p class="wellness-message">
+                Descubre nuevas lecturas para tu bienestar 📚
+            </p>
+                        
+        <!-- RESULTADOS -->
+
+        <div class="results-container">
+
+            <div class="results-header">
+
+                <h2>
+                    Resultados para "{{ consulta }}"
+                </h2>
+
+                <span class="results-count">
+                    {{ libros|length }} libros encontrados
+                </span>
+
+            </div>
+
+            <div class="results-shelf">
+
+                <div class="books-grid">
+
+                    {% for libro in libros %}
+
+                    <a href="{{ url_for(
+                        'libro',
+                        clave=libro.key,
+                        portada=libro.portada
+                    ) }}"
+                       class="book-link">                    
+
+                        <div class="book-card result-card">
+
+                            <img
+                                src="{{ libro.portada }}"
+                                alt="{{ libro.titulo }}"
+                            >
+
+                            <div class="book-info">
+
+                                <p class="book-title-card">
+                                    {{ libro.titulo }}
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </a>
+
+                    {% endfor %}
+
+                </div>
+
+                <div class="shelf"></div>
+
+            </div>
+
+        </div>
+
+
+</body>
+</html>
+
+

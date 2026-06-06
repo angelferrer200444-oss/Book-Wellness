@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Book Wellness</title>
+
+    <!-- CSS PRINCIPAL -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+    <!-- CSS DEL RELOJ -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ParteInferior-Superior.css') }}">
+
+    <!-- CSS ESTANTERIA -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estanteria.css') }}">
+
+    <!-- CSS CALENDARIO -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/calendario.css') }}">
+
+    <!-- FUENTES -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <!-- =========================
+         BARRA SUPERIOR
+    ========================== -->
+
+    <div class="top-bar">
+
+        <!-- IZQUIERDA -->
+        <div class="left-section">
+
+            <!-- LOGO -->
+            <div class="logo-container">
+
+                <div class="books-logo">
+
+                    <div class="book book-1"></div>
+                    <div class="book book-2"></div>
+                    <div class="book book-3"></div>
+
+                </div>
+
+                <div class="logo-text">
+
+                    <span class="book-title">
+                        Book
+                    </span>
+
+                    <span class="wellness-title">
+                        Wellness
+                    </span>
+
+                </div>
+
+            </div>
+
+            <!-- MENÚ -->
+            <div class="menu-container">
+
+                <button class="curve-btn">
+                    Estadística
+                </button>
+
+                <button class="curve-btn">
+                    Objetivos
+                </button>
+
+                <button class="curve-btn">
+                    Notas
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- BOTÓN USUARIO -->
+        <a href="sesion"> 
+            <button class="user-btn">
+
+                <div class="user-icon">
+
+                    <div class="user-head"></div>
+
+                    <div class="user-body"></div>
+
+                </div>
+
+            </button>
+        </a>
+    </div>
+
+    <!-- DIVISOR -->
+    <div class="top-divider"></div>
+
+    <!-- =========================
+         LAYOUT PRINCIPAL
+    ========================== -->
+
+    <div class="main-layout">
+
+        <!-- =========================
+             CONTENIDO IZQUIERDO
+        ========================== -->
+
+        <div class="main-content">
+
+            <!-- RELOJ -->
+            <div class="clock-section">
+
+                <div class="streak-container">
+
+                    <div class="clock">
+
+                        <div class="clock-face">
+
+                            <div class="hand"></div>
+
+                        </div>
+
+                    </div>
+
+                    <span class="streak-number">
+                        0
+                    </span>
+
+                    <!-- HERRAMIENTAS -->
+                    <div class="reading-tools">
+
+                        <button class="tool-btn">
+                            Filtro
+                        </button>
+
+                        <button class="tool-btn">
+                            Ordenar
+                        </button>
+
+                        <!-- BUSCADOR -->
+                        <div class="search-box">
+
+                            <form action="/buscar" method="GET">
+
+                                <div class="search-box">
+                            
+                                    <span class="search-icon">
+                                        🔍
+                                    </span>
+                            
+                                    <input
+                                        type="text"
+                                        name="q"
+                                        placeholder="¿Qué deseas leer hoy?"
+                                        required
+                                    >
+                            
+                                </div>
+                            
+                            </form>                            
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+            
+            <!-- =========================
+                 ESTANTERÍA
+            ========================== -->
+
+            <div class="library-container">
+
+                <!-- =========================
+                     LEYENDO
+                ========================== -->
+
+                <section class="shelf-section">
+
+                    <div class="shelf-header">
+
+                        <h2>
+                            Leyendo
+                        </h2>
+
+                    </div>
+
+                    <div class="books-row">
+
+                        <!-- AGREGAR -->
+                        <div class="book-card add-book">
+
+                            <span>
+                                +
+                            </span>
+
+                            <p>
+                                Agregar
+                            </p>
+
+                        </div>
+
+                        <!-- LIBRO -->
+                        <a href="libros.html" class="book-link">
+
+                            <div class="book-card">
+
+                                <img 
+                                    src="https://covers.openlibrary.org/b/id/10523338-L.jpg" 
+                                    alt=""
+                                >
+
+                            </div>
+
+                        </a>
+
+                        <!-- LIBRO -->
+                        <div class="book-card">
+
+                            <img 
+                                src="https://covers.openlibrary.org/b/id/7984916-L.jpg" 
+                                alt=""
+                            >
+
+                        </div>
+
+                        <!-- LIBRO -->
+                        <div class="book-card">
+
+                            <img 
+                                src="https://covers.openlibrary.org/b/id/8231856-L.jpg" 
+                                alt=""
+                            >
+
+                        </div>
+
+                    </div>
+
+                    <div class="shelf"></div>
+
+                </section>
+
+                <!-- =========================
+                     Pendiente a leer
+                ========================== -->
+
+                <section class="shelf-section">
+
+                    <div class="shelf-header">
+
+                        <h2>
+                            Pendiente a leer
+                        </h2>
+
+                    </div>
+
+                    <div class="books-row">
+
+                        <!-- AGREGAR -->
+                        <div class="book-card add-book">
+
+                            <span>
+                                +
+                            </span>
+
+                            <p>
+                                Agregar
+                            </p>
+
+                        </div>
+
+                        <!-- LIBRO -->
+                        <div class="book-card">
+
+                            <img 
+                                src="https://covers.openlibrary.org/b/id/11153271-L.jpg" 
+                                alt=""
+                            >
+
+                        </div>
+
+                        <!-- LIBRO -->
+                        <div class="book-card">
+
+                            <img 
+                                src="https://covers.openlibrary.org/b/id/10594765-L.jpg" 
+                                alt=""
+                            >
+
+                        </div>
+
+                        <!-- LIBRO -->
+                        <div class="book-card">
+
+                            <img 
+                                src="https://covers.openlibrary.org/b/id/7884866-L.jpg" 
+                                alt=""
+                            >
+
+                        </div>
+
+                        <!-- LIBRO -->
+                        <div class="book-card">
+
+                            <img 
+                                src="https://covers.openlibrary.org/b/id/8319256-L.jpg" 
+                                alt=""
+                            >
+
+                        </div>
+
+                        <!-- LIBRO -->
+                        <div class="book-card">
+
+                            <img 
+                                src="https://http2.mlstatic.com/D_NQ_NP_2X_878495-MLU92374019762_092025-F.webp" 
+                                alt=""
+                            >
+
+                        </div>
+
+                        <!-- LIBRO -->
+                        <div class="book-card">
+
+                            <img 
+                                src="https://elbohemiodehojalata.wordpress.com/wp-content/uploads/2015/09/el-forastero-misterioso.jpg" 
+                                alt=""
+                            >
+
+                        </div>
+
+                        <!-- LIBRO -->
+                        <div class="book-card">
+
+                            <img 
+                                src="https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1419003669i/6483211.jpg" 
+                                alt=""
+                            >
+
+                        </div>
+
+                    </div>
+                    
+                    <div class="shelf"></div>
+
+                </section>
+
+                <!-- =========================
+                     RECOMENDACIONES
+                ========================== -->
+
+                <section class="shelf-section">
+
+                    <div class="shelf-header">
+
+                        <h2>
+                            Recomendaciones
+                        </h2>
+
+                    </div>
+
+                    <div class="books-row">
+
+                        <!-- LIBRO -->
+                        <div class="book-card">
+
+                            <img 
+                                src="https://covers.openlibrary.org/b/id/8228691-L.jpg" 
+                                alt=""
+                            >
+
+                        </div>
+
+                        <!-- LIBRO -->
+                        <div class="book-card">
+
+                            <img 
+                                src="https://covers.openlibrary.org/b/id/9259256-L.jpg" 
+                                alt=""
+                            >
+
+                        </div>
+
+                        <!-- LIBRO -->
+                        <div class="book-card">
+
+                            <img 
+                                src="https://covers.openlibrary.org/b/id/10521270-L.jpg" 
+                                alt=""
+                            >
+
+                        </div>
+
+                        <!-- LIBRO -->
+                        <div class="book-card">
+
+                            <img 
+                                src="https://covers.openlibrary.org/b/id/10594765-L.jpg" 
+                                alt=""
+                            >
+
+                        </div>
+
+                    </div>
+
+                    <div class="shelf"></div>
+
+                </section>
+
+            </div>
+
+        </div>
+
+        <!-- =========================
+             SIDEBAR DERECHO
+        ========================== -->
+
+        <aside class="right-sidebar">
+
+            <!-- BOTÓN -->
+            <button class="tracker-btn">
+
+                Abrir Seguimiento
+
+            </button>
+
+            <!-- =========================
+                 CALENDARIO
+            ========================== -->
+
+            <div class="calendar-box">
+
+                <div class="calendar-header">
+            
+                    <button id="prevMonth">
+                        &lt;
+                    </button>
+            
+                    <h3 id="monthYear"></h3>
+            
+                    <button id="nextMonth">
+                        &gt;
+                    </button>
+            
+                </div>
+            
+                <div class="calendar-days">
+                    <span>Do</span>
+                    <span>Lu</span>
+                    <span>Ma</span>
+                    <span>Mi</span>
+                    <span>Ju</span>
+                    <span>Vi</span>
+                    <span>Sa</span>
+                </div>
+            
+                <div class="calendar-dates" id="calendarDates"></div>
+            
+            </div>            
+
+        </aside>
+
+    </div>
+
+<script src="{{ url_for('static', filename='js/drag-scroll.js') }}"></script>
+<script src="{{ url_for('static', filename='js/calendario.js') }}"></script>
+    
+
+</body>
+</html>

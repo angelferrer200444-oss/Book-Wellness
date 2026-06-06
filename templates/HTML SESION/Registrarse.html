@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Wellness</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sesion.css') }}">
+</head>
+<body>
+
+    <div class="background"></div>
+
+    <div class="login-container">
+
+        <div class="leaf">🍂</div>
+
+        <h1>Registrarse</h1>
+
+
+        <form id="formulario-registro">
+
+            <input
+                type="text"
+                id="nombre"
+                placeholder="Nombre"
+                required
+            >
+            <input
+                type="text"
+                id="correo"
+                placeholder="Correo electronico"
+                required
+            >
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Contraseña"
+                required
+            >
+   
+
+            <label for="nivel" class="select-label">¿Qué nivel de lectura dominas?</label>
+
+            <select id="nivel" name="nivel" class="nivel-select">
+                <option value="principiante">🌱 Principiante</option>
+                <option value="intermedio">📚 Intermedio</option>
+                <option value="maestro">👑 Maestro</option>
+            </select>
+
+            <div id="mensaje-alerta"></div>
+            <button type="submit">
+                Entrar
+            </button>
+
+            <div class="links">
+                <a href="/sesion">Iniciar sesion</a>
+            </div>
+
+        </form>
+
+    </div>
+ 
+     <script src="/static/js/registro.js"></script>
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Detalle Libro</title>
+
+    <!-- CSS GENERAL -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+    <!-- CSS DETALLE -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/detalle-libro.css') }}">
+
+    <!-- FUENTE -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <!-- BARRA SUPERIOR -->
+    <div class="top-bar">
+
+        <!-- IZQUIERDA -->
+        <div class="left-section">
+
+            <!-- LOGO -->
+            <div class="logo-container">
+
+                <div class="books-logo">
+
+                    <div class="book book-1"></div>
+                    <div class="book book-2"></div>
+                    <div class="book book-3"></div>
+
+                </div>
+
+                <div class="logo-text">
+
+                    <span class="book-title">
+                        Book
+                    </span>
+
+                    <span class="wellness-title">
+                        Wellness
+                    </span>
+
+                </div>
+
+            </div>
+
+            <!-- BOTONES -->
+            <div class="menu-container">
+
+                <button class="curve-btn">
+                    Estadística
+                </button>
+
+                <button class="curve-btn">
+                    Objetivos
+                </button>
+
+                <button class="curve-btn">
+                    Notas
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- BOTÓN USUARIO -->
+        <a href="HTML SESION/sesion.html"> 
+            <button class="user-btn">
+
+                <div class="user-icon">
+
+                    <div class="user-head"></div>
+
+                    <div class="user-body"></div>
+
+                </div>
+
+            </button>
+        </a>
+
+    </div>
+
+    <!-- DIVISOR -->
+    <div class="top-divider"></div>
+
+    <!-- CONTENIDO -->
+    <div class="book-detail-container">
+
+        <!-- IZQUIERDA -->
+        <div class="book-cover-section">
+
+            <button class="back-btn" onclick="history.back()">
+                ←
+            </button>
+
+            <div class="detail-book-card">
+
+                <img 
+                    src="{{ portada }}" 
+                    alt="{{ titulo }}"
+                >
+
+            </div>
+
+        </div>
+
+        <!-- DERECHA -->
+        <div class="book-info-section">
+
+            <h1>
+                {{ titulo }}
+            </h1>
+
+            <h3>
+                {{ autor }}
+            </h3>
+
+            <p class="book-short-text">
+                Información próximamente por asignar.
+            </p>
+
+            <!-- BOTONES -->
+            <div class="detail-buttons">
+
+                <button class="read-btn">
+                    Leyendo
+                </button>
+
+                <button class="soon-btn">
+                    Pendiente a leer
+                </button>
+
+            </div>
+
+            <!-- INFO -->
+            <div class="book-extra-info">
+
+                <div class="info-block">
+
+                    <h4>
+                        Descripción
+                    </h4>
+
+                    <p>
+                        {{ descripcion }}
+                    </p>
+
+                </div>
+
+                <div class="info-grid">
+
+                    <div class="mini-info">
+
+                        <h4>
+                            Editor
+                        </h4>
+
+                        <p>
+                            Próximamente
+                        </p>
+
+                    </div>
+
+                    <div class="mini-info">
+
+                        <h4>
+                            Idioma
+                        </h4>
+
+                        <p>
+                            Próximamente
+                        </p>
+                    </div>
+
+                    <div class="mini-info">
+
+                        <h4>
+                            Formato
+                        </h4>
+
+                        <p>
+                            Próximamente
+                        </p>
+
+                    </div>
+
+                    <div class="mini-info">
+
+                        <h4>
+                            ISBN
+                        </h4>
+
+                        <p>
+                            Próximamente
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
