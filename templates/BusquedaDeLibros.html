@@ -9,6 +9,7 @@
     <title>Book Wellness</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/BusquedaDeLibros.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -56,15 +57,39 @@
 
         </div>
 
-        <button class="user-btn">
+        <div class="user-menu-container">
 
-            <div class="user-icon">
-                <div class="user-head"></div>
-                <div class="user-body"></div>
+            <button class="user-btn" id="btn-usuario">
+        
+                <div class="user-icon">
+        
+                    <div class="user-head"></div>
+        
+                    <div class="user-body"></div>
+        
+                </div>
+        
+            </button>
+        
+            <div
+                class="user-dropdown"
+                id="user-dropdown"
+                style="display:none;"
+            >
+        
+                <p id="nombre-usuario-dropdown">
+                    Usuario
+                </p>
+        
+                <hr>
+        
+                <button id="btn-logout">
+                    Cerrar sesión
+                </button>
+        
             </div>
-
-        </button>
-
+        
+        </div>
     </div>
 
     <div class="top-divider"></div>
@@ -76,9 +101,25 @@
             <!-- BUSCADOR -->
             <div class="reading-tools">
 
-                <button class="tool-btn">
-                    Filtro
-                </button>
+                <div class="filter-container">
+
+                    <button
+                        class="tool-btn"
+                        id="filterBtn">
+                
+                        <span>Filtro</span>
+
+                        <span>▼</span>
+                
+                    </button>
+                
+                    <div
+                        id="filterMenu"
+                        class="filter-menu">
+                
+                    </div>
+                
+                </div>
 
                 <button class="tool-btn">
                     Ordenar
@@ -167,8 +208,9 @@
 
         </div>
 
-
+<script src="{{ url_for('static', filename='js/generos.js') }}"></script>
+<script src="{{ url_for('static', filename='js/filtro.js') }}"></script>
+<script src="{{ url_for('static', filename='js/usuario.js') }}"></script>
+        
 </body>
 </html>
-
-

@@ -28,7 +28,8 @@ document.getElementById('formulario-login').addEventListener('submit', async (e)
             alerta.innerText = resultado.mensaje;
             
             
-            localStorage.setItem('usuario_logeado', resultado.usuario.nombre);
+           localStorage.setItem('usuario_nombre', resultado.usuario.nombre);
+            localStorage.setItem('usuario_id', resultado.usuario.id_usuario); 
 
             
             setTimeout(() => {

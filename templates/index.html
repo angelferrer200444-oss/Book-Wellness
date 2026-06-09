@@ -84,19 +84,40 @@
         </div>
 
         <!-- BOTÓN USUARIO -->
-        <a href="sesion"> 
-            <button class="user-btn">
+        <div class="user-menu-container">
 
+            <button class="user-btn" id="btn-usuario">
+        
                 <div class="user-icon">
-
+        
                     <div class="user-head"></div>
-
+        
                     <div class="user-body"></div>
-
+        
                 </div>
-
+        
             </button>
-        </a>
+        
+            <div
+                class="user-dropdown"
+                id="user-dropdown"
+                style="display:none;"
+            >
+        
+                <p id="nombre-usuario-dropdown">
+                    Usuario
+                </p>
+        
+                <hr>
+        
+                <button id="btn-logout">
+                    Cerrar sesión
+                </button>
+        
+            </div>
+        
+        </div>
+        
     </div>
 
     <!-- DIVISOR -->
@@ -136,9 +157,25 @@
                     <!-- HERRAMIENTAS -->
                     <div class="reading-tools">
 
-                        <button class="tool-btn">
-                            Filtro
-                        </button>
+                        <div class="filter-container">
+
+                            <button
+                                class="tool-btn"
+                                id="filterBtn">
+                        
+                                <span>Filtro</span>
+
+                                <span>▼</span>
+                        
+                            </button>
+                        
+                            <div
+                                id="filterMenu"
+                                class="filter-menu">
+                        
+                            </div>
+                        
+                        </div>                                                
 
                         <button class="tool-btn">
                             Ordenar
@@ -197,53 +234,27 @@
                     <div class="books-row">
 
                         <!-- AGREGAR -->
-                        <div class="book-card add-book">
 
-                            <span>
-                                +
-                            </span>
-
-                            <p>
-                                Agregar
-                            </p>
-
-                        </div>
-
-                        <!-- LIBRO -->
-                        <a href="libros.html" class="book-link">
-
-                            <div class="book-card">
-
-                                <img 
-                                    src="https://covers.openlibrary.org/b/id/10523338-L.jpg" 
-                                    alt=""
-                                >
-
+                            <div class="book-card add-book">
+                        
+                                <span>+</span>
+                        
+                                <p>Agregar</p>
+                        
                             </div>
-
-                        </a>
-
-                        <!-- LIBRO -->
-                        <div class="book-card">
-
-                            <img 
-                                src="https://covers.openlibrary.org/b/id/7984916-L.jpg" 
-                                alt=""
-                            >
-
-                        </div>
-
-                        <!-- LIBRO -->
-                        <div class="book-card">
-
-                            <img 
-                                src="https://covers.openlibrary.org/b/id/8231856-L.jpg" 
-                                alt=""
-                            >
-
-                        </div>
-
-                    </div>
+                        
+                           {% for libro in libros_leyendo %}
+<div class="book-card-wrapper">
+    <a href="/sesion-lectura">
+        <div class="book-card">
+            <img src="{{ libro.portada }}" alt="{{ libro.titulo }}">
+        </div>
+    </a>
+    <button class="btn-eliminar" data-id="{{ libro.id_libro }}">✕</button>
+</div>
+{% endfor %}
+                        
+                        </div>                        
 
                     <div class="shelf"></div>
 
@@ -265,90 +276,26 @@
 
                     <div class="books-row">
 
-                        <!-- AGREGAR -->
                         <div class="book-card add-book">
-
-                            <span>
-                                +
-                            </span>
-
-                            <p>
-                                Agregar
-                            </p>
-
+                    
+                            <span>+</span>
+                    
+                            <p>Agregar</p>
+                    
                         </div>
-
-                        <!-- LIBRO -->
-                        <div class="book-card">
-
-                            <img 
-                                src="https://covers.openlibrary.org/b/id/11153271-L.jpg" 
-                                alt=""
-                            >
-
-                        </div>
-
-                        <!-- LIBRO -->
-                        <div class="book-card">
-
-                            <img 
-                                src="https://covers.openlibrary.org/b/id/10594765-L.jpg" 
-                                alt=""
-                            >
-
-                        </div>
-
-                        <!-- LIBRO -->
-                        <div class="book-card">
-
-                            <img 
-                                src="https://covers.openlibrary.org/b/id/7884866-L.jpg" 
-                                alt=""
-                            >
-
-                        </div>
-
-                        <!-- LIBRO -->
-                        <div class="book-card">
-
-                            <img 
-                                src="https://covers.openlibrary.org/b/id/8319256-L.jpg" 
-                                alt=""
-                            >
-
-                        </div>
-
-                        <!-- LIBRO -->
-                        <div class="book-card">
-
-                            <img 
-                                src="https://http2.mlstatic.com/D_NQ_NP_2X_878495-MLU92374019762_092025-F.webp" 
-                                alt=""
-                            >
-
-                        </div>
-
-                        <!-- LIBRO -->
-                        <div class="book-card">
-
-                            <img 
-                                src="https://elbohemiodehojalata.wordpress.com/wp-content/uploads/2015/09/el-forastero-misterioso.jpg" 
-                                alt=""
-                            >
-
-                        </div>
-
-                        <!-- LIBRO -->
-                        <div class="book-card">
-
-                            <img 
-                                src="https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1419003669i/6483211.jpg" 
-                                alt=""
-                            >
-
-                        </div>
-
-                    </div>
+                    
+                        {% for libro in libros_pendientes %}
+<div class="book-card-wrapper">
+    <a href="/libro?clave={{ libro.key_libro }}&portada={{ libro.portada }}">
+        <div class="book-card">
+            <img src="{{ libro.portada }}" alt="{{ libro.titulo }}">
+        </div>
+    </a>
+    <button class="btn-eliminar" data-id="{{ libro.id_libro }}">✕</button>
+</div>
+{% endfor %}
+                    
+                    </div>                    
                     
                     <div class="shelf"></div>
 
@@ -473,7 +420,10 @@
 
 <script src="{{ url_for('static', filename='js/drag-scroll.js') }}"></script>
 <script src="{{ url_for('static', filename='js/calendario.js') }}"></script>
-    
+<script src="{{ url_for('static', filename='js/generos.js') }}"></script>
+<script src="{{ url_for('static', filename='js/filtro.js') }}"></script>
+<script src="{{ url_for('static', filename='js/usuario.js') }}"></script>
+<script src="{{ url_for('static', filename='js/eliminar-libro.js') }}"></script>
 
 </body>
 </html>

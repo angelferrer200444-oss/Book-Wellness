@@ -66,7 +66,17 @@
     font-family: 'Cinzel', serif;
     font-size: 52px;
     color: #4a1f17;
-    margin-bottom: 12px;
+    margin-bottom: 4px;
+}
+
+/* SUBTÍTULO */
+.book-subtitle{
+    font-size: 22px;
+    font-weight: 400;
+    color: #7a6a62;
+    margin-top: -5px;
+    margin-bottom: 20px;
+    font-family: 'Cinzel', serif;
 }
 
 /* AUTOR */
@@ -226,4 +236,3 @@
     }
 
 }
-

@@ -22,6 +22,7 @@
 
 </head>
 
+
 <body>
 
     <!-- BARRA SUPERIOR -->
@@ -75,19 +76,39 @@
         </div>
 
         <!-- BOTÓN USUARIO -->
-        <a href="HTML SESION/sesion.html"> 
-            <button class="user-btn">
+        <div class="user-menu-container">
 
+            <button class="user-btn" id="btn-usuario">
+        
                 <div class="user-icon">
-
+        
                     <div class="user-head"></div>
-
+        
                     <div class="user-body"></div>
-
+        
                 </div>
-
+        
             </button>
-        </a>
+        
+            <div
+                class="user-dropdown"
+                id="user-dropdown"
+                style="display:none;"
+            >
+        
+                <p id="nombre-usuario-dropdown">
+                    Usuario
+                </p>
+        
+                <hr>
+        
+                <button id="btn-logout">
+                    Cerrar sesión
+                </button>
+        
+            </div>
+        
+        </div>
 
     </div>
 
@@ -122,6 +143,12 @@
                 {{ titulo }}
             </h1>
 
+            {% if subtitulo %}
+                <h2 class="book-subtitle">
+                    {{ subtitulo }}
+                </h2>
+            {% endif %}
+
             <h3>
                 {{ autor }}
             </h3>
@@ -133,11 +160,11 @@
             <!-- BOTONES -->
             <div class="detail-buttons">
 
-                <button class="read-btn">
+                <button class="read-btn"id="btn-leyendo">
                     Leyendo
                 </button>
 
-                <button class="soon-btn">
+                <button class="soon-btn" id="btn-pendiente">
                     Pendiente a leer
                 </button>
 
@@ -161,7 +188,7 @@
                 <div class="info-grid">
 
                     <div class="mini-info">
-
+                        
                         <h4>
                             Editor
                         </h4>
@@ -198,11 +225,11 @@
                     <div class="mini-info">
 
                         <h4>
-                            ISBN
+                            Año de publicación
                         </h4>
 
                         <p>
-                            Próximamente
+                            {{ anio }}
                         </p>
 
                     </div>
@@ -212,8 +239,22 @@
             </div>
 
         </div>
-
+            
     </div>
+
+    <script>
+        console.log("JS cargado");
+        const datoLibro = {
+            titulo: "{{ titulo }}",
+            autor: "{{ autor }}",
+            descripcion: `{{ descripcion }}`,
+            portada: "{{ portada }}",
+            key: "{{ key }}"
+        };
+    </script>
+    <script src="{{ url_for('static', filename='js/detalle-libro.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/usuario.js') }}"></script>
+
 
 </body>
 </html>
