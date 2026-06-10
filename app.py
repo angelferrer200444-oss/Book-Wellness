@@ -3,9 +3,12 @@ from flask_cors import CORS
 import db
 import Libros as libros_api
 import requests
+from flask import Flask, render_template, request, jsonify, session
 
 app = Flask(__name__)
+app.secret_key = 'ilovesucklemons'  # clave secretosa
 CORS(app)
+
 
 api = libros_api.LibroAPI()
 
@@ -19,7 +22,8 @@ def home():
     libros_leyendo = []
     libros_pendientes = []
 
-    id_usuario = request.args.get('id_usuario')
+    id_usuario = session.get('id_usuario')
+    
 
     if id_usuario:
         libros_leyendo = db.obtener_libros_usuario(id_usuario, 'leyendo')
@@ -69,6 +73,7 @@ def libro():
 
     clave = request.args.get("clave")
     portada = request.args.get("portada")
+    print("CLAVE RECIBIDA:", clave) 
 
     if not clave:
         return render_template("libros.html")
@@ -161,14 +166,14 @@ def libro():
 
                 if isinstance(a, dict) and "author" in a:
 
-                    key = a["author"].get("key")
+                    autor_key = a["author"].get("key")
 
-                    if key:
+                    if autor_key:
 
                         try:
 
                             r = requests.get(
-                                f"https://openlibrary.org{key}.json",
+                                f"https://openlibrary.org{autor_key}.json",
                                 timeout=10
                             )
 
@@ -191,6 +196,8 @@ def libro():
 
     except requests.exceptions.RequestException as e:
         print("Error API:", e)
+
+    print("KEY QUE SE PASA AL TEMPLATE:", key)
 
     return render_template(
         "libros.html",
@@ -291,31 +298,29 @@ def registrar_usuario():
 
 @app.route('/api/login', methods=['POST'])
 def login_usuario():
-
     datos = request.json
-
     correo = datos.get('correo')
     password = datos.get('password')
 
     if not correo or not password:
-        return jsonify({
-            "error": "Rellena todos los campos"
-        }), 400
+        return jsonify({"error": "Rellena todos los campos"}), 400
 
-    usuario = db.buscar_usuario(correo, password)
+    usuario = db.buscar_usuario(correo, password)  
 
-    if usuario:
-
+    if usuario:                                     
+        session['id_usuario'] = usuario['id_usuario']
+        session['nombre'] = usuario['nombre']
         return jsonify({
             "mensaje": f"¡Bienvenido, {usuario['nombre']}!",
             "usuario": usuario
         }), 200
+    else:
+        return jsonify({"error": "Credenciales incorrectas"}), 401
 
-    return jsonify({
-        "error": "Credenciales incorrectas"
-    }), 401
-
-
+@app.route('/api/logout', methods=['POST'])
+def logout():
+    session.clear()
+    return jsonify({"mensaje": "Sesión cerrada"}), 200
 # -------------------------
 # BOOK TRACKER
 # -------------------------

@@ -56,6 +56,7 @@ class LibroAPI:
             libros = []
 
             for libro in libros_aleatorios:
+               
 
                 libros.append({
 
