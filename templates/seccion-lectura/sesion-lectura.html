@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Wellness - Lectura</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/SeccionLectura2.css') }}">
+
+</head>
+<body>
+
+    <div class="contenedor-lectura">
+
+        <div class="portada-libro">
+
+            <button onclick="history.back()" class="btn-volver">
+                ←
+            </button>
+        
+            <div class="portada">
+                <span>Portada<br>Libro</span>
+            </div>
+        
+            <!-- titulo -->
+            <div class="info-portada">
+        
+                <h2 class="titulo-portada">
+                    Titulo provisional
+                </h2>
+        
+                <p class="autor-portada">
+                    Autor provisional
+                </p>
+        
+            </div>
+        
+        </div>        
+
+        <!-- Información -->
+        <div class="info-lectura">
+
+            <h1>SECCIÓN DE LECTURA</h1>
+
+            <!-- Barra de progreso -->
+            <div class="progreso-container">
+                <div class="progreso-barra">
+                    <div class="progreso-relleno">
+                        99%
+                    </div>
+                </div>
+                <p>Porcentaje leído</p>
+            </div>
+
+            <!-- Datos -->
+            <div class="datos-lectura">
+
+                <div class="dato">
+                    <label>Formato de Lectura:</label>
+                
+                    <input
+                        type="text"
+                        list="formatos-lectura"
+                        placeholder="Seleccione o escriba un formato">
+                
+                    <datalist id="formatos-lectura">
+                
+                        <option value="Libro Físico">
+                        <option value="Ebook">
+                        <option value="Audiolibro">
+                
+                        <option value="Manga">
+                        <option value="Cómic">
+                        <option value="Novela Gráfica">
+                
+                        <option value="Web Novel">
+                        <option value="Light Novel">
+                
+                        <option value="Fanfiction">
+                        <option value="Revista">
+                        <option value="Artículo Académico">
+                
+                        <option value="Periódico">
+                        <option value="Manual Técnico">
+                
+                        <option value="PDF">
+                        <option value="Otro">
+                
+                    </datalist>
+                </div>                
+                
+                <div class="dato">
+                    <label>Páginas Totales:</label>
+                    <input type="number">
+                </div>
+
+                <div class="dato">
+                    <label>Páginas Leídas:</label>
+                    <input type="number">
+                </div>
+
+                <div class="dato">
+                    <label>Capítulos Leídos:</label>
+                    <input type="number">
+                </div>
+
+                <div class="dato">
+                    <label>Notas del Libro:</label>
+                    <button class="btn-notas">
+                        Botón de notas
+                    </button>
+                </div>
+
+                <div class="dato">
+                    <label>Tiempo Leído:</label>
+                    <input type="text">
+                </div>
+
+                <div class="dato">
+                    <label>Fecha Inicio:</label>
+                    <input type="date">
+                </div>
+                
+                <div class="dato">
+                    <label>Fecha Final:</label>
+                    <input type="date">
+                </div>                
+
+            </div>
+
+            <a
+                href="{{ url_for('seccion_lectura') }}"
+                class="btn-empezar">
+                Empezar lectura
+            </a>
+
+
+        </div>
+
+    </div>
+
+</body>
+</html>

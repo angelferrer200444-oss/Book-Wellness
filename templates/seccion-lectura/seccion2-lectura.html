@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Sesión de Lectura
+    </title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cronometro-lectura.css') }}">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+
+    <button
+        class="btn-volver"
+        onclick="history.back()">
+
+        ←
+
+    </button>
+
+    <main class="timer-panel">
+
+        <h2>
+            SESIÓN DE LECTURA
+        </h2>
+
+        <div class="libro-info">
+
+            <div class="mini-portada">
+
+                PORTADA
+
+            </div>
+
+            <div>
+
+                <h3>
+                    Rhythm of War
+                </h3>
+
+                <p class="autor">
+
+                    ✒️ Brandon Sanderson
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <h1
+            class="timer"
+            id="timer">
+
+            00:00:00
+
+        </h1>
+
+        <p class="texto-tiempo">
+
+            Tiempo de lectura actual
+
+        </p>
+
+        <div class="botones">
+
+            <button
+                id="btnPausa"
+                class="btn-pausa">
+
+                ⏸️ Pausar lectura
+
+            </button>
+
+            <a
+            href="{{ url_for('seccion3_lectura') }}" class="btn-finalizar">
+            ✔️ Finalizar lectura
+            </a>
+
+
+        </div>
+
+    </main>
+    <script src="{{ url_for('static', filename='js/cronometro-lectura.js') }}"></script>
+
+</body>
+
+</html>

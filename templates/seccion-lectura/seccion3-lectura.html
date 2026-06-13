@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Reflexión de Lectura
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/SeccionLectura3.css') }}">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+
+    <div class="contenedor-reflexion">
+
+        <h1>
+            SESIÓN FINALIZADA
+        </h1>
+
+        <div class="resumen-sesion">
+
+            <h2>
+                Tiempo total leído
+            </h2>
+
+            <div class="tiempo-total">
+                01:42:36
+            </div>
+
+            <div class="separador-decorativo">
+
+                <span>❦</span>
+            
+            </div>            
+
+        </div>
+
+        <div class="grid-reflexion">
+
+            <!-- COLUMNA IZQUIERDA -->
+
+            <div class="columna">
+
+                <div class="bloque">
+
+                    <h3>
+                        ¿Cómo te sientes?
+                    </h3>
+
+                    <select>
+
+                        <option>😊 Feliz</option>
+                        <option>😌 Tranquilo</option>
+                        <option>🤔 Reflexivo</option>
+                        <option>😮 Sorprendido</option>
+                        <option>😢 Triste</option>
+                        <option>😰 Ansioso</option>
+
+                    </select>
+
+                </div>
+
+                <div class="bloque">
+
+                    <h3>
+                        ¿Qué aprendiste hoy?
+                    </h3>
+
+                    <textarea class="pequeno"></textarea>
+
+                </div>
+
+                <div class="bloque">
+
+                    <h3>
+                        ¿Palabras nuevas?
+                    </h3>
+
+                    <textarea class="pequeno"></textarea>
+
+                </div>
+
+                <div class="bloque">
+
+                    <h3>
+                        Personaje destacado
+                    </h3>
+
+                    <textarea class="pequeno"></textarea>
+
+                </div>
+
+                <div class="bloque">
+
+                    <h3>
+                        Escena que más te impactó
+                    </h3>
+
+                    <textarea class="pequeno"></textarea>
+
+                </div>
+
+                <div class="bloque">
+
+                    <h3>
+                        ¿Continuarás esta lectura?
+                    </h3>
+                
+                    <select>
+                
+                        <option value="">
+                            Selecciona una opción
+                        </option>
+                
+                        <option>
+                            Sí, continuaré leyendo
+                        </option>
+                
+                        <option>
+                            No por ahora
+                        </option>
+                
+                        <option>
+                            He terminado el libro
+                        </option>
+                
+                    </select>
+                
+                </div>                
+
+            </div>
+
+            <!-- SEPARADOR -->
+            <div class="separador-vertical">
+
+                <span>❦</span>
+
+            </div>
+
+            <!-- COLUMNA DERECHA -->
+
+            <div class="columna">
+
+                <div class="bloque">
+
+                    <h3>
+                        ¿Qué te pareció esta sesión?
+                    </h3>
+
+                    <textarea class="grande"></textarea>
+
+                </div>
+
+                <div class="bloque">
+
+                    <h3>
+                        ¿Te recordó algo de tu vida?
+                    </h3>
+
+                    <textarea class="mediano"></textarea>
+
+                </div>
+
+                <div class="bloque">
+
+                    <h3>
+                        Notas y observaciones
+                    </h3>
+
+                    <textarea
+                        class="grande"
+                        placeholder="Escribe aquí tus notas, teorías o pensamientos..."></textarea>
+
+                </div>
+
+                <div class="bloque">
+
+                    <h3>
+                        ¿Qué buscabas al leer?
+                    </h3>
+
+                    <select>
+
+                        <option>Aprender</option>
+                        <option>Relajarme</option>
+                        <option>Entretenerme</option>
+                        <option>Inspirarme</option>
+                        <option>Comprender algo</option>
+                        <option>Curiosidad</option>
+
+                    </select>
+
+                </div>
+
+                <div class="bloque">
+
+                    <h3>
+                        ¿Encontraste lo que buscabas?
+                    </h3>
+
+                    <select>
+
+                        <option>Sí</option>
+                        <option>Parcialmente</option>
+                        <option>No</option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="acciones-finales">
+
+        <button class="btn-guardar">
+
+            Finalizar y guardar reflexión
+
+        </button>
+
+    </div>
+
+</body>
+
+</html>
