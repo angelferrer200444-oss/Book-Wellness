@@ -80,11 +80,20 @@
 }
 
 /* AUTOR */
-.book-info-section h3{
-    color: #6e140f;
-    font-size: 22px;
-    margin-bottom: 25px;
-    font-weight: 600;
+.book-author{
+    color:#6e140f;
+    font-size:22px;
+    margin-bottom:25px;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.book-author::before{
+    content:"❦";
+    color:#6e140f;
+    font-size:18px;
 }
 
 /* TEXTO */
@@ -236,3 +245,4 @@
     }
 
 }
+
