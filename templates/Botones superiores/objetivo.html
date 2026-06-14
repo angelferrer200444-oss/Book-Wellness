@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Wellness - Objetivos</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="left-section">
+            <div class="logo-container">
+                <div class="books-logo">
+                    <div class="book book-1"></div>
+                    <div class="book book-2"></div>
+                    <div class="book book-3"></div>
+                </div>
+                <div class="logo-text">
+                    <span class="book-title">Book</span>
+                    <span class="wellness-title">Wellness</span>
+                </div>
+            </div>
+
+            <div class="menu-container">
+                <button class="curve-btn">Estadística</button>
+                <button class="curve-btn">Objetivos</button>
+                <button class="curve-btn">Notas</button>
+            </div>
+        </div>
+
+        <button class="user-btn">
+            <div class="user-icon">
+                <div class="user-head"></div>
+                <div class="user-body"></div>
+            </div>
+        </button>
+    </div>
+
+    <div class="top-divider"></div>
+
+    <main class="main-content">
+        <div class="info-cards">
+            
+            <!-- TARJETA 1: MODELO NOTAS -->
+            <div class="card card-container-design">
+                <div class="card-header-brown">Panel de Control</div>
+                
+                <div class="db-diagram-box">
+                    <div class="diagram-header">Notas_Config</div>
+                    <div class="diagram-body">
+                        <div class="diagram-row">
+                            <span class="diag-field font-bold">nota_id</span>
+                            <span class="diag-type">int</span>
+                            <span class="diag-key font-bold">PK</span>
+                        </div>
+                        <div class="diagram-row">
+                            <span class="diag-field font-bold">sesion_id</span>
+                            <span class="diag-type">int</span>
+                            <span class="diag-key font-bold">FK</span>
+                        </div>
+                        <div class="diagram-row">
+                            <span class="diag-field">contenido</span>
+                            <span class="diag-type">text</span>
+                            <span class="diag-key"></span>
+                        </div>
+                        <div class="diagram-row">
+                            <span class="diag-field">fecha_creacion</span>
+                            <span class="diag-type">datetime</span>
+                            <span class="diag-key">N</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TARJETA 2: OBJETIVOS ACTUALES -->
+            <div class="card card-container-design">
+                <div class="card-header-brown">Metas Activas</div>
+                
+                <div class="db-diagram-box">
+                    <div class="diagram-header">Objetivos_Global</div>
+                    <div class="diagram-body">
+                        <div class="diagram-row">
+                            <span class="diag-field font-bold">meta_id</span>
+                            <span class="diag-type">int</span>
+                            <span class="diag-key font-bold">PK</span>
+                        </div>
+                        <div class="diagram-row">
+                            <span class="diag-field">descripcion</span>
+                            <span class="diag-type">varchar</span>
+                            <span class="diag-key"></span>
+                        </div>
+                        <div class="diagram-row">
+                            <span class="diag-field">completado</span>
+                            <span class="diag-type">boolean</span>
+                            <span class="diag-key"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TARJETA INTERACTIVA: AGREGAR NUEVO OBJETIVO -->
+            <div class="card card-container-design add-target-card">
+                <div class="card-header-brown">Nuevo Registro</div>
+                
+                <div class="db-diagram-box add-diagram-box">
+                    <div class="diagram-header">Insertar_Objetivo</div>
+                    <div class="diagram-body add-btn-body">
+                        <button class="add-db-btn" title="Agregar nuevo objetivo">
+                            <span class="plus-sign">+</span>
+                            <span class="btn-subtext">ADD_ROW</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+</body>
+</html>
