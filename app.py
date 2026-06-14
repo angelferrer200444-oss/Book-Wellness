@@ -63,6 +63,12 @@ def registro():
 def recuperar_password():
     return render_template("HTML SESION/¿OlvidasteContrasena.html")
 
+@app.route('/seccion-lectura')
+def seccion_lectura():
+
+    return render_template(
+        'seccion-lectura/Seccion2-Lectura.html'
+    )
 
 # -------------------------
 # DETALLE LIBRO (MEJORADO)
@@ -321,6 +327,7 @@ def login_usuario():
 def logout():
     session.clear()
     return jsonify({"mensaje": "Sesión cerrada"}), 200
+
 # -------------------------
 # BOOK TRACKER
 # -------------------------
@@ -373,7 +380,13 @@ def agregar_libro():
     
 @app.route("/sesion-lectura")
 def sesion_lectura():
-    return render_template("sesion-lectura.html")
+    return render_template("seccion-lectura/sesion-lectura.html")
+
+@app.route('/seccion3-lectura')
+def seccion3_lectura():
+    return render_template(
+        'seccion-lectura/seccion3-lectura.html')
+
 
 @app.route('/api/eliminar_libro', methods=['DELETE'])
 def eliminar_libro():
@@ -400,4 +413,3 @@ if __name__ == "__main__":
         debug=True,
         port=5000
     )
-
