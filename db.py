@@ -35,7 +35,7 @@ def buscar_usuario(correo, password):
     conexion.close()
     return usuario
 
-def agregar_libro(id_usuario, titulo, autor, descripcion, portada, categoria, key_libro):
+def agregar_libro(id_usuario, titulo, autor, descripcion, portada, categoria, key_libro, paginas):
     conexion = obtener_conexion()
     cursor = conexion.cursor()
     
@@ -50,9 +50,9 @@ def agregar_libro(id_usuario, titulo, autor, descripcion, portada, categoria, ke
         return False
 
     cursor.execute("""
-        INSERT INTO libros (id_usuario, titulo, autor, descripcion, portada, categoria, key_libro) 
-        VALUES (%s, %s, %s, %s, %s, %s, %s)
-    """, (id_usuario, titulo, autor, descripcion, portada, categoria, key_libro))
+        INSERT INTO libros (id_usuario, titulo, autor, descripcion, portada, categoria, key_libro, paginas_totales) 
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+    """, (id_usuario, titulo, autor, descripcion, portada, categoria, key_libro, paginas))
     conexion.commit()
     cursor.close()
     conexion.close()
@@ -80,3 +80,120 @@ def eliminar_libro(id_libro, id_usuario):
     conexion.commit()
     cursor.close()
     conexion.close()
+
+def obtener_libro(id_libro):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor(dictionary=True)
+    cursor.execute("""
+        SELECT * FROM libros WHERE id_libro = %s
+    """, (id_libro,))
+    libro = cursor.fetchone()
+    cursor.close()
+    conexion.close()
+    return libro
+
+def actualizar_datos_libro(id_libro, paginas_totales=None, num_caps=None, formato=None):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+    
+    campos = []
+    valores = []
+    
+    if paginas_totales is not None:
+        campos.append("paginas_totales = %s")
+        valores.append(paginas_totales)
+    
+    if num_caps is not None:
+        campos.append("num_caps = %s")
+        valores.append(num_caps)
+    
+    if formato is not None:
+        campos.append("formato = %s")
+        valores.append(formato)
+    
+    if campos:
+        valores.append(id_libro)
+        query = f"UPDATE libros SET {', '.join(campos)} WHERE id_libro = %s"
+        cursor.execute(query, valores)
+        conexion.commit()
+    
+    cursor.close()
+    conexion.close()
+
+
+def guardar_lectura(id_usuario, id_libro, tiempo_minutos, estado, fecha_fin, paginas_leidas, pagina_actual, capitulos_leidos):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT id_lectura, tiempo_minutos, paginas_leidas, capitulos_leidos 
+        FROM lecturas 
+        WHERE id_usuario = %s AND id_libro = %s
+    """, (id_usuario, id_libro))
+    
+    existente = cursor.fetchone()
+
+    if existente:
+        nuevo_tiempo = existente['tiempo_minutos'] + tiempo_minutos
+        nuevas_paginas = existente['paginas_leidas'] + paginas_leidas
+        nuevos_capitulos = existente['capitulos_leidos'] + capitulos_leidos
+
+        cursor.execute("""
+            UPDATE lecturas 
+            SET tiempo_minutos = %s, paginas_leidas = %s, pagina_actual = %s, capitulos_leidos = %s,
+                estado = %s, fecha_fin = %s
+            WHERE id_lectura = %s
+        """, (nuevo_tiempo, nuevas_paginas, pagina_actual, nuevos_capitulos, estado, fecha_fin, existente['id_lectura']))
+        
+        id_lectura = existente['id_lectura']
+
+    else:
+        cursor.execute("""
+            INSERT INTO lecturas (id_usuario, id_libro, tiempo_minutos, estado, fecha_inicio, fecha_fin, paginas_leidas, pagina_actual, capitulos_leidos)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+        """, (id_usuario, id_libro, tiempo_minutos, estado, fecha_fin, fecha_fin, paginas_leidas, pagina_actual, capitulos_leidos))
+        
+        id_lectura = cursor.lastrowid
+
+    conexion.commit()
+    cursor.close()
+    conexion.close()
+    return id_lectura
+
+def guardar_fecha_limite(id_usuario, id_libro, fecha_limite):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+    cursor.execute("""
+        UPDATE lecturas SET fecha_limite = %s
+        WHERE id_usuario = %s AND id_libro = %s
+    """, (fecha_limite, id_usuario, id_libro))
+    conexion.commit()
+    cursor.close()
+    conexion.close()
+
+
+def guardar_notas_lectura(id_lectura, respuestas):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+    cursor.execute("""
+        INSERT INTO notas_lectura 
+        (id_lectura, como_te_sientes, que_aprendiste, palabras_nuevas, personaje_destacado, 
+         escena_impacto, continuara, parecer_sesion, recuerdo_vida, notas_observaciones, 
+         buscaba_al_leer, encontro_lo_buscado)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    """, (id_lectura, *respuestas))
+    conexion.commit()
+    cursor.close()
+    conexion.close()
+
+def obtener_lectura_en_progreso(id_usuario, id_libro):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor(dictionary=True)
+    cursor.execute("""
+        SELECT * FROM lecturas 
+        WHERE id_usuario = %s AND id_libro = %s
+    """, (id_usuario, id_libro))
+    lectura = cursor.fetchone()
+    cursor.close()
+    conexion.close()
+    return lectura

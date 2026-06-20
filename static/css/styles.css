@@ -729,3 +729,6 @@ body::before {
     background-color: #2980b9;
 }
 
+a{
+    text-decoration: none;
+}

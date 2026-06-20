@@ -41,17 +41,21 @@
 
             <div class="menu-container">
 
-                <button class="curve-btn">
-                    Estadística
-                </button>
+                <a href="{{ url_for('estadisticas') }}" class="curve-btn">
+                    Estadísticas
+                </a>
 
-                <button class="curve-btn">
+                <a href="{{ url_for('objetivo') }}" class="curve-btn">
                     Objetivos
-                </button>
+                </a>
 
-                <button class="curve-btn">
+                <a href="{{ url_for('notas') }}" class="curve-btn">
                     Notas
-                </button>
+                </a>                
+
+                <a href="{{ url_for('leidos') }}" class="curve-btn">
+                    Leídos
+                </a>
 
             </div>
 
@@ -152,65 +156,24 @@
                         
         <!-- RESULTADOS -->
 
-        <div class="results-container">
+        <div id="contenedor-resultados">
 
-            <div class="results-header">
-
-                <h2>
-                    Resultados para "{{ consulta }}"
-                </h2>
-
-                <span class="results-count">
-                    {{ libros|length }} libros encontrados
+            <div class="loader-cabecera">
+        
+                <div class="loader loader-grande"></div>
+        
+                <span id="texto-carga-cabecera">
+                    Consultando catálogo...
                 </span>
-
+        
             </div>
-
-            <div class="results-shelf">
-
-                <div class="books-grid">
-
-                    {% for libro in libros %}
-
-                    <a href="{{ url_for(
-                        'libro',
-                        clave=libro.key,
-                        portada=libro.portada
-                    ) }}"
-                       class="book-link">                    
-
-                        <div class="book-card result-card">
-
-                            <img
-                                src="{{ libro.portada }}"
-                                alt="{{ libro.titulo }}"
-                            >
-
-                            <div class="book-info">
-
-                                <p class="book-title-card">
-                                    {{ libro.titulo }}
-                                </p>
-
-                            </div>
-
-                        </div>
-
-                    </a>
-
-                    {% endfor %}
-
-                </div>
-
-                <div class="shelf"></div>
-
-            </div>
-
-        </div>
+        
+        </div>        
 
 <script src="{{ url_for('static', filename='js/generos.js') }}"></script>
 <script src="{{ url_for('static', filename='js/filtro.js') }}"></script>
 <script src="{{ url_for('static', filename='js/usuario.js') }}"></script>
+<script src="{{ url_for('static', filename='js/busqueda-libro.js') }}"></script>
         
 </body>
 </html>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 06-06-2026 a las 17:35:25
+-- Tiempo de generación: 20-06-2026 a las 15:58:31
 -- Versión del servidor: 8.4.7
 -- Versión de PHP: 8.3.28
 
@@ -35,11 +35,26 @@ CREATE TABLE IF NOT EXISTS `lecturas` (
   `estado` enum('por_leer','leyendo','terminado','pausado') COLLATE utf8mb4_unicode_ci DEFAULT 'por_leer',
   `fecha_inicio` date DEFAULT NULL,
   `fecha_fin` date DEFAULT NULL,
+  `paginas_leidas` int DEFAULT '0',
+  `capitulos_leidos` int DEFAULT '0',
+  `tiempo_minutos` int DEFAULT '0',
+  `pagina_actual` int DEFAULT '0',
+  `fecha_limite` date DEFAULT NULL,
   PRIMARY KEY (`id_lectura`),
   UNIQUE KEY `uk_lectura_usuario` (`id_lectura`,`id_usuario`),
-  KEY `FK_0` (`id_usuario`),
+  UNIQUE KEY `unico_libro_usuario` (`id_usuario`,`id_libro`),
   KEY `FK_1` (`id_libro`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `lecturas`
+--
+
+INSERT INTO `lecturas` (`id_lectura`, `id_usuario`, `id_libro`, `estado`, `fecha_inicio`, `fecha_fin`, `paginas_leidas`, `capitulos_leidos`, `tiempo_minutos`, `pagina_actual`, `fecha_limite`) VALUES
+(2, 22, 41, '', '2026-06-20', '2026-06-20', 21, 3, 2, 21, NULL),
+(3, 22, 43, '', '2026-06-20', '2026-06-20', 12, 3, 0, 12, '2026-07-09'),
+(4, 6, 44, '', '2026-06-20', '2026-06-20', 11, 2, 4, 11, NULL),
+(5, 6, 46, '', '2026-06-20', '2026-06-20', 9, 2, 1, 9, NULL);
 
 -- --------------------------------------------------------
 
@@ -53,29 +68,53 @@ CREATE TABLE IF NOT EXISTS `libros` (
   `titulo` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
   `autor` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `descripcion` text COLLATE utf8mb4_unicode_ci,
-  `num_paginas` int DEFAULT NULL,
-  `formato` enum('fisico','digital','audiolibro') COLLATE utf8mb4_unicode_ci DEFAULT 'fisico',
-  `genero` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT '',
-  `es_agregado_manualmente` tinyint(1) DEFAULT '0',
-  `num_caps` int NOT NULL,
+  `formato` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `genero` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `es_agregado_manualmente` tinyint DEFAULT NULL,
+  `num_caps` int DEFAULT NULL,
+  `id_usuario` int NOT NULL,
+  `portada` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `categoria` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT 'pendiente',
+  `key_libro` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `paginas_totales` int DEFAULT NULL,
   PRIMARY KEY (`id_libro`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `libros`
+--
+
+INSERT INTO `libros` (`id_libro`, `titulo`, `autor`, `descripcion`, `formato`, `genero`, `es_agregado_manualmente`, `num_caps`, `id_usuario`, `portada`, `categoria`, `key_libro`, `paginas_totales`) VALUES
+(41, 'Dino IQ (Smart Kids)', 'Roger Priddy', 'Descripción no disponible', 'Libro Físico', NULL, NULL, 10, 22, 'https://covers.openlibrary.org/b/id/1170398-L.jpg', 'leyendo', '/works/OL3260124W', 45),
+(43, 'The lord of the rings', 'Jude Fisher', 'Descripción no disponible', 'Libro Físico', NULL, NULL, 12, 22, 'https://covers.openlibrary.org/b/id/393983-L.jpg', 'leyendo', '/works/OL5753836W', 65),
+(44, 'Dinosaur Babies', 'Leonie Bennett', 'Did dinosaurs lay eggs in nests? How big were the eggs? What were the shells like? Did mother dinosaurs care for their babies? These and other questions about the birth and care of dinosaur babies are answered in this fascinating peek into the home lives of these reptiles. The simple text and exciting illustrations along with the tantalizing information will capture the interest of all young readers. Developed by literacy experts, Dinosaur Babies features controlled text with appropriate vocabulary, grammar, and sentence structure for emergent readers. Dinosaur Babies is part of Bearport\'s I Love Reading: Dino World series.', 'Libro Físico', NULL, NULL, 5, 6, 'https://covers.openlibrary.org/b/id/1998640-L.jpg', 'leyendo', '/works/OL5837360W', 24),
+(45, 'Aiki ne waza', 'Autor desconocido', 'Descripción no disponible', NULL, NULL, NULL, NULL, 6, 'https://covers.openlibrary.org/b/id/13585127-L.jpg', 'pendiente', '/works/OL34818907W', 192),
+(46, 'Hermano Lobo', 'Autor desconocido', 'Descripción no disponible', 'Libro Físico', NULL, NULL, 25, 6, 'https://covers.openlibrary.org/b/id/14474590-L.jpg', 'leyendo', '/works/OL25379493W', 224);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `notas_sesion`
+-- Estructura de tabla para la tabla `notas_lectura`
 --
 
-DROP TABLE IF EXISTS `notas_sesion`;
-CREATE TABLE IF NOT EXISTS `notas_sesion` (
+DROP TABLE IF EXISTS `notas_lectura`;
+CREATE TABLE IF NOT EXISTS `notas_lectura` (
   `id_nota` int NOT NULL AUTO_INCREMENT,
-  `id_sesion` int NOT NULL,
-  `contenido` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `fecha_creacion` datetime DEFAULT CURRENT_TIMESTAMP,
+  `id_lectura` int NOT NULL,
+  `como_te_sientes` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `que_aprendiste` text COLLATE utf8mb4_unicode_ci,
+  `palabras_nuevas` text COLLATE utf8mb4_unicode_ci,
+  `personaje_destacado` text COLLATE utf8mb4_unicode_ci,
+  `escena_impacto` text COLLATE utf8mb4_unicode_ci,
+  `continuara` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `parecer_sesion` text COLLATE utf8mb4_unicode_ci,
+  `recuerdo_vida` text COLLATE utf8mb4_unicode_ci,
+  `notas_observaciones` text COLLATE utf8mb4_unicode_ci,
+  `buscaba_al_leer` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `encontro_lo_buscado` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id_nota`),
-  KEY `FK_6` (`id_sesion`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  KEY `id_lectura` (`id_lectura`)
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -100,37 +139,6 @@ CREATE TABLE IF NOT EXISTS `objetivos_personales` (
   `Name_custom` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id_objetivo`),
   KEY `FK_10` (`id_usuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `palabras_nuevas`
---
-
-DROP TABLE IF EXISTS `palabras_nuevas`;
-CREATE TABLE IF NOT EXISTS `palabras_nuevas` (
-  `id_palabra` int NOT NULL AUTO_INCREMENT,
-  `id_sesion` int NOT NULL,
-  `palabra` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id_palabra`),
-  KEY `FK_4` (`id_sesion`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `personajes`
---
-
-DROP TABLE IF EXISTS `personajes`;
-CREATE TABLE IF NOT EXISTS `personajes` (
-  `id_personaje` int NOT NULL AUTO_INCREMENT,
-  `id_sesion` int NOT NULL,
-  `nombre_personaje` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `id_libro` int NOT NULL,
-  PRIMARY KEY (`id_personaje`),
-  KEY `FK_5` (`id_sesion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -178,14 +186,15 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   `genero_preferido` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT '',
   PRIMARY KEY (`id_usuario`),
   UNIQUE KEY `uk_usuarios_correo` (`correo`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `usuarios`
 --
 
 INSERT INTO `usuarios` (`id_usuario`, `nombre`, `correo`, `password`, `fecha_registro`, `nivel_actual`, `total_libros_leidos`, `total_paginas_leidas`, `promedio_paginas_sesion`, `genero_preferido`) VALUES
-(6, 'Ender', 'enderdg2010@gmail.com', 'ene102010', '2026-06-01 10:07:48', 'principiante', 0, 0, 0.00, '');
+(6, 'Ender', 'enderdg2010@gmail.com', 'ene102010', '2026-06-01 10:07:48', 'principiante', 0, 0, 0.00, ''),
+(22, 'popo', 'popeto123@gmail.com', '123', '2026-06-07 13:50:45', 'principiante', 0, 0, 0.00, '');
 
 --
 -- Restricciones para tablas volcadas
@@ -199,28 +208,10 @@ ALTER TABLE `lecturas`
   ADD CONSTRAINT `FK_1` FOREIGN KEY (`id_libro`) REFERENCES `libros` (`id_libro`) ON DELETE RESTRICT;
 
 --
--- Filtros para la tabla `notas_sesion`
---
-ALTER TABLE `notas_sesion`
-  ADD CONSTRAINT `FK_6` FOREIGN KEY (`id_sesion`) REFERENCES `sesiones` (`id_sesion`) ON DELETE CASCADE;
-
---
 -- Filtros para la tabla `objetivos_personales`
 --
 ALTER TABLE `objetivos_personales`
   ADD CONSTRAINT `FK_10` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE;
-
---
--- Filtros para la tabla `palabras_nuevas`
---
-ALTER TABLE `palabras_nuevas`
-  ADD CONSTRAINT `FK_4` FOREIGN KEY (`id_sesion`) REFERENCES `sesiones` (`id_sesion`) ON DELETE CASCADE;
-
---
--- Filtros para la tabla `personajes`
---
-ALTER TABLE `personajes`
-  ADD CONSTRAINT `FK_5` FOREIGN KEY (`id_sesion`) REFERENCES `sesiones` (`id_sesion`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `sesiones`

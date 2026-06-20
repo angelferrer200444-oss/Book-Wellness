@@ -11,6 +11,7 @@ class LibroAPI:
         editions = libro.get("edition_key", [])
         isbns = libro.get("isbn", [])
         cover_id = libro.get("cover_i")
+        
 
         if editions:
             return f"https://covers.openlibrary.org/b/olid/{editions[0]}-L.jpg"

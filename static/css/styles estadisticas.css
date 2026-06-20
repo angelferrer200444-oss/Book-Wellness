@@ -1,0 +1,374 @@
+/* =========================
+   FONDO Y CONFIGURACIÓN BASE
+========================= */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Cinzel', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background:
+    radial-gradient(
+        circle at top,
+        rgba(201,92,38,0.18),
+        transparent 45%
+    ),
+    linear-gradient(
+        to bottom,
+        #efe3cf 0%,
+        #e3d3bd 40%,
+        #d5c0a4 100%
+    );
+    color: #4a1f14;
+}
+
+/* DETALLES DECORATIVOS DE REJILLA */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+    repeating-linear-gradient(
+        90deg,
+        rgba(90,35,20,0.025) 0px,
+        rgba(90,35,20,0.025) 2px,
+        transparent 2px,
+        transparent 6px
+    );
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* =========================
+   BARRA SUPERIOR INTERFAZ
+========================= */
+.top-bar {
+    position: relative;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 8px 28px 0 28px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    z-index: 5;
+}
+
+.left-section {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px; 
+}
+
+/* PILA DE LIBROS LOGO */
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-top: 8px;
+}
+
+.books-logo {
+    position: relative;
+    width: 70px;
+    height: 70px;
+}
+
+.book {
+    position: absolute;
+    width: 54px;
+    height: 14px;
+    border-radius: 4px;
+    border: 3px solid #2c0906;
+    box-shadow:
+        0 4px 8px rgba(0,0,0,0.18),
+        inset 0 1px 2px rgba(255,255,255,0.08);
+}
+
+.book-1 { bottom: 0; left: 0; background: linear-gradient(to bottom, #7f2618, #4a150d); }
+.book-2 { bottom: 18px; left: 8px; background: linear-gradient(to bottom, #8b3b1e, #5a1f12); }
+.book-3 { bottom: 36px; left: 16px; background: linear-gradient(to bottom, #9a4a22, #6b2814); }
+
+.logo-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 0.9;
+}
+
+.book-title { font-size: 40px; font-weight: 700; color: #5a1c11; }
+.wellness-title { font-size: 22px; font-weight: 600; letter-spacing: 2px; color: #7a2618; }
+
+/* BOTONES CURVOS INTERFAZ */
+.menu-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    margin-top: -12px;
+}
+
+.curve-btn {
+    position: relative;
+    width: 220px;
+    height: 110px;
+    background: transparent;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 10px;
+    color: #f2e3cd;
+    font-size: 22px;
+    font-weight: bold;
+    font-family: 'Cinzel', serif;
+    text-align: center;
+    line-height: 1.05;
+    cursor: pointer;
+    transition:
+        transform 0.25s ease,
+        filter 0.25s ease;
+}
+
+/* =========================
+   CURVA
+========================= */
+.curve-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 220px;
+    height: 58px;
+    background:
+        linear-gradient(
+            to bottom,
+            #7f2618,
+            #4e170f
+        );
+    border-bottom: 4px solid #2b0d08;
+    border-left: 4px solid #2b0d08;
+    border-right: 4px solid #2b0d08;
+    border-bottom-left-radius: 140px 70px;
+    border-bottom-right-radius: 140px 70px;
+    box-shadow:
+        0 6px 12px rgba(0,0,0,0.25),
+        inset 0 2px 2px rgba(255,255,255,0.06);
+    z-index: -1;
+}
+
+/* =========================
+   PICO CENTRAL
+========================= */
+.curve-btn::after {
+    content: "";
+    position: absolute;
+    top: 49px;
+    left: 50%;
+    transform:
+        translateX(-50%)
+        rotate(45deg);
+    width: 16px;
+    height: 16px;
+    background:
+        linear-gradient(
+            to bottom,
+            #6a1f13,
+            #45120c
+        );
+    border-right: 4px solid #2b0d08;
+    border-bottom: 4px solid #2b0d08;
+}
+
+/* =========================
+   HOVER BOTÓN
+========================= */
+.curve-btn:hover {
+    transform:
+        translateY(5px)
+        scale(1.03);
+    filter: brightness(1.08);
+}
+
+/* AVATAR DE USUARIO */
+.user-btn {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    border: 4px solid #2a0d08;
+    background: linear-gradient(to bottom, #7f2618, #4a150d);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25), inset 0 2px 3px rgba(255,255,255,0.06);
+    transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.user-btn:hover { transform: scale(1.08) rotate(4deg); filter: brightness(1.08); }
+
+.user-icon { position: relative; width: 38px; height: 38px; }
+.user-head { width: 16px; height: 16px; background: #efe3cf; border-radius: 50%; position: absolute; top: 0; left: 50%; transform: translateX(-50%); }
+.user-body { width: 28px; height: 16px; background: #efe3cf; border-radius: 20px 20px 10px 10px; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); }
+
+/* LÍNEA DIVISORA DE SECCIONES */
+.top-divider {
+    position: absolute;
+    top: 105px;
+    left: 0;
+    width: 100vw;
+    height: 18px;
+    background: linear-gradient(to bottom, #7a2618 0%, #631c12 35%, #4d140d 65%, #2c0906 100%);
+    border-top: 3px solid #a54a33;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.18), inset 0 2px 2px rgba(255,255,255,0.08), inset 0 -4px 6px rgba(0,0,0,0.3);
+    z-index: 10;
+}
+
+/* ========================================================
+   SECCIÓN: CUADRO ÚNICO DE ESTADÍSTICAS (MEJORADO)
+   ======================================================== */
+.main-content {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 60px auto 40px; 
+    padding: 0 24px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Alinea los elementos al inicio superior */
+}
+
+/* CONTENEDOR Y BOTÓN ATRÁS (ESTILO CAPTURA) */
+.back-btn-container {
+    position: absolute;
+    left: 40px; /* Separación desde el borde izquierdo del área de contenido */
+    top: 10px;  /* Altura alineada con la parte superior de la tarjeta */
+}
+
+.back-circle-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    background-color: #5a120c; /* Color guinda/marrón oscuro de la app */
+    color: #efe3cf;            /* Color beige claro para la flecha */
+    font-size: 24px;
+    font-weight: bold;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.back-circle-btn:hover {
+    transform: scale(1.1);
+    background-color: #7a2618; /* Brillo sutil en el hover */
+}
+
+/* Tarjeta contenedora única elegante */
+.main-dashboard-card {
+    width: 100%;
+    max-width: 500px;
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(6px);
+    border: 2px solid #5a1c11;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(90, 35, 20, 0.12);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.main-dashboard-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(90, 35, 20, 0.18);
+}
+
+/* Cabecera integrada de la tarjeta */
+.dashboard-header {
+    background: linear-gradient(to bottom, #7a2618, #4d140d);
+    color: #f2e3cd;
+    text-align: center;
+    padding: 16px 0;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    border-bottom: 3px solid #2c0906;
+}
+
+/* Cuerpo interno del cuadro */
+.dashboard-body {
+    padding: 12px 20px 24px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Filas individuales con espacio y aire */
+.dashboard-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px;
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(90, 35, 20, 0.15);
+    border-radius: 10px;
+    transition: background-color 0.2s ease;
+}
+
+.dashboard-row:hover {
+    background: rgba(255, 255, 255, 0.75);
+}
+
+/* Resaltado sutil para la racha */
+.highlight-row {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.4), rgba(201, 92, 38, 0.08));
+    border-color: rgba(201, 92, 38, 0.3);
+}
+
+/* Lado izquierdo de la fila (Icono + Texto descriptivo) */
+.row-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.row-icon {
+    font-size: 22px;
+}
+
+.row-label {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    color: #5a1c11;
+}
+
+/* Valores de la derecha destacados */
+.row-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: #2c0906;
+}
+
+/* Contenedor de etiquetas/tags */
+.tags-container {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+/* Cápsulas de géneros literarios */
+.tag {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    background-color: #7a2618;
+    color: #efe3cf;
+    padding: 4px 10px;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+a {
+    text-decoration: none;
+}

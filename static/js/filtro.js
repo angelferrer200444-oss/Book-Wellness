@@ -69,5 +69,3 @@ buscador.addEventListener("input", ()=>{
     });
 
 });
-
-

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Reflexión de Lectura
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/SeccionLectura3.css') }}">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+
+    <div class="contenedor-reflexion">
+
+        <h1>
+            SESIÓN FINALIZADA
+        </h1>
+
+        <div class="resumen-sesion">
+
+            <h2>
+                Tiempo total leído
+            </h2>
+
+            <div class="tiempo-total">
+                01:42:36
+            </div>
+
+            <div class="separador-decorativo">
+
+                <span>❦</span>
+            
+            </div>            
+
+        </div>
+
+       <div class="grid-reflexion">
+
+    <div class="pregunta activa">
+        <h3>¿En qué página te quedaste?</h3>
+        <p style="opacity:0.7; font-size:14px; margin-bottom:10px;">
+            Ibas en la página {{ pagina_anterior }}
+        </p>
+        <input type="number" id="paginaActual" placeholder="Ej: 150">
+    </div>
+    <div class="pregunta">
+    <h3>¿Cuántos capítulos leíste hoy?</h3>
+    <input type="number" id="capitulosHoy" placeholder="Ej: 3">
+</div>
+
+            <div class="pregunta">
+
+                <h3>¿Cómo te sientes?</h3>
+        
+                <select>
+                    <option>😊 Feliz</option>
+                    <option>😌 Tranquilo</option>
+                    <option>🤔 Reflexivo</option>
+                    <option>😮 Sorprendido</option>
+                    <option>😢 Triste</option>
+                    <option>😰 Ansioso</option>
+                </select>
+        
+            </div>
+        
+            <div class="pregunta">
+        
+                <h3>¿Qué aprendiste hoy?</h3>
+        
+                <textarea></textarea>
+        
+            </div>
+        
+            <div class="pregunta">
+        
+                <h3>¿Palabras nuevas?</h3>
+        
+                <textarea></textarea>
+        
+            </div>
+        
+            <div class="pregunta">
+        
+                <h3>Personaje destacado</h3>
+        
+                <textarea></textarea>
+        
+            </div>
+        
+            <div class="pregunta">
+        
+                <h3>Escena que más te impactó</h3>
+        
+                <textarea></textarea>
+        
+            </div>
+        
+            <div class="pregunta">
+        
+                <h3>¿Continuarás esta lectura?</h3>
+        
+                <select>
+                    <option>Sí, continuaré leyendo</option>
+                    <option>No por ahora</option>
+                    <option>He terminado el libro</option>
+                </select>
+        
+            </div>
+        
+            <div class="pregunta">
+        
+                <h3>¿Qué te pareció esta sesión?</h3>
+        
+                <textarea></textarea>
+        
+            </div>
+        
+            <div class="pregunta">
+        
+                <h3>¿Te recordó algo de tu vida?</h3>
+        
+                <textarea></textarea>
+        
+            </div>
+        
+            <div class="pregunta">
+        
+                <h3>Notas y observaciones</h3>
+        
+                <textarea></textarea>
+        
+            </div>
+        
+            <div class="pregunta">
+        
+                <h3>¿Qué buscabas al leer?</h3>
+        
+                <select>
+                    <option>Aprender</option>
+                    <option>Relajarme</option>
+                    <option>Entretenerme</option>
+                    <option>Inspirarme</option>
+                    <option>Comprender algo</option>
+                    <option>Curiosidad</option>
+                </select>
+        
+            </div>
+        
+            <div class="pregunta">
+        
+                <h3>¿Encontraste lo que buscabas?</h3>
+        
+                <select>
+                    <option>Sí</option>
+                    <option>Parcialmente</option>
+                    <option>No</option>
+                </select>
+        
+            </div>
+        
+        </div>
+        
+        <div class="navegacion-reflexion">
+
+            <button class="btn-atras" id="btnAtras">
+        
+                ← Atrás
+        
+            </button>        
+        
+            <div class="indicadores">
+        
+                <span class="punto activo"></span>
+                <span class="punto"></span>
+                <span class="punto"></span>
+                <span class="punto"></span>
+                <span class="punto"></span>
+                <span class="punto"></span>
+                <span class="punto"></span>
+                <span class="punto"></span>
+                <span class="punto"></span>
+                <span class="punto"></span>
+                <span class="punto"></span>
+        
+            </div>
+        
+            <button class="btn-guardar" id="btnContinuar">
+        
+                Continuar
+        
+            </button>
+            
+
+        </div>
+
+        <div class="separador-decorativo">
+
+            <span>❦</span>
+        
+        </div>
+
+        <div class="boton-menu">
+
+            <button id="btnMenu">
+        
+                🏠 Menú
+        
+            </button>
+        
+        </div>
+        
+        </div>
+        
+    </div>
+
+
+<script>
+    const segundosTotal = parseInt(localStorage.getItem('tiempo_lectura') || 0);
+    const horas = Math.floor(segundosTotal / 3600);
+    const minutos = Math.floor((segundosTotal % 3600) / 60);
+    const segs = segundosTotal % 60;
+    const tiempoFormateado = 
+        String(horas).padStart(2,"0") + ":" +
+        String(minutos).padStart(2,"0") + ":" +
+        String(segs).padStart(2,"0");
+
+    document.querySelector('.tiempo-total').textContent = tiempoFormateado;
+</script>
+
+<script>
+    window.paginaAnterior = "{{ pagina_anterior }}";
+</script>
+<script src="{{ url_for('static', filename='js/reflexion.js') }}"></script>
+
+</body>
+
+</html>

@@ -56,20 +56,23 @@
 
             </div>
 
-            <!-- BOTONES -->
             <div class="menu-container">
 
-                <button class="curve-btn">
-                    Estadística
-                </button>
+                <a href="{{ url_for('estadisticas') }}" class="curve-btn">
+                    Estadísticas
+                </a>
 
-                <button class="curve-btn">
+                <a href="{{ url_for('objetivo') }}" class="curve-btn">
                     Objetivos
-                </button>
+                </a>
 
-                <button class="curve-btn">
+                <a href="{{ url_for('notas') }}" class="curve-btn">
                     Notas
-                </button>
+                </a>                
+
+                <a href="{{ url_for('leidos') }}" class="curve-btn">
+                    Leídos
+                </a>
 
             </div>
 
@@ -139,23 +142,19 @@
         <!-- DERECHA -->
         <div class="book-info-section">
 
-            <h1>
-                {{ titulo }}
-            </h1>
+            <div id="cabecera-libro">
 
-            {% if subtitulo %}
-                <h2 class="book-subtitle">
-                    {{ subtitulo }}
-                </h2>
-            {% endif %}
-
-            <h3>
-                {{ autor }}
-            </h3>
-
-            <p class="book-short-text">
-                Información próximamente por asignar.
-            </p>
+                <div class="loader-cabecera">
+            
+                    <div class="loader loader-grande"></div>
+            
+                    <span id="texto-carga-cabecera">
+                        Consultando catálogo...
+                    </span>
+            
+                </div>
+            
+            </div>                        
 
             <!-- BOTONES -->
             <div class="detail-buttons">
@@ -179,60 +178,89 @@
                         Descripción
                     </h4>
 
-                    <p>
-                        {{ descripcion }}
-                    </p>
+                    <div id="descripcion">
+
+                        <div class="loader-container">
+                            <div class="loader"></div>
+                            <span id="texto-carga">
+                                Buscando ejemplar...
+                            </span>
+                        </div>
+                    </div>                                        
 
                 </div>
 
                 <div class="info-grid">
 
                     <div class="mini-info">
-                        
-                        <h4>
-                            Editor
-                        </h4>
 
-                        <p>
-                            Próximamente
-                        </p>
-
+                        <h4>Páginas</h4>
+                    
+                        <div id="paginas">
+                    
+                            <div class="loader-container">
+                                <div class="loader"></div>
+                            </div>
+                    
+                        </div>
+                    
                     </div>
-
+                    
                     <div class="mini-info">
-
-                        <h4>
-                            Idioma
-                        </h4>
-
-                        <p>
-                            Próximamente
-                        </p>
+                    
+                        <h4>Géneros</h4>
+                    
+                        <div id="generos">
+                    
+                            <div class="loader-container">
+                                <div class="loader"></div>
+                            </div>
+                    
+                        </div>
+                    
                     </div>
-
+                    
                     <div class="mini-info">
-
-                        <h4>
-                            Formato
-                        </h4>
-
-                        <p>
-                            Próximamente
-                        </p>
-
+                    
+                        <h4>País de origen</h4>
+                    
+                        <div id="pais">
+                    
+                            <div class="loader-container">
+                                <div class="loader"></div>
+                            </div>
+                    
+                        </div>
+                    
                     </div>
-
+                    
                     <div class="mini-info">
-
-                        <h4>
-                            Año de publicación
-                        </h4>
-
-                        <p>
-                            {{ anio }}
-                        </p>
-
+                    
+                        <h4>Año de publicación</h4>
+                    
+                        <div id="anio">
+                    
+                            <div class="loader-container">
+                                <div class="loader"></div>
+                            </div>
+                    
+                        </div>
+                    
                     </div>
+                    
+                    <div class="mini-info">
+                    
+                        <h4>Formato</h4>
+                    
+                        <div id="formato">
+                    
+                            <div class="loader-container">
+                                <div class="loader"></div>
+                            </div>
+                    
+                        </div>
+                    
+                    </div>                    
 
                 </div>
 
@@ -243,17 +271,19 @@
     </div>
 
     <script>
-        console.log("JS cargado");
-        const datoLibro = {
-            titulo: "{{ titulo }}",
-            autor: "{{ autor }}",
-            descripcion: `{{ descripcion }}`,
+
+        window.datoLibro = {
             portada: "{{ portada }}",
-            key: "{{ key }}"
+            key: "{{ clave }}",
+            titulo: "",
+            autor: "",
+            descripcion: ""
         };
+        
     </script>
-    <script src="{{ url_for('static', filename='js/detalle-libro.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/usuario.js') }}"></script>
+        
+<script src="{{ url_for('static', filename='js/detalle-libro.js') }}"></script>
+<script src="{{ url_for('static', filename='js/usuario.js') }}"></script>
 
 
 </body>

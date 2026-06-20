@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Wellness - Notas</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles notas.css') }}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="left-section">
+            <div class="logo-container">
+                <div class="books-logo">
+                    <div class="book book-1"></div>
+                    <div class="book book-2"></div>
+                    <div class="book book-3"></div>
+                </div>
+                <div class="logo-text">
+                    <span class="book-title">Book</span>
+                    <span class="wellness-title">Wellness</span>
+                </div>
+            </div>
+            
+            <div class="menu-container">
+                <a href="{{ url_for('estadisticas') }}" class="curve-btn">Estadísticas</a>
+                <a href="{{ url_for('objetivo') }}" class="curve-btn">Objetivos</a>
+                <a href="{{ url_for('notas') }}" class="curve-btn">Notas</a>                
+                <a href="{{ url_for('leidos') }}" class="curve-btn">Leídos</a>
+            </div>
+        </div>
+
+        <button class="user-btn">
+            <div class="user-icon">
+                <div class="user-head"></div>
+                <div class="user-body"></div>
+            </div>
+        </button>
+    </div>
+
+    <div class="top-divider"></div>
+
+    <main class="main-content">
+        
+        <div class="back-btn-container">
+            <button onclick="history.back()" class="back-circle-btn" aria-label="Volver atrás">
+                &larr;
+            </button>
+        </div>
+
+        <div class="welcome-block">
+            <h1>Notas de Lectura</h1>
+            <p>Gestiona tus apuntes y captura las mejores reflexiones de tus libros favoritos</p>
+        </div>
+
+        <div class="notes-layout-container">
+            
+            <div class="left-book-column">
+                <h2 class="section-subtitle">Notas Actuales</h2>
+                <div class="book-current-section">
+                    
+                    <div class="book-carousel-nav">
+                        <button type="button" id="prev-book-btn" class="nav-arrow-btn" title="Libro anterior">&lsaquo;</button>
+                        
+                        <div class="book-cover-placeholder">
+                            <span>Portada<br>Libro</span>
+                        </div>
+                        
+                        <button type="button" id="next-book-btn" class="nav-arrow-btn" title="Siguiente libro">&rsaquo;</button>
+                    </div>
+
+                    <div class="book-metadata-display">
+                        <div id="current-book-title" class="book-meta-title">El Alquimista</div>
+                        <div id="current-book-author" class="book-meta-author">Paulo Coelho</div>
+                        <div id="current-book-date" class="book-meta-date">Publicación: 1988</div>
+                    </div>
+
+                    <button type="button" id="toggle-form-btn" class="new-note-btn">Nueva Nota</button>
+                </div>
+
+                <div id="note-form-container" class="note-form-container">
+                    <form id="new-note-form" class="note-form">
+                        <input type="text" id="note-title-input" placeholder="Título de la nota..." class="form-input" required>
+                        <textarea id="note-content-input" placeholder="¿Qué tienes en mente hoy? Escribe aquí tu nota..." class="form-textarea" rows="5" required></textarea>
+                        
+                        <div class="form-group">
+                            <label for="note-category-select" class="form-label">Categoría de la Nota:</label>
+                            <select id="note-category-select" class="form-select" required>
+                                <option value="Reflexiones">Reflexiones</option>
+                                <option value="Personajes">Personajes</option>
+                                <option value="Citas">Citas</option>
+                                <option value="Vocabulario">Vocabulario</option>
+                            </select>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" id="cancel-note-btn" class="cancel-note-btn">Cancelar</button>
+                            <button type="submit" class="submit-note-btn">Guardar Nota</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="right-notes-column">
+                <div class="notes-header-filter">
+                    <h2 class="section-subtitle inline-subtitle">Notas Guardadas de</h2>
+                    
+                    <div class="dropdown-filter-container">
+                        <button type="button" id="dropdown-filter-btn" class="filter-option-btn">Todos <span class="arrow-down"></span></button>
+                        <div id="dropdown-menu-options" class="dropdown-menu-options">
+                            <button type="button" class="dropdown-item" data-value="Todos">Todos</button>
+                            <button type="button" class="dropdown-item" data-value="Personajes">Personajes</button>
+                            <button type="button" class="dropdown-item" data-value="Citas">Citas</button>
+                            <button type="button" class="dropdown-item" data-value="Reflexiones">Reflexiones</button>
+                            <button type="button" class="dropdown-item" data-value="Vocabulario">Vocabulario</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="saved-notes-scroll">
+                    <div id="notes-list-layout" class="notes-list-layout">
+                        
+                        <div class="note-card" data-category="Citas">
+                            <div class="note-header">
+                                <div class="note-title-wrapper">
+                                    <h3 class="note-title">Cita - El Alquimista</h3>
+                                    <span class="note-category-badge">Citas</span>
+                                </div>
+                                <span class="note-date">14 Jun 2026</span>
+                            </div>
+                            <div class="note-body">
+                                <p>"Cuando quieres algo, todo el universo conspira para que realices tu deseo." Una frase hermosa para recordar en el capítulo 3.</p>
+                            </div>
+                            <div class="note-footer">
+                                <button class="note-action-btn edit-btn">Editar</button>
+                                <button class="note-action-btn delete-btn">Borrar</button>
+                            </div>
+                        </div>
+
+                        <div class="note-card" data-category="Reflexiones">
+                            <div class="note-header">
+                                <div class="note-title-wrapper">
+                                    <h3 class="note-title">Reflexión Cap. 5</h3>
+                                    <span class="note-category-badge">Reflexiones</span>
+                                </div>
+                                <span class="note-date">12 Jun 2026</span>
+                            </div>
+                            <div class="note-body">
+                                <p>El desarrollo del antagonista en este punto se siente un poco apresurado. Anotar si mejora en las próximas páginas.</p>
+                            </div>
+                            <div class="note-footer">
+                                <button class="note-action-btn edit-btn">Editar</button>
+                                <button class="note-action-btn delete-btn">Borrar</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/notas.js') }}"></script>
+
+</body>
+</html>

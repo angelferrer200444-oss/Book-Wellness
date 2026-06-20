@@ -1,18 +1,14 @@
 /* =========================
    FONDO
 ========================= */
-body {
 
+body {
     margin: 0;
     padding: 0;
-
     font-family: 'Cinzel', serif;
-
     min-height: 100vh;
-
     overflow-x: hidden;
     overflow-y: auto;
-
     background:
 
     radial-gradient(
@@ -37,11 +33,8 @@ body {
 body::before {
 
     content: "";
-
     position: fixed;
-
     inset: 0;
-
     background:
 
     repeating-linear-gradient(
@@ -53,7 +46,6 @@ body::before {
     );
 
     pointer-events: none;
-
     z-index: -1;
 }
 
@@ -63,18 +55,13 @@ body::before {
 .top-bar {
 
     position: relative;
-
     top: 0;
     left: 0;
     right: 0;
-
     padding: 8px 28px 0 28px;
-
     display: flex;
-
     align-items: flex-start;
     justify-content: space-between;
-
     z-index: 5;
 }
 
@@ -84,58 +71,45 @@ body::before {
 .left-section {
 
     display: flex;
-
     align-items: flex-start;
-
     gap: 80px;
 }
 
 /* =========================
    LOGO
 ========================= */
+
 .logo-container {
-
     display: flex;
-
     align-items: center;
-
     gap: 18px;
-
     margin-top: 8px;
 }
 
 /* =========================
    PILA DE LIBROS
 ========================= */
+
 .books-logo {
-
     position: relative;
-
     width: 70px;
     height: 70px;
 }
 
 .book {
-
     position: absolute;
-
     width: 54px;
     height: 14px;
-
     border-radius: 4px;
-
     border: 3px solid #2c0906;
-
     box-shadow:
         0 4px 8px rgba(0,0,0,0.18),
         inset 0 1px 2px rgba(255,255,255,0.08);
 }
 
 .book-1 {
-
     bottom: 0;
     left: 0;
-
     background:
         linear-gradient(
             to bottom,
@@ -145,10 +119,8 @@ body::before {
 }
 
 .book-2 {
-
     bottom: 18px;
     left: 8px;
-
     background:
         linear-gradient(
             to bottom,
@@ -158,10 +130,8 @@ body::before {
 }
 
 .book-3 {
-
     bottom: 36px;
     left: 16px;
-
     background:
         linear-gradient(
             to bottom,
@@ -173,77 +143,58 @@ body::before {
 /* =========================
    TEXTO LOGO
 ========================= */
-.logo-text {
 
+.logo-text {
     display: flex;
     flex-direction: column;
-
     line-height: 0.9;
 }
 
 .book-title {
-
     font-size: 40px;
     font-weight: 700;
-
     color: #5a1c11;
 }
 
 .wellness-title {
-
     font-size: 22px;
     font-weight: 600;
-
     letter-spacing: 2px;
-
     color: #7a2618;
 }
 
 /* =========================
    BOTONES CURVOS
 ========================= */
+
 .menu-container {
-
     display: flex;
-
     align-items: flex-start;
-
     gap: 18px;
-
     margin-top: -12px;
 }
 
 /* =========================
    BOTÓN
 ========================= */
+
 .curve-btn {
-
     position: relative;
-
     width: 220px;
     height: 110px;
-
     background: transparent;
     border: none;
-
     display: flex;
     justify-content: center;
     align-items: flex-start;
-
     padding-top: 10px;
-
     color: #f2e3cd;
-
     font-size: 22px;
     font-weight: bold;
-
     font-family: 'Cinzel', serif;
-
     text-align: center;
     line-height: 1.05;
-
     cursor: pointer;
-
     transition:
         transform 0.25s ease,
         filter 0.25s ease;
@@ -252,19 +203,15 @@ body::before {
 /* =========================
    CURVA
 ========================= */
-.curve-btn::before {
 
+.curve-btn::before {
     content: "";
     position: absolute;
-
     top: 0;
     left: 50%;
-
     transform: translateX(-50%);
-
     width: 220px;
     height: 58px;
-
     background:
         linear-gradient(
             to bottom,
@@ -273,46 +220,36 @@ body::before {
         );
 
     border-bottom: 4px solid #2b0d08;
-
     border-left: 4px solid #2b0d08;
     border-right: 4px solid #2b0d08;
-
     border-bottom-left-radius: 140px 70px;
     border-bottom-right-radius: 140px 70px;
-
     box-shadow:
         0 6px 12px rgba(0,0,0,0.25),
         inset 0 2px 2px rgba(255,255,255,0.06);
-
     z-index: -1;
 }
 
 /* =========================
    PICO CENTRAL
 ========================= */
+
 .curve-btn::after {
-
     content: "";
-
     position: absolute;
-
     top: 49px;
     left: 50%;
-
     transform:
         translateX(-50%)
         rotate(45deg);
-
     width: 16px;
     height: 16px;
-
     background:
         linear-gradient(
             to bottom,
             #6a1f13,
             #45120c
         );
-
     border-right: 4px solid #2b0d08;
     border-bottom: 4px solid #2b0d08;
 }
@@ -320,27 +257,23 @@ body::before {
 /* =========================
    HOVER BOTÓN
 ========================= */
-.curve-btn:hover {
 
+.curve-btn:hover {
     transform:
         translateY(5px)
         scale(1.03);
-
     filter: brightness(1.08);
 }
 
 /* =========================
    BOTÓN USUARIO
 ========================= */
-.user-btn {
 
+.user-btn {
     width: 84px;
     height: 84px;
-
     border-radius: 50%;
-
     border: 4px solid #2a0d08;
-
     background:
         linear-gradient(
             to bottom,
@@ -351,87 +284,66 @@ body::before {
     display: flex;
     justify-content: center;
     align-items: center;
-
     cursor: pointer;
-
     box-shadow:
         0 8px 20px rgba(0,0,0,0.25),
         inset 0 2px 3px rgba(255,255,255,0.06);
-
     transition:
         transform 0.25s ease,
         filter 0.25s ease;
 }
 
 .user-btn:hover {
-
     transform:
         scale(1.08)
         rotate(4deg);
-
     filter: brightness(1.08);
 }
 
 /* =========================
    ICONO USUARIO
 ========================= */
+
 .user-icon {
-
     position: relative;
-
     width: 38px;
     height: 38px;
 }
 
 .user-head {
-
     width: 16px;
     height: 16px;
-
     background: #efe3cf;
-
     border-radius: 50%;
-
     position: absolute;
-
     top: 0;
     left: 50%;
-
     transform: translateX(-50%);
 }
 
 .user-body {
-
     width: 28px;
     height: 16px;
-
     background: #efe3cf;
-
     border-radius: 20px 20px 10px 10px;
-
     position: absolute;
-
     bottom: 0;
     left: 50%;
-
     transform: translateX(-50%);
 }
 
 /* =========================
    DIVISOR SUPERIOR
 ========================= */
+
 .top-divider {
 
     position: absolute;
-
     top: 105px;
     left: 0;
-
     width: 100vw;
     height: 18px;
-
     background:
-
     linear-gradient(
         to bottom,
 
@@ -442,30 +354,23 @@ body::before {
     );
 
     border-top: 3px solid #a54a33;
-
     box-shadow:
-
         0 5px 10px rgba(0,0,0,0.18),
-
         inset 0 2px 2px rgba(255,255,255,0.08),
-
         inset 0 -4px 6px rgba(0,0,0,0.3);
-
     z-index: 10;
 }
 
 /* =========================
    HERRAMIENTAS DE LECTURA
 ========================= */
+
 .reading-tools {
     margin-top: 60px;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     gap: 0;
-
     margin-left: 0;
 }
 
@@ -473,75 +378,60 @@ body::before {
 /* =========================
    BOTONES
 ========================= */
+
 .tool-btn {
-
     height: 58px;
-
     padding: 0 28px;
-
     border: none;
-
     background:
         linear-gradient(
             to bottom,
             #7f2618,
             #4a150d
         );
-
     color: #f2e3cd;
-
     font-family: 'Cinzel', serif;
-
     font-size: 18px;
     font-weight: 600;
-
     cursor: pointer;
-
     border-top: 3px solid #a54a33;
     border-bottom: 3px solid #2c0906;
-
     transition:
         transform 0.2s ease,
         filter 0.2s ease;
 }
 
 /* PRIMER BOTÓN */
+
 .tool-btn:first-child {
-
     border-radius: 20px 0 0 20px;
-
     border-left: 3px solid #2c0906;
 }
 
 /* SEGUNDO BOTÓN */
 .tool-btn:nth-child(2) {
-
     border-left: 2px solid rgba(255,255,255,0.08);
 }
 
 /* =========================
    HOVER
 ========================= */
+
 .tool-btn:hover {
-
     filter: brightness(1.08);
-
     transform: translateY(-2px);
 }
 
 /* =========================
    SEARCH BOX
 ========================= */
-.search-box {
 
+.search-box {
     height: 58px;
     width: 400px;
-
     display: flex;
     align-items: center;
-
     padding: 0 18px;
-
     background:
         linear-gradient(
             to bottom,
@@ -552,9 +442,7 @@ body::before {
     border-top: 3px solid #fff2df;
     border-right: 3px solid #2c0906;
     border-bottom: 3px solid #2c0906;
-
     border-radius: 0 20px 20px 0;
-
     box-shadow:
         inset 0 2px 4px rgba(0,0,0,0.08);
 }
@@ -562,35 +450,29 @@ body::before {
 /* =========================
    LUPA
 ========================= */
+
 .search-icon {
-
     font-size: 20px;
-
     margin-right: 12px;
 }
 
 /* =========================
    INPUT
 ========================= */
+
 .search-box input {
-
     width: 100%;
-
     border: none;
     outline: none;
-
     background: transparent;
-
     font-size: 18px;
-
     font-family: 'Cinzel', serif;
-
     color: #4a1f14;
 }
 
 /* PLACEHOLDER */
-.search-box input::placeholder {
 
+.search-box input::placeholder {
     color: #7b5a4b;
 }
 
@@ -671,13 +553,10 @@ body::before {
     color: #4a1f14;
     font-size: 15px;
     line-height: 1.4;
-
     min-height: 63px;
-
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3; /* máximo 3 líneas */
-
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -703,4 +582,50 @@ body::before {
 .book-link{
     text-decoration: none;
     color: inherit;
+}
+
+.loader-cabecera{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:20px;
+    min-height:350px;
+    text-align:center;
+}
+
+.loader-grande{
+    width:80px;
+    padding:10px;
+}
+
+.loader{
+    aspect-ratio:1;
+    border-radius:50%;
+    background:#6e140f;
+
+    --_m:
+        conic-gradient(#0000 10%, #000),
+        linear-gradient(#000 0 0) content-box;
+
+    -webkit-mask:var(--_m);
+    mask:var(--_m);
+
+    -webkit-mask-composite:source-out;
+    mask-composite:subtract;
+
+    animation:girarLoader .8s linear infinite;
+}
+
+#texto-carga-cabecera{
+    color:#5b463f;
+    font-family:'Cinzel', serif;
+    font-size:22px;
+    font-style:italic;
+}
+
+@keyframes girarLoader{
+    to{
+        transform:rotate(1turn);
+    }
 }

@@ -1,0 +1,584 @@
+/* =========================
+   FONDO
+========================= */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Cinzel', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background:
+    radial-gradient(
+        circle at top,
+        rgba(201,92,38,0.18),
+        transparent 45%
+    ),
+    linear-gradient(
+        to bottom,
+        #efe3cf 0%,
+        #e3d3bd 40%,
+        #d5c0a4 100%
+    );
+    color: #4a1f14;
+}
+
+/* =========================
+   DETALLES DECORATIVOS
+========================= */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+    repeating-linear-gradient(
+        90deg,
+        rgba(90,35,20,0.025) 0px,
+        rgba(90,35,20,0.025) 2px,
+        transparent 2px,
+        transparent 6px
+    );
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* =========================
+   BARRA SUPERIOR
+========================= */
+.top-bar {
+    position: relative;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 8px 28px 0 28px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    z-index: 5;
+}
+
+/* =========================
+   SECCIÓN IZQUIERDA
+========================= */
+.left-section {
+    display: flex;
+    align-items: flex-start;
+    gap: 80px;
+}
+
+/* =========================
+   SECCIÓN DERECHA
+========================= */
+.right-section {
+    display: flex;
+    align-items: flex-start;
+    gap: 25px;
+}
+
+/* =========================
+   LOGO
+========================= */
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-top: 8px;
+}
+
+/* =========================
+   PILA DE LIBROS
+========================= */
+.books-logo {
+    position: relative;
+    width: 70px;
+    height: 70px;
+}
+
+.book {
+    position: absolute;
+    width: 54px;
+    height: 14px;
+    border-radius: 4px;
+    border: 3px solid #2c0906;
+    box-shadow:
+        0 4px 8px rgba(0,0,0,0.18),
+        inset 0 1px 2px rgba(255,255,255,0.08);
+}
+
+.book-1 {
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(to bottom, #7f2618, #4a150d);
+}
+
+.book-2 {
+    bottom: 18px;
+    left: 8px;
+    background: linear-gradient(to bottom, #8b3b1e, #5a1f12);
+}
+
+.book-3 {
+    bottom: 36px;
+    left: 16px;
+    background: linear-gradient(to bottom, #9a4a22, #6b2814);
+}
+
+/* =========================
+   TEXTO LOGO
+========================= */
+.logo-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 0.9;
+}
+
+.book-title {
+    font-size: 40px;
+    font-weight: 700;
+    color: #5a1c11;
+}
+
+.wellness-title {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: #7a2618;
+}
+
+/* =========================
+   CONTENEDORES DE BOTONES CURVOS
+========================= */
+.menu-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    margin-top: -12px;
+}
+
+.right-menu-container {
+    display: flex;
+    align-items: flex-start;
+    margin-top: -12px;
+}
+
+/* Estilo unificado de botones de pestañas */
+.curve-btn {
+    position: relative;
+    width: 220px;
+    height: 110px;
+    background: transparent;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 10px;
+    color: #f2e3cd;
+    font-size: 22px;
+    font-weight: bold;
+    font-family: 'Cinzel', serif;
+    text-align: center;
+    line-height: 1.05;
+    cursor: pointer;
+    transition:
+        transform 0.25s ease,
+        filter 0.25s ease;
+}
+
+/* =========================
+   CURVA
+========================= */
+.curve-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 220px;
+    height: 58px;
+    background:
+        linear-gradient(
+            to bottom,
+            #7f2618,
+            #4e170f
+        );
+    border-bottom: 4px solid #2b0d08;
+    border-left: 4px solid #2b0d08;
+    border-right: 4px solid #2b0d08;
+    border-bottom-left-radius: 140px 70px;
+    border-bottom-right-radius: 140px 70px;
+    box-shadow:
+        0 6px 12px rgba(0,0,0,0.25),
+        inset 0 2px 2px rgba(255,255,255,0.06);
+    z-index: -1;
+}
+
+/* =========================
+   PICO CENTRAL
+========================= */
+.curve-btn::after {
+    content: "";
+    position: absolute;
+    top: 49px;
+    left: 50%;
+    transform:
+        translateX(-50%)
+        rotate(45deg);
+    width: 16px;
+    height: 16px;
+    background:
+        linear-gradient(
+            to bottom,
+            #6a1f13,
+            #45120c
+        );
+    border-right: 4px solid #2b0d08;
+    border-bottom: 4px solid #2b0d08;
+}
+
+/* =========================
+   HOVER BOTÓN
+========================= */
+.curve-btn:hover {
+    transform:
+        translateY(5px)
+        scale(1.03);
+    filter: brightness(1.08);
+}
+
+/* =========================
+   BOTÓN USUARIO
+========================= */
+.user-btn {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    border: 4px solid #2a0d08;
+    background: linear-gradient(to bottom, #7f2618, #4a150d);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow:
+        0 8px 20px rgba(0,0,0,0.25),
+        inset 0 2px 3px rgba(255,255,255,0.06);
+    transition: transform 0.25s ease, filter 0.25s ease;
+    margin-top: -12px;
+}
+
+.user-btn:hover {
+    transform: scale(1.08) rotate(4deg);
+    filter: brightness(1.08);
+}
+
+.user-icon {
+    position: relative;
+    width: 38px;
+    height: 38px;
+}
+
+.user-head {
+    width: 16px;
+    height: 16px;
+    background: #efe3cf;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.user-body {
+    width: 28px;
+    height: 16px;
+    background: #efe3cf;
+    border-radius: 20px 20px 10px 10px;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* =========================
+   DIVISOR SUPERIOR
+========================= */
+.top-divider {
+    position: absolute;
+    top: 105px;
+    left: 0;
+    width: 100vw;
+    height: 18px;
+    background: linear-gradient(
+        to bottom,
+        #7a2618 0%,
+        #631c12 35%,
+        #4d140d 65%,
+        #2c0906 100%
+    );
+    border-top: 3px solid #a54a33;
+    box-shadow:
+        0 5px 10px rgba(0,0,0,0.18),
+        inset 0 2px 2px rgba(255,255,255,0.08),
+        inset 0 -4px 6px rgba(0,0,0,0.3);
+    z-index: 10;
+}
+
+/* =======================================
+   CONTENEDOR DE LA BIBLIOTECA (ULTRA PEGADO)
+======================================= */
+.library-container {
+    margin-top: 65px; /* Reducido al mínimo para pegarlo completamente al divisor superior */
+    padding: 0 40px 60px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative; /* Agregado para posicionar correctamente el botón de atrás */
+}
+
+.library-container h2.library-title:first-of-type {
+    margin-top: 0px;       /* Eliminamos el espacio superior interno */
+    margin-bottom: 20px;   /* Acerca los libros al título principal */
+}
+
+.library-container h2.library-title:not(:first-of-type) {
+    margin-top: 60px;
+}
+
+.library-title {
+    font-size: 34px;
+    font-weight: 700;
+    color: #5a1c11;
+    text-align: center;
+    margin-bottom: 35px;
+    letter-spacing: 1.5px;
+    text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.4);
+}
+
+/* =========================
+   ESTANTERÍA (SHELF)
+========================= */
+.shelf-wrapper {
+    width: 100%;
+    max-width: 950px;
+    margin-bottom: 45px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.books-row {
+    width: 95%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 35px;
+    height: 250px;
+    padding-bottom: 2px;
+}
+
+.shelf-wood {
+    width: 100%;
+    height: 18px;
+    background: linear-gradient(
+        to bottom,
+        #7a2618 0%,
+        #631c12 35%,
+        #4d140d 65%,
+        #2c0906 100%
+    );
+    border-top: 3px solid #a54a33;
+    border-radius: 4px;
+    box-shadow:
+        0 10px 20px rgba(0,0,0,0.3),
+        inset 0 1px 1px rgba(255,255,255,0.15),
+        inset 0 -3px 4px rgba(0,0,0,0.4);
+}
+
+/* =========================
+   PORTADAS DE LIBROS (3D)
+========================= */
+.book-cover-item {
+    position: relative;
+    width: 150px;
+    height: 220px;
+    background: #2b0d08;
+    padding: 4px;
+    border-radius: 4px 8px 8px 4px;
+    box-sizing: border-box;
+    cursor: pointer;
+    box-shadow:
+        5px 10px 18px rgba(0,0,0,0.25),
+        1px 1px 2px rgba(0,0,0,0.3);
+    transition: transform 0.28s ease, filter 0.28s ease, box-shadow 0.28s ease;
+}
+
+.book-cover-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 2px 5px 5px 2px;
+    position: relative;
+    display: flex;
+    overflow: hidden;
+}
+
+.book-spine-edge {
+    width: 10px;
+    height: 100%;
+    background: linear-gradient(
+        to right,
+        rgba(0,0,0,0.3) 0%,
+        rgba(255,255,255,0.15) 40%,
+        rgba(0,0,0,0.1) 85%,
+        rgba(0,0,0,0.4) 100%
+    );
+    position: relative;
+    z-index: 2;
+}
+
+.book-cover-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 10px;
+    box-sizing: border-box;
+    text-align: center;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.cover-author {
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(242, 227, 205, 0.85);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+    z-index: 1;
+}
+
+.cover-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #f2e3cd;
+    line-height: 1.2;
+    margin: auto 0;
+    text-shadow: 1px 2px 5px rgba(0,0,0,0.9);
+    z-index: 1;
+}
+
+.cover-decoration {
+    font-size: 18px;
+    color: #efe3cf;
+    opacity: 0.85;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+    z-index: 1;
+}
+
+/* Interactividad global de portadas */
+.book-cover-item:hover {
+    transform: translateY(-12px) scale(1.04) rotate(-1deg);
+    filter: brightness(1.08);
+    box-shadow:
+        12px 18px 24px rgba(0,0,0,0.35),
+        2px 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Efecto opcional exclusivo de Audiolibros */
+.audio-book-item:hover {
+    box-shadow:
+        0 0 15px rgba(201, 92, 38, 0.35),
+        12px 18px 24px rgba(0,0,0,0.35);
+}
+
+/* =========================================
+   VARIACIÓN SUTIL DE ALTURAS (ORGANIC LOOK)
+========================================= */
+.shelf-wrapper:nth-of-type(1) .book-cover-item:nth-child(2) { height: 214px; }
+.shelf-wrapper:nth-of-type(1) .book-cover-item:nth-child(3) { height: 224px; }
+.shelf-wrapper:nth-of-type(2) .book-cover-item:nth-child(2) { height: 216px; }
+.shelf-wrapper:nth-of-type(3) .book-cover-item:nth-child(1) { height: 225px; }
+
+/* =========================
+   ASIGNACIÓN DE PORTADAS REALES
+========================= */
+
+/* Estantería 1: Leídos */
+.book-dracula .book-cover-content {
+    background-image: 
+        linear-gradient(to bottom, rgba(40,10,10,0.45), rgba(15,5,5,0.75)), 
+        url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=300&auto=format&fit=crop');
+}
+
+.book-alquimista .book-cover-content {
+    background-image: 
+        linear-gradient(to bottom, rgba(90,50,20,0.4), rgba(30,15,5,0.75)), 
+        url('https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=300&auto=format&fit=crop');
+}
+
+.book-soledad .book-cover-content {
+    background-image: 
+        linear-gradient(to bottom, rgba(20,40,20,0.4), rgba(5,15,5,0.8)), 
+        url('https://images.unsplash.com/photo-1502082553048-f009c37129b9?q=80&w=300&auto=format&fit=crop');
+}
+
+/* Estantería 2: Inconclusos */
+.book-castigo .book-cover-content {
+    background-image: 
+        linear-gradient(to bottom, rgba(35,35,45,0.5), rgba(15,15,20,0.85)), 
+        url('https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=300&auto=format&fit=crop');
+}
+
+.book-metamorfosis .book-cover-content {
+    background-image: 
+        linear-gradient(to bottom, rgba(40,45,30,0.45), rgba(20,25,15,0.85)), 
+        url('https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=300&auto=format&fit=crop');
+}
+
+/* Estantería 3: Audiolibros */
+.book-principito .book-cover-content {
+    background-image: 
+        linear-gradient(to bottom, rgba(15,30,60,0.35), rgba(5,10,25,0.75)), 
+        url('https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?q=80&w=300&auto=format&fit=crop');
+}
+
+.book-quijote .book-cover-content {
+    background-image: 
+        linear-gradient(to bottom, rgba(80,60,40,0.45), rgba(30,20,10,0.8)), 
+        url('https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=300&auto=format&fit=crop');
+}
+
+a {
+    text-decoration: none;
+}
+
+/* ========================================================
+   ESTILOS EXCLUSIVOS PARA EL BOTÓN "IR ATRÁS"
+   ======================================================== */
+.back-btn-container {
+    position: absolute;
+    left: 24px; 
+    top: 0px;  
+}
+
+.back-circle-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    background-color: #5a120c; 
+    color: #efe3cf;            
+    font-size: 24px;
+    font-weight: bold;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.back-circle-btn:hover {
+    transform: scale(1.1);
+    background-color: #7a2618;
+}

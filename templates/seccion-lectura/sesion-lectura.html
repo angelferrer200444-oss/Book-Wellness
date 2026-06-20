@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Wellness - Lectura</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/SeccionLectura2.css') }}">
+
+</head>
+<body>
+
+    <div class="contenedor-lectura">
+
+        <div class="portada-libro">
+
+            <button onclick="history.back()" class="btn-volver">
+                ←
+            </button>
+
+            <div class="portada">
+                {% if libro and libro.portada %}
+                    <img src="{{ libro.portada }}" alt="{{ libro.titulo }}" style="width:100%;height:100%;object-fit:cover;">
+                {% else %}
+                    <span>Portada<br>Libro</span>
+                {% endif %}
+            </div>
+
+            <div class="info-portada">
+                <h2 class="titulo-portada">
+                    {{ libro.titulo if libro else 'Sin título' }}
+                </h2>
+                <p class="autor-portada">
+                    {{ libro.autor if libro else 'Autor desconocido' }}
+                </p>
+            </div>
+
+            <button id="btnEmpezar" class="btn-empezar">
+                Empezar lectura
+            </button>
+
+        </div>
+        <!-- Información -->
+        <div class="info-lectura">
+
+            <h1>SECCIÓN DE LECTURA</h1>
+
+            <!-- Barra de progreso -->
+            <div class="progreso-container">
+                <div class="progreso-barra">
+                    <div class="progreso-relleno" id="barraProgreso">
+                    </div>
+                </div>
+                <p>Porcentaje leído</p>
+            </div>
+
+            <!-- Datos -->
+            <div class="dato">
+                <label>Formato de Lectura:</label>
+
+                <input
+                    type="text"
+                    id="formatoLectura"
+                    list="formatos-lectura"
+                    placeholder="Seleccione o escriba un formato"
+                    value="{{ libro.formato if libro and libro.formato else '' }}"
+                    {{ 'disabled' if datos_completos else '' }}
+                    onchange="actualizarFormato()">
+
+                <datalist id="formatos-lectura">
+
+                    <option value="Libro Físico">
+                    <option value="Ebook">
+                    <option value="Audiolibro">
+
+                    <option value="Manga">
+                    <option value="Cómic">
+                    <option value="Novela Gráfica">
+
+                    <option value="Web Novel">
+                    <option value="Light Novel">
+
+                    <option value="Fanfiction">
+                    <option value="Revista">
+                    <option value="Artículo Académico">
+
+                    <option value="Periódico">
+                    <option value="Manual Técnico">
+
+                    <option value="PDF">
+                    <option value="Otro">
+
+                </datalist>
+            </div>
+
+            <div class="dato">
+                <label id="labelTotal">Páginas Totales:</label>
+                <input
+                    type="number"
+                    id="total"
+                    placeholder="500"
+                    value="{{ libro.paginas_totales if libro and libro.paginas_totales else '' }}"
+                    {{ 'disabled style=opacity:0.6;' if libro and libro.paginas_totales else '' }}
+                    oninput="actualizarProgreso()">
+            </div>
+
+            <div class="dato">
+                <label id="labelLeido">Páginas Leídas:</label>
+                <input
+                    type="number"
+                    id="leido"
+                    value="{{ pagina_actual if pagina_actual else 0 }}"
+                    disabled
+                    style="opacity:0.6;">
+            </div>
+
+            <div class="dato">
+    <label id="labelCapLeidos">Capítulos Leídos:</label>
+    <input
+        type="number"
+        id="capLeidos"
+        value="{{ capitulos_leidos if capitulos_leidos else 0 }}"
+        disabled
+        style="opacity:0.6;">
+</div>
+
+            <div class="dato">
+                <label id="labelCapTotal">Capítulos Totales:</label>
+                <input
+                    type="number"
+                    id="capTotal"
+                    value="{{ libro.num_caps if libro and libro.num_caps else '' }}"
+                    {{ 'disabled style=opacity:0.6;' if libro and libro.num_caps else '' }}
+                    oninput="actualizarProgreso()">
+            </div>
+
+            <div class="dato">
+                <label>Notas del Libro:</label>
+                <a href="{{ url_for('notas') }}">
+                    <button class="btn-notas">
+                        Botón de notas
+                    </button>
+                </a>
+            </div>
+
+            <div class="dato">
+                <label>Fecha Inicio:</label>
+                <input type="text" value="{{ fecha_inicio if fecha_inicio else 'Aún no has empezado' }}" disabled style="opacity:0.6;">
+            </div>
+
+            <div class="dato">
+                <label>Última vez leído:</label>
+                <input type="text" value="{{ fecha_fin if fecha_fin else 'Sin sesiones aún' }}" disabled style="opacity:0.6;">
+            </div>
+
+            <div class="dato">
+                <label>Fecha límite:</label>
+                <input type="date" id="fechaLimite" value="{{ fecha_limite if fecha_limite else '' }}" onchange="guardarFechaLimite()">
+            </div>
+
+        </div>
+
+    </div>
+
+<div id="datos-lectura"
+     data-id-libro="{{ libro.id_libro if libro else '' }}"
+     data-completos="{{ 'true' if datos_completos else 'false' }}"
+     data-paginas-guardadas="{{ 'true' if libro and libro.paginas_totales else 'false' }}"
+     data-capitulos-guardados="{{ 'true' if libro and libro.num_caps else 'false' }}"
+     style="display:none;">
+</div>
+
+
+    <script>
+    const datosEl = document.getElementById('datos-lectura');
+
+    window.datosLectura = {
+        id_libro: datosEl.dataset.idLibro || null,
+        datosCompletos: datosEl.dataset.completos === 'true',
+        paginasYaGuardadas: datosEl.dataset.paginasGuardadas === 'true',
+        capitulosYaGuardados: datosEl.dataset.capitulosGuardados === 'true'
+    };
+
+    async function guardarFechaLimite(){
+        const fecha = document.getElementById('fechaLimite').value;
+
+        try {
+            await fetch('/api/guardar_fecha_limite', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id_libro: window.datosLectura.id_libro,
+                    fecha_limite: fecha
+                })
+            });
+        } catch (error) {
+            alert('No se pudo guardar la fecha límite.');
+        }
+    }
+</script>
+
+    <script src="{{ url_for('static', filename='js/audiolibroenseccion.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/barraprogresoseccion.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/iniciar-lectura.js') }}"></script>
+
+</body>
+</html>

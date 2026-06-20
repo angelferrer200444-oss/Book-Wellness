@@ -67,17 +67,21 @@
             <!-- MENÚ -->
             <div class="menu-container">
 
-                <button class="curve-btn">
-                    Estadística
-                </button>
+                <a href="{{ url_for('estadisticas') }}" class="curve-btn">
+                    Estadísticas
+                </a>
 
-                <button class="curve-btn">
+                <a href="{{ url_for('objetivo') }}" class="curve-btn">
                     Objetivos
-                </button>
+                </a>
 
-                <button class="curve-btn">
+                <a href="{{ url_for('notas') }}" class="curve-btn">
                     Notas
-                </button>
+                </a>                
+
+                <a href="{{ url_for('leidos') }}" class="curve-btn">
+                    Leídos
+                </a>
 
             </div>
 
@@ -235,17 +239,17 @@
 
                         <!-- AGREGAR -->
 
-                            <div class="book-card add-book">
-                        
+                            <a href="{{ url_for('agregar') }}" class="book-card add-book">
+
                                 <span>+</span>
-                        
+                            
                                 <p>Agregar</p>
+                            
+                            </a>
                         
-                            </div>
-                        
-                           {% for libro in libros_leyendo %}
+{% for libro in libros_leyendo %}
 <div class="book-card-wrapper">
-    <a href="/sesion-lectura">
+    <a href="/sesion-lectura?id_libro={{ libro.id_libro }}">
         <div class="book-card">
             <img src="{{ libro.portada }}" alt="{{ libro.titulo }}">
         </div>
@@ -276,13 +280,13 @@
 
                     <div class="books-row">
 
-                        <div class="book-card add-book">
-                    
+                        <a href="{{ url_for('agregar') }}" class="book-card add-book">
+
                             <span>+</span>
-                    
+                        
                             <p>Agregar</p>
-                    
-                        </div>
+                        
+                        </a>                        
                     
                         {% for libro in libros_pendientes %}
 <div class="book-card-wrapper">
@@ -373,12 +377,11 @@
 
         <aside class="right-sidebar">
 
-            <!-- BOTÓN -->
-            <button class="tracker-btn">
-
-                Abrir Seguimiento
-
-            </button>
+            <a href="{{ url_for('seguimiento') }}">
+                <button class="tracker-btn">
+                    Abrir Seguimiento
+                </button>
+            </a>
 
             <!-- =========================
                  CALENDARIO

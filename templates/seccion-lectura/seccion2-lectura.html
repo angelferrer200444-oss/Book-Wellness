@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Sesión de Lectura
+    </title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cronometro-lectura.css') }}">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+
+    <button
+        class="btn-volver"
+        onclick="history.back()">
+
+        ←
+
+    </button>
+
+    <main class="timer-panel">
+
+        <h2>
+            SESIÓN DE LECTURA
+        </h2>
+
+        <div class="libro-info">
+
+    <div class="mini-portada">
+        {% if libro and libro.portada %}
+        <img src="{{ libro.portada }}" alt="{{ libro.titulo }}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">
+        {% else %}
+        PORTADA
+        {% endif %}
+    </div>
+
+    <div>
+        <h3>{{ libro.titulo if libro else 'Sin título' }}</h3>
+        <p class="autor">✒️ {{ libro.autor if libro else 'Autor desconocido' }}</p>
+    </div>
+
+</div>
+
+        <h1
+            class="timer"
+            id="timer">
+
+            00:00:00
+
+        </h1>
+
+        <p class="texto-tiempo">
+
+            Tiempo de lectura actual
+
+        </p>
+
+        <div class="botones">
+
+            <button
+                id="btnPausa"
+                class="btn-pausa">
+
+                ⏸️ Pausar lectura
+
+            </button>
+
+          <button id="btnFinalizar" class="btn-finalizar">
+    ✔️ Finalizar lectura
+        </button>
+
+
+        </div>
+
+    </main>
+    <script src="{{ url_for('static', filename='js/cronometro-lectura.js') }}"></script>
+
+</body>
+
+</html>
