@@ -1,0 +1,236 @@
+.left-section{
+    gap:50px;
+}
+
+.top-bar{
+    height:90px;
+    box-sizing:border-box;
+}
+
+.menu-container{
+    align-items:center;
+    flex-wrap:nowrap;
+    gap:20px;
+}
+
+.user-btn{
+    flex-shrink:0;
+}
+
+.top-divider{
+    top:115px;
+}
+
+/* ==========================================================================
+   SECCIÓN: APARTADO DE SEGUIMIENTO (Línea de Tiempo)
+   ========================================================================== */
+
+.tracking-container{
+    max-width:900px;
+    margin:140px auto 60px;
+    padding:0 20px;
+    box-sizing:border-box;
+    position:relative;
+}
+
+.section-title{
+    font-size:32px;
+    color:#5a1c11;
+    text-align:center;
+    text-transform:uppercase;
+    letter-spacing:3px;
+    margin-bottom:35px;
+    text-shadow:1px 1px 2px rgba(255,255,255,.5);
+}
+
+.timeline{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    gap:35px;
+}
+
+.timeline::before{
+    content:"";
+    position:absolute;
+    top:15px;
+    left:57px;
+    bottom:15px;
+    width:4px;
+    background:#4a150d;
+    border-radius:2px;
+    opacity:.25;
+}
+
+.timeline-item{
+    display:flex;
+    align-items:center;
+    gap:40px;
+    position:relative;
+    width:100%;
+}
+
+/* FECHA */
+
+.date-box{
+    min-width:114px;
+    height:125px;
+    background:linear-gradient(to bottom,#efe3cf,#d5c0a4);
+    border:3px solid #2c0906;
+    border-radius:12px;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    box-shadow:0 6px 12px rgba(0,0,0,.15);
+    z-index:2;
+    transition:transform .25s ease;
+}
+
+.date-info{
+    flex-grow:1;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    padding-top:4px;
+}
+
+.date-box .day{
+    font-size:32px;
+    font-weight:700;
+    color:#4a1f14;
+    line-height:1;
+}
+
+.date-box .month{
+    font-size:14px;
+    font-weight:600;
+    color:#7a2618;
+    letter-spacing:2px;
+    margin-top:2px;
+}
+
+.time-bar{
+    background:linear-gradient(to right,#7f2618,#4a150d);
+    border-top:2px solid #2c0906;
+    color:#efe3cf;
+    font-size:11px;
+    font-weight:bold;
+    text-align:center;
+    padding:5px 0;
+    letter-spacing:1px;
+    font-family:system-ui,-apple-system,sans-serif;
+}
+
+/* TARJETA */
+
+.event-card{
+    flex-grow:1;
+    background:linear-gradient(to bottom,#7f2618,#4a150d);
+    border:3px solid #2c0906;
+    border-radius:14px;
+    padding:22px 25px;
+    color:#efe3cf;
+    box-shadow:
+        0 8px 16px rgba(0,0,0,.2),
+        inset 0 1px 2px rgba(255,255,255,.1);
+    position:relative;
+    transition:transform .25s ease,filter .25s ease;
+}
+
+.event-title{
+    font-size:22px;
+    font-weight:700;
+    margin:0 0 8px;
+    letter-spacing:1px;
+    color:#f2e3cd;
+}
+
+.event-desc{
+    font-size:15px;
+    margin:0;
+    line-height:1.5;
+    opacity:.85;
+    font-family:system-ui,-apple-system,sans-serif;
+}
+
+/* ETIQUETAS */
+
+.badge{
+    position:absolute;
+    top:-12px;
+    right:20px;
+    padding:4px 14px;
+    font-size:12px;
+    font-weight:bold;
+    text-transform:uppercase;
+    border:2px solid #2c0906;
+    border-radius:20px;
+    box-shadow:0 4px 6px rgba(0,0,0,.15);
+}
+
+.status-completed .badge{
+    background:#d5c0a4;
+    color:#2c0906;
+}
+
+.status-pending .badge{
+    background:#9a4a22;
+    color:#efe3cf;
+}
+
+.event-card::before{
+    content:"";
+    position:absolute;
+    top:45px;
+    left:-11px;
+    width:16px;
+    height:16px;
+    background:#7f2618;
+    border-left:3px solid #2c0906;
+    border-bottom:3px solid #2c0906;
+    transform:rotate(45deg);
+}
+
+/* HOVER */
+
+.timeline-item:hover .date-box{
+    transform:scale(1.06);
+}
+
+.date-box:hover .time-bar{
+    filter:brightness(1.15);
+}
+
+.timeline-item:hover .event-card{
+    transform:translateX(6px);
+    filter:brightness(1.06);
+}
+
+/* BOTÓN ATRÁS */
+
+.back-btn-container{
+    position:absolute;
+    left:20px;
+    top:-5px;
+}
+.back-circle-btn{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width:50px;
+    height:50px;
+    background:linear-gradient(to bottom,#7f2618,#4a150d);
+    color:#efe3cf;
+    font-size:24px;
+    font-weight:bold;
+    border:3px solid #2c0906;
+    border-radius:50%;
+    box-shadow:0 6px 12px rgba(0,0,0,.25);
+    transition:transform .25s ease,filter .25s ease;
+}
+
+.back-circle-btn:hover{
+    transform:scale(1.1);
+    filter:brightness(1.15);
+}
