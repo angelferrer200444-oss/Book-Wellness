@@ -4,7 +4,7 @@ class GoogleBooksAPI:
 
     def __init__(self):
         self.url_base = "https://www.googleapis.com/books/v1/volumes"
-        self.api_key = "AIzaSyDPF53gJZagUHwavvK_-PzHH2N81HG2wy0"
+        self.api_key = "LA KEY NO SE PUEDE PUBLICAR"
 
 
     def buscar_libros(self, texto):
