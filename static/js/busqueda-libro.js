@@ -87,8 +87,9 @@ function mostrarResultados(consulta, libros){
 
         html += `
 
-            <a href="/libro?clave=${encodeURIComponent(libro.key)}&portada=${encodeURIComponent(libro.portada)}"
-               class="book-link">
+        <a href="/libro?id_google=${encodeURIComponent(libro.id_google || "")}&clave=${encodeURIComponent(libro.key || "")}&portada=${encodeURIComponent(libro.portada)}"
+        class="book-link">
+        
 
                 <div class="book-card result-card">
 

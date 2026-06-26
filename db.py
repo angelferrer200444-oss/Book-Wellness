@@ -35,9 +35,10 @@ def buscar_usuario(correo, password):
     conexion.close()
     return usuario
 
-def agregar_libro(id_usuario, titulo, autor, descripcion, portada, categoria, key_libro, paginas):
+def agregar_libro(id_usuario, titulo, autor, descripcion, portada, categoria, key_libro, paginas, id_google=None):
     conexion = obtener_conexion()
     cursor = conexion.cursor()
+    print("ID_GOOGLE RECIBIDO:", id_google)
     
     cursor.execute("""
         SELECT id_libro FROM libros 
@@ -50,9 +51,9 @@ def agregar_libro(id_usuario, titulo, autor, descripcion, portada, categoria, ke
         return False
 
     cursor.execute("""
-        INSERT INTO libros (id_usuario, titulo, autor, descripcion, portada, categoria, key_libro, paginas_totales) 
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-    """, (id_usuario, titulo, autor, descripcion, portada, categoria, key_libro, paginas))
+        INSERT INTO libros (id_usuario, titulo, autor, descripcion, portada, categoria, key_libro, paginas_totales, id_google) 
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+    """, (id_usuario, titulo, autor, descripcion, portada, categoria, key_libro, paginas, id_google))
     conexion.commit()
     cursor.close()
     conexion.close()
@@ -62,7 +63,7 @@ def obtener_libros_usuario(id_usuario, categoria):
     conexion = obtener_conexion()
     cursor = conexion.cursor(dictionary=True)
     cursor.execute("""
-        SELECT id_libro, titulo, autor, portada, key_libro FROM libros 
+        SELECT id_libro, titulo, autor, portada, key_libro, id_google FROM libros 
         WHERE id_usuario = %s AND categoria = %s
     """, (id_usuario, categoria))
     libros = cursor.fetchall()
@@ -80,6 +81,7 @@ def eliminar_libro(id_libro, id_usuario):
     conexion.commit()
     cursor.close()
     conexion.close()
+    return True
 
 def obtener_libro(id_libro):
     conexion = obtener_conexion()

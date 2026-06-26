@@ -131,10 +131,10 @@
             <div class="detail-book-card">
 
                 <img 
-                    src="{{ portada }}" 
-                    alt="{{ titulo }}"
-                >
-
+                src="{{ portada }}"
+                alt="{{ titulo }}"
+                id="img-portada"
+         >
             </div>
 
         </div>
@@ -272,15 +272,18 @@
 
     <script>
 
-        window.datoLibro = {
-            portada: "{{ portada }}",
-            key: "{{ clave }}",
-            titulo: "",
-            autor: "",
-            descripcion: ""
-        };
+   window.datoLibro = {
+    portada: "",
+    key: "{{ clave }}",
+    id_google: "{{ id_google }}",  
+    titulo: "",
+    autor: "",
+    descripcion: "",
+    paginas: null
+};
         
     </script>
+        
         
 <script src="{{ url_for('static', filename='js/detalle-libro.js') }}"></script>
 <script src="{{ url_for('static', filename='js/usuario.js') }}"></script>

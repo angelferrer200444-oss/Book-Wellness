@@ -1,0 +1,264 @@
+from flask import render_template, request, jsonify, session
+import db
+
+
+def registrar_rutas(app):
+
+    # -------------------------
+    # BOOK TRACKER
+    # -------------------------
+
+    @app.route('/api/agregar_libro', methods=['POST'])
+    def agregar_libro():
+
+        datos = request.json
+
+        id_usuario = datos.get('id_usuario')
+        titulo = datos.get('titulo')
+        autor = datos.get('autor')
+        descripcion = datos.get('descripcion')
+        portada = datos.get('portada')
+        categoria = datos.get('categoria', 'pendiente')
+        key_libro = datos.get('key_libro')
+        paginas = datos.get('paginas')
+        id_google = datos.get('id_google')
+
+        if not id_usuario:
+            return jsonify({
+                "error": "Usuario no identificado"
+            }), 400
+
+        try:
+
+            resultado = db.agregar_libro(
+                id_usuario,
+                titulo,
+                autor,
+                descripcion,
+                portada,
+                categoria,
+                key_libro,
+                paginas,
+                id_google
+
+            )
+
+            if resultado:
+
+                return jsonify({
+                    "mensaje": "Libro agregado correctamente"
+                }), 201
+
+            return jsonify({
+                "error": "Este libro ya está en tu lista"
+            }), 409
+
+        except Exception as e:
+
+            return jsonify({
+                "error": str(e)
+            }), 500
+
+
+    # -------------------------
+    # SECCION LECTURA
+    # -------------------------
+
+    @app.route("/sesion-lectura")
+    def sesion_lectura():
+
+        id_libro = request.args.get('id_libro')
+        id_usuario = session.get('id_usuario')
+
+        libro = None
+        pagina_actual = 0
+        capitulos_leidos = 0
+        fecha_inicio = None
+        fecha_fin = None
+        fecha_limite = None
+
+        if id_libro:
+
+            libro = db.obtener_libro(id_libro)
+
+            if id_usuario:
+
+                lectura = db.obtener_lectura_en_progreso(
+                    id_usuario,
+                    id_libro
+                )
+
+                if lectura:
+
+                    pagina_actual = lectura['pagina_actual']
+                    capitulos_leidos = lectura['capitulos_leidos']
+                    fecha_inicio = lectura['fecha_inicio']
+                    fecha_fin = lectura['fecha_fin']
+                    fecha_limite = lectura['fecha_limite']
+
+        datos_completos = (
+            libro and
+            libro.get('paginas_totales') and
+            libro.get('num_caps')
+        )
+
+        return render_template(
+            "seccion-lectura/sesion-lectura.html",
+            libro=libro,
+            datos_completos=datos_completos,
+            pagina_actual=pagina_actual,
+            capitulos_leidos=capitulos_leidos,
+            fecha_inicio=fecha_inicio,
+            fecha_fin=fecha_fin,
+            fecha_limite=fecha_limite
+        )
+
+
+    @app.route('/api/iniciar_lectura', methods=['POST'])
+    def iniciar_lectura():
+
+        datos = request.json
+
+        id_libro = datos.get('id_libro')
+        paginas_totales = datos.get('paginas_totales')
+        num_caps = datos.get('num_caps')
+        formato = datos.get('formato')
+
+        try:
+
+            db.actualizar_datos_libro(
+                id_libro,
+                paginas_totales,
+                num_caps,
+                formato
+            )
+
+            return jsonify({
+                "mensaje": "Datos guardados"
+            }), 200
+
+        except Exception as e:
+
+            return jsonify({
+                "error": str(e)
+            }), 500
+
+
+    @app.route('/api/guardar_fecha_limite', methods=['POST'])
+    def guardar_fecha_limite_ruta():
+
+        datos = request.json
+
+        id_usuario = session.get('id_usuario')
+        id_libro = datos.get('id_libro')
+        fecha_limite = datos.get('fecha_limite')
+
+        if not id_usuario:
+            return jsonify({
+                "error": "No hay sesión activa"
+            }), 401
+
+        try:
+
+            db.guardar_fecha_limite(
+                id_usuario,
+                id_libro,
+                fecha_limite
+            )
+
+            return jsonify({
+                "mensaje": "Fecha límite guardada"
+            }), 200
+
+        except Exception as e:
+
+            return jsonify({
+                "error": str(e)
+            }), 500
+
+    @app.route("/seccion2-lectura")
+    def seccion2_lectura():
+
+        id_libro = request.args.get('id_libro')
+
+        libro = None
+
+        if id_libro:
+            libro = db.obtener_libro(id_libro)
+
+        return render_template(
+            "seccion-lectura/seccion2-lectura.html",
+            libro=libro
+        )
+
+
+    @app.route('/seccion3-lectura')
+    def seccion3_lectura():
+
+        id_libro = request.args.get('id_libro')
+        id_usuario = session.get('id_usuario')
+
+        lectura = None
+
+        if id_libro and id_usuario:
+
+            lectura = db.obtener_lectura_en_progreso(
+                id_usuario,
+                id_libro
+            )
+
+        pagina_anterior = (
+            lectura['pagina_actual']
+            if lectura else 0
+        )
+
+        return render_template(
+            'seccion-lectura/seccion3-lectura.html',
+            id_libro=id_libro,
+            pagina_anterior=pagina_anterior
+        )
+
+
+    @app.route('/api/guardar_lectura', methods=['POST'])
+    def guardar_lectura_ruta():
+
+        datos = request.json
+
+        id_usuario = session.get('id_usuario')
+
+        if not id_usuario:
+            return jsonify({
+                "error": "No hay sesión activa"
+            }), 401
+
+        try:
+
+            id_lectura = db.guardar_lectura(
+                id_usuario=id_usuario,
+                id_libro=datos.get('id_libro'),
+                tiempo_minutos=datos.get('tiempo_minutos'),
+                estado=datos.get('estado', 'en progreso'),
+                fecha_fin=datos.get('fecha_fin'),
+                paginas_leidas=datos.get('paginas_leidas', 0),
+                pagina_actual=datos.get('pagina_actual', 0),
+                capitulos_leidos=datos.get('capitulos_leidos', 0)
+            )
+
+            respuestas = datos.get('respuestas', [])
+
+            if respuestas:
+
+                db.guardar_notas_lectura(
+                    id_lectura,
+                    respuestas
+                )
+
+            return jsonify({
+                "mensaje": "Lectura guardada"
+            }), 201
+
+        except Exception as e:
+
+            return jsonify({
+                "error": str(e)
+            }), 500

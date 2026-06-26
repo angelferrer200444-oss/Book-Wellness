@@ -143,6 +143,17 @@
                 </a>
             </div>
 
+            {% if datos_completos %}
+<div class="dato" style="justify-content: flex-start; padding-left: 275px;">
+    <button id="btnEditar" class="btn-editar" onclick="activarEdicion()">
+        ✏️ Editar datos del libro
+    </button>
+    <button id="btnGuardar" class="btn-guardar" style="display:none;" onclick="guardarEdicion()">
+        💾 Guardar cambios
+    </button>
+</div>
+{% endif %}
+
             <div class="dato">
                 <label>Fecha Inicio:</label>
                 <input type="text" value="{{ fecha_inicio if fecha_inicio else 'Aún no has empezado' }}" disabled style="opacity:0.6;">
@@ -172,31 +183,58 @@
 
 
     <script>
-    const datosEl = document.getElementById('datos-lectura');
 
-    window.datosLectura = {
-        id_libro: datosEl.dataset.idLibro || null,
-        datosCompletos: datosEl.dataset.completos === 'true',
-        paginasYaGuardadas: datosEl.dataset.paginasGuardadas === 'true',
-        capitulosYaGuardados: datosEl.dataset.capitulosGuardados === 'true'
-    };
+        const datosEl = document.getElementById('datos-lectura');
+window.datosLectura = {
+    id_libro: datosEl.dataset.idLibro || null,
+    datosCompletos: datosEl.dataset.completos === 'true',
+    paginasYaGuardadas: datosEl.dataset.paginasGuardadas === 'true',
+    capitulosYaGuardados: datosEl.dataset.capitulosGuardados === 'true'
+};
 
-    async function guardarFechaLimite(){
-        const fecha = document.getElementById('fechaLimite').value;
+   function activarEdicion() {
+    document.getElementById('total').disabled = false;
+    document.getElementById('total').style.opacity = '1';
+    document.getElementById('capTotal').disabled = false;
+    document.getElementById('capTotal').style.opacity = '1';
+    document.getElementById('formatoLectura').disabled = false;
+    document.getElementById('btnEditar').style.display = 'none';
+    document.getElementById('btnGuardar').style.display = 'block';
+}
 
-        try {
-            await fetch('/api/guardar_fecha_limite', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    id_libro: window.datosLectura.id_libro,
-                    fecha_limite: fecha
-                })
-            });
-        } catch (error) {
-            alert('No se pudo guardar la fecha límite.');
-        }
+async function guardarEdicion() {
+    const paginas = document.getElementById('total').value;
+    const caps = document.getElementById('capTotal').value;
+    const formato = document.getElementById('formatoLectura').value;
+
+    try {
+        await fetch('/api/iniciar_lectura', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                id_libro: window.datosLectura.id_libro,
+                paginas_totales: paginas,
+                num_caps: caps,
+                formato: formato
+            })
+        });
+
+        // Volver a bloquear
+        document.getElementById('total').disabled = true;
+        document.getElementById('total').style.opacity = '0.6';
+        document.getElementById('capTotal').disabled = true;
+        document.getElementById('capTotal').style.opacity = '0.6';
+        document.getElementById('formatoLectura').disabled = true;
+        document.getElementById('btnGuardar').style.display = 'none';
+        document.getElementById('btnEditar').style.display = 'block';
+
+        alert('Datos actualizados correctamente.');
+        actualizarProgreso();
+
+    } catch (error) {
+        alert('Error al guardar los cambios.');
     }
+}
 </script>
 
     <script src="{{ url_for('static', filename='js/audiolibroenseccion.js') }}"></script>

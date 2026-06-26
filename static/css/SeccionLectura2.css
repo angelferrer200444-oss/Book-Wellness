@@ -558,3 +558,39 @@ body::before {
     opacity:0;
     transition:.3s;
 }
+
+
+.btn-editar {
+    background: transparent;
+    border: 2px solid #7a2618;
+    color: #7a2618;
+    border-radius: 20px;
+    padding: 8px 20px;
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+
+.btn-editar:hover {
+    background: #7a2618;
+    color: #f2e3cd;
+}
+
+.btn-guardar {
+    background: #7a2618;
+    border: none;
+    color: #f2e3cd;
+    border-radius: 20px;
+    padding: 8px 20px;
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+
+.btn-guardar:hover {
+    background: #5a1c11;
+}

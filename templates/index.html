@@ -290,7 +290,7 @@
                     
                         {% for libro in libros_pendientes %}
 <div class="book-card-wrapper">
-    <a href="/libro?clave={{ libro.key_libro }}&portada={{ libro.portada }}">
+    <a href="/libro?clave={{ libro.key_libro }}&portada={{ libro.portada }}&id_google={{ libro.id_google or '' }}">
         <div class="book-card">
             <img src="{{ libro.portada }}" alt="{{ libro.titulo }}">
         </div>

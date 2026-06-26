@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 document.getElementById('btn-leyendo').disabled = true;
 document.getElementById('btn-pendiente').disabled = true;
+
     cargarLibro();
 
     const frases = [
@@ -17,6 +18,7 @@ document.getElementById('btn-pendiente').disabled = true;
     ];
 
     const textoCarga = document.getElementById("texto-carga-cabecera");
+    
 
     if(textoCarga){
 
@@ -30,6 +32,9 @@ document.getElementById('btn-pendiente').disabled = true;
     async function agregarLibro(categoria) {
 
         if(yaAgregado) return;
+
+        console.log("id_google:", datoLibro.id_google);
+        console.log("key:", datoLibro.key);
 
         yaAgregado = true;
 
@@ -63,6 +68,7 @@ document.getElementById('btn-pendiente').disabled = true;
                     portada:datoLibro.portada,
                     categoria:categoria,
                     key_libro:datoLibro.key,
+                    id_google:datoLibro.id_google,
                     paginas:datoLibro.paginas
 
                 })
@@ -121,21 +127,43 @@ document.getElementById('btn-pendiente').disabled = true;
 });
 
 async function cargarLibro(){
-
     try{
+        const idGoogleOriginal = datoLibro.id_google;
+        const keyOriginal = datoLibro.key;
 
-        const respuesta = await fetch(
-            `/api/libro?clave=${encodeURIComponent(datoLibro.key)}`
-        );
+        let url;
+        
+        if(datoLibro.id_google && datoLibro.id_google !== 'None' && datoLibro.id_google !== '') {
+            url = `/api/libro?id=${encodeURIComponent(datoLibro.id_google)}`;
+        } else if(datoLibro.key && datoLibro.key !== 'None' && datoLibro.key !== '') {
+            url = `/api/libro?clave=${encodeURIComponent(datoLibro.key)}`;
+        } else {
+            // No hay clave, mostrar error
+            document.getElementById("cabecera-libro").innerHTML = '<h1>Sin información</h1>';
+            document.getElementById('btn-leyendo').disabled = false;
+            document.getElementById('btn-pendiente').disabled = false;
+            return;
+        }
 
+        const respuesta = await fetch(url);
         const data = await respuesta.json();
 
-        console.log(data);
+        
+       
 
+        console.log(data);
+        datoLibro.id_google = idGoogleOriginal;
+        datoLibro.key = keyOriginal;
         datoLibro.titulo = data.titulo;
         datoLibro.autor = data.autor;
         datoLibro.descripcion = data.descripcion;
         datoLibro.paginas = (data.paginas !== "Desconocido") ? data.paginas : null;
+        datoLibro.portada = data.portada || datoLibro.portada; 
+
+        const imgPortada = document.getElementById('img-portada');
+            if(imgPortada && data.portada) {
+                 imgPortada.src = data.portada;  
+        }
 
         const cabecera = document.getElementById("cabecera-libro");
 
