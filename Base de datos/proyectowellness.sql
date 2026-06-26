@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 20-06-2026 a las 15:58:31
+-- Tiempo de generación: 26-06-2026 a las 07:53:35
 -- Versión del servidor: 8.4.7
 -- Versión de PHP: 8.3.28
 
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `lecturas` (
   UNIQUE KEY `uk_lectura_usuario` (`id_lectura`,`id_usuario`),
   UNIQUE KEY `unico_libro_usuario` (`id_usuario`,`id_libro`),
   KEY `FK_1` (`id_libro`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `lecturas`
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `lecturas` (
 INSERT INTO `lecturas` (`id_lectura`, `id_usuario`, `id_libro`, `estado`, `fecha_inicio`, `fecha_fin`, `paginas_leidas`, `capitulos_leidos`, `tiempo_minutos`, `pagina_actual`, `fecha_limite`) VALUES
 (2, 22, 41, '', '2026-06-20', '2026-06-20', 21, 3, 2, 21, NULL),
 (3, 22, 43, '', '2026-06-20', '2026-06-20', 12, 3, 0, 12, '2026-07-09'),
-(4, 6, 44, '', '2026-06-20', '2026-06-20', 11, 2, 4, 11, NULL),
+(4, 6, 44, '', '2026-06-20', '2026-06-20', 13, 3, 5, 13, '2026-06-27'),
 (5, 6, 46, '', '2026-06-20', '2026-06-20', 9, 2, 1, 9, NULL);
 
 -- --------------------------------------------------------
@@ -77,19 +77,20 @@ CREATE TABLE IF NOT EXISTS `libros` (
   `categoria` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT 'pendiente',
   `key_libro` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `paginas_totales` int DEFAULT NULL,
+  `id_google` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id_libro`)
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `libros`
 --
 
-INSERT INTO `libros` (`id_libro`, `titulo`, `autor`, `descripcion`, `formato`, `genero`, `es_agregado_manualmente`, `num_caps`, `id_usuario`, `portada`, `categoria`, `key_libro`, `paginas_totales`) VALUES
-(41, 'Dino IQ (Smart Kids)', 'Roger Priddy', 'Descripción no disponible', 'Libro Físico', NULL, NULL, 10, 22, 'https://covers.openlibrary.org/b/id/1170398-L.jpg', 'leyendo', '/works/OL3260124W', 45),
-(43, 'The lord of the rings', 'Jude Fisher', 'Descripción no disponible', 'Libro Físico', NULL, NULL, 12, 22, 'https://covers.openlibrary.org/b/id/393983-L.jpg', 'leyendo', '/works/OL5753836W', 65),
-(44, 'Dinosaur Babies', 'Leonie Bennett', 'Did dinosaurs lay eggs in nests? How big were the eggs? What were the shells like? Did mother dinosaurs care for their babies? These and other questions about the birth and care of dinosaur babies are answered in this fascinating peek into the home lives of these reptiles. The simple text and exciting illustrations along with the tantalizing information will capture the interest of all young readers. Developed by literacy experts, Dinosaur Babies features controlled text with appropriate vocabulary, grammar, and sentence structure for emergent readers. Dinosaur Babies is part of Bearport\'s I Love Reading: Dino World series.', 'Libro Físico', NULL, NULL, 5, 6, 'https://covers.openlibrary.org/b/id/1998640-L.jpg', 'leyendo', '/works/OL5837360W', 24),
-(45, 'Aiki ne waza', 'Autor desconocido', 'Descripción no disponible', NULL, NULL, NULL, NULL, 6, 'https://covers.openlibrary.org/b/id/13585127-L.jpg', 'pendiente', '/works/OL34818907W', 192),
-(46, 'Hermano Lobo', 'Autor desconocido', 'Descripción no disponible', 'Libro Físico', NULL, NULL, 25, 6, 'https://covers.openlibrary.org/b/id/14474590-L.jpg', 'leyendo', '/works/OL25379493W', 224);
+INSERT INTO `libros` (`id_libro`, `titulo`, `autor`, `descripcion`, `formato`, `genero`, `es_agregado_manualmente`, `num_caps`, `id_usuario`, `portada`, `categoria`, `key_libro`, `paginas_totales`, `id_google`) VALUES
+(41, 'Dino IQ (Smart Kids)', 'Roger Priddy', 'Descripción no disponible', 'Libro Físico', NULL, NULL, 10, 22, 'https://covers.openlibrary.org/b/id/1170398-L.jpg', 'leyendo', '/works/OL3260124W', 45, NULL),
+(43, 'The lord of the rings', 'Jude Fisher', 'Descripción no disponible', 'Libro Físico', NULL, NULL, 12, 22, 'https://covers.openlibrary.org/b/id/393983-L.jpg', 'leyendo', '/works/OL5753836W', 65, NULL),
+(44, 'Dinosaur Babies', 'Leonie Bennett', 'Did dinosaurs lay eggs in nests? How big were the eggs? What were the shells like? Did mother dinosaurs care for their babies? These and other questions about the birth and care of dinosaur babies are answered in this fascinating peek into the home lives of these reptiles. The simple text and exciting illustrations along with the tantalizing information will capture the interest of all young readers. Developed by literacy experts, Dinosaur Babies features controlled text with appropriate vocabulary, grammar, and sentence structure for emergent readers. Dinosaur Babies is part of Bearport\'s I Love Reading: Dino World series.', 'Libro Físico', NULL, NULL, 5, 6, 'https://covers.openlibrary.org/b/id/1998640-L.jpg', 'leyendo', '/works/OL5837360W', 24, NULL),
+(45, 'Aiki ne waza', 'Autor desconocido', 'Descripción no disponible', NULL, NULL, NULL, NULL, 6, 'https://covers.openlibrary.org/b/id/13585127-L.jpg', 'pendiente', '/works/OL34818907W', 192, NULL),
+(46, 'Hermano Lobo', 'Autor desconocido', 'Descripción no disponible', 'Libro Físico', NULL, NULL, 25, 6, 'https://covers.openlibrary.org/b/id/14474590-L.jpg', 'leyendo', '/works/OL25379493W', 224, NULL);
 
 -- --------------------------------------------------------
 
@@ -114,7 +115,16 @@ CREATE TABLE IF NOT EXISTS `notas_lectura` (
   `encontro_lo_buscado` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id_nota`),
   KEY `id_lectura` (`id_lectura`)
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `notas_lectura`
+--
+
+INSERT INTO `notas_lectura` (`id_nota`, `id_lectura`, `como_te_sientes`, `que_aprendiste`, `palabras_nuevas`, `personaje_destacado`, `escena_impacto`, `continuara`, `parecer_sesion`, `recuerdo_vida`, `notas_observaciones`, `buscaba_al_leer`, `encontro_lo_buscado`) VALUES
+(11, 6, '😊 Feliz', '', '', '', '', 'Sí, continuaré leyendo', '', '', '', 'Aprender', 'Sí'),
+(10, 4, '😊 Feliz', '', '', '', '', 'Sí, continuaré leyendo', '', '', '', 'Aprender', 'Sí'),
+(9, 4, '😊 Feliz', '', '', '', '', 'Sí, continuaré leyendo', '', '', '', 'Aprender', 'Sí');
 
 -- --------------------------------------------------------
 
@@ -205,7 +215,7 @@ INSERT INTO `usuarios` (`id_usuario`, `nombre`, `correo`, `password`, `fecha_reg
 --
 ALTER TABLE `lecturas`
   ADD CONSTRAINT `FK_0` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE,
-  ADD CONSTRAINT `FK_1` FOREIGN KEY (`id_libro`) REFERENCES `libros` (`id_libro`) ON DELETE RESTRICT;
+  ADD CONSTRAINT `FK_1` FOREIGN KEY (`id_libro`) REFERENCES `libros` (`id_libro`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `objetivos_personales`
