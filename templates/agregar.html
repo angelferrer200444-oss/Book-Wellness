@@ -6,12 +6,12 @@
 
     <title>Book Wellness</title>
 
-    <!-- CSS PRINCIPAL -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    
     <!-- CSS AGREGAR -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/agregar.css') }}">
 
+    <!-- CSS PRINCIPAL -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+   
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -45,21 +45,21 @@
 
             <div class="menu-container">
 
-                <button class="curve-btn" onclick="window.location.href='estadisticas.html'">
+                <a href="{{ url_for('estadisticas') }}" class="curve-btn">
                     Estadísticas
-                </button>
+                </a>
 
-                <button class="curve-btn" onclick="window.location.href='objetivo.html'">
+                <a href="{{ url_for('objetivo') }}" class="curve-btn">
                     Objetivos
-                </button>
+                </a>
 
-                <button class="curve-btn" onclick="window.location.href='notas.html'">
+                <a href="{{ url_for('notas') }}" class="curve-btn">
                     Notas
-                </button>
+                </a>                
 
-                <button class="curve-btn" onclick="window.location.href='Leidos.html'">
+                <a href="{{ url_for('leidos') }}" class="curve-btn">
                     Leídos
-                </button>
+                </a>
 
             </div>
 
