@@ -1,0 +1,108 @@
+.week-grid{
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 6px; /* Antes era 4px o 5px */
+    width: 100%;
+}
+
+.day-number{
+    width: 100%;
+    aspect-ratio: 1;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: #5b120d;
+    font-weight: bold;
+    transition: .25s;
+
+    box-sizing: border-box;
+    padding: 2px;
+
+}
+
+.week-item{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.day-number{
+
+    width:36px;
+    height:36px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    border:2px solid #7c1f16;
+    border-radius:10px;
+
+    
+
+    color:#5b120d;
+    font-weight:bold;
+
+    transition:.25s;
+}
+
+.week-item span{
+    font-size:13px;
+    color:#5b120d;
+    font-weight:bold;
+}
+
+.week-item.completed .day-number{
+    
+    color:#5b120d;
+    border:2px solid #7c1f16;
+}
+
+.week-item.today .day-number{
+    background:#7c1f16;
+    color:white;
+    border-color:#7c1f16;
+}
+
+.week-box h3{
+    width:100%;
+    margin:0 0 20px;
+    text-align:center;
+
+    color:#5b120d;
+    font-family:'Cinzel', serif;
+    font-size:clamp(16px,2vw,22px);
+}
+
+.day-number{
+    transition: all .25s ease;
+}
+
+.week-item:hover .day-number{
+    background:#7c1f16;
+    color:white;
+    transform:translateY(-3px);
+    box-shadow:0 4px 10px rgba(0,0,0,.2);
+    cursor:pointer;
+}
+
+.week-panel{
+    border:2px solid #7c1f16;
+    border-radius:15px;
+    padding:20px;
+    
+    width: 90%;
+    padding-left: 12px;
+    padding-right: 18px;
+
+
+}
+
+.week-panel h3{
+    text-align: center;
+    width: 100%;
+    margin: 0 0 15px 0;
+}

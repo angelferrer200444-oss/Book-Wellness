@@ -1,0 +1,89 @@
+/* =========================
+   BOOK WELLNESS - PANEL IA
+========================= */
+
+.bw-ai-card{
+
+    width:100%;
+    background:#f3e7d3;
+    border:3px solid #5b120d;
+    border-radius:25px;
+    padding:20px;
+    box-sizing:border-box;
+    box-shadow:0 5px 20px rgba(0,0,0,.2);
+}
+
+/* =========================
+   CONTENEDOR DEL INPUT
+========================= */
+
+.bw-ai-panel{
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+}
+
+/* =========================
+   INPUT
+========================= */
+
+.bw-ai-input{
+
+    flex:1;
+    height:48px;
+    padding:0 15px;
+    border:2px solid #7c1f16;
+    border-radius:14px;
+    background:#fff;
+    color:#4b2c20;
+    font-size:15px;
+    outline:none;
+    box-sizing:border-box;
+    transition:.2s;
+}
+
+.bw-ai-input::placeholder{
+    color:#9a8b82;
+}
+
+.bw-ai-input:focus{
+    border-color:#C4984F;
+    box-shadow:0 0 8px rgba(196,152,79,.25);
+
+}
+
+/* =========================
+   BOTÓN ENVIAR
+========================= */
+
+.bw-ai-button{
+    width:48px;
+    height:48px;
+    border:none;
+    border-radius:14px;
+    background:linear-gradient(to bottom,#7c1f16,#4d0c07);
+    color:#fff;
+    font-size:20px;
+    cursor:pointer;
+    flex-shrink:0;
+    transition:.25s;
+}
+
+.bw-ai-button:hover{
+    transform:translateY(-2px);
+    box-shadow:0 4px 10px rgba(0,0,0,.25);
+
+}
+
+.bw-ai-button:active{
+    transform:scale(.96);
+}
+
+.week-panel{
+    margin-bottom:20px;
+}
+
+.bw-ai-card{
+    margin-top:10px;
+}

@@ -1,0 +1,75 @@
+/* =========================
+   LAYOUT GENERAL INDEX
+========================= */
+
+.main-layout{
+    display: flex;
+    gap: 30px;
+    padding: 20px;
+    align-items: flex-start;
+}
+
+.main-content{
+    flex: 1;
+    min-width: 0;
+}
+
+/* =========================
+   SIDEBAR DERECHO
+========================= */
+
+.right-sidebar{
+    width: 300px;
+    background: #f3e7d3;
+    border: 3px solid #5b120d;
+    border-radius: 25px;
+
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+
+    position: sticky;
+    top: 20px;
+
+    margin-top: 60px;
+
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+}
+
+/* =========================
+   BOTÓN TRACKER
+========================= */
+
+.tracker-btn{
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 15px;
+    background: linear-gradient(to bottom, #7c1f16, #4d0c07);
+    color: white;
+    font-size: 18px;
+    font-family: 'Cinzel', serif;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.tracker-btn:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.sidebar-wrapper{
+    position: sticky;
+    top: -30px;
+    align-self:flex-start;
+}
+
+.sidebar-column{
+    display:flex;
+    flex-direction:column;
+    gap:25px;
+    width:100%;
+}
+
