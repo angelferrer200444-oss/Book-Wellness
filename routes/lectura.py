@@ -22,6 +22,8 @@ def registrar_rutas(app):
         key_libro = datos.get('key_libro')
         paginas = datos.get('paginas')
         id_google = datos.get('id_google')
+        genero = datos.get('genero')
+        anio = datos.get('anio')
 
         if not id_usuario:
             return jsonify({
@@ -39,8 +41,9 @@ def registrar_rutas(app):
                 categoria,
                 key_libro,
                 paginas,
-                id_google
-
+                id_google,
+                genero,
+                anio
             )
 
             if resultado:

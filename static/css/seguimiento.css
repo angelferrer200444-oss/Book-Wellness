@@ -1,505 +1,236 @@
-/* ==========================================================================
-   1. FONDO Y CONFIGURACIÓN BASE (Tu diseño original)
-   ========================================================================== */
-body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Cinzel', serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-    overflow-y: auto;
-    background:
-        radial-gradient(
-            circle at top,
-            rgba(201,92,38,0.18),
-            transparent 45%
-        ),
-        linear-gradient(
-            to bottom,
-            #efe3cf 0%,
-            #e3d3bd 40%,
-            #d5c0a4 100%
-        );
-    color: #4a1f14;
+.left-section{
+    gap:50px;
 }
 
-/* Detalles decorativos en el fondo */
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background:
-        repeating-linear-gradient(
-            90deg,
-            rgba(90,35,20,0.025) 0px,
-            rgba(90,35,20,0.025) 2px,
-            transparent 2px,
-            transparent 6px
-        );
-    pointer-events: none;
-    z-index: -1;
+.top-bar{
+    height:90px;
+    box-sizing:border-box;
+}
+
+.menu-container{
+    align-items:center;
+    flex-wrap:nowrap;
+    gap:20px;
+}
+
+.user-btn{
+    flex-shrink:0;
+}
+
+.top-divider{
+    top:115px;
 }
 
 /* ==========================================================================
-   2. BARRA SUPERIOR (FIJADA Y PROTEGIDA CONTRA DESPLAZAMIENTOS)
+   SECCIÓN: APARTADO DE SEGUIMIENTO (Línea de Tiempo)
    ========================================================================== */
-.top-bar {
-    position: relative;
-    top: 0;
-    left: 0;
-    right: 0;
-    padding: 8px 28px 0 28px;
-    display: flex;
-    align-items: center; /* Alineación vertical fija al centro */
-    justify-content: space-between;
-    z-index: 5;
-    height: 90px; /* Altura fija para contener la estructura sin saltos */
-    box-sizing: border-box;
+
+.tracking-container{
+    max-width:900px;
+    margin:140px auto 60px;
+    padding:0 20px;
+    box-sizing:border-box;
+    position:relative;
 }
 
-.left-section {
-    display: flex;
-    align-items: center; /* Centrado vertical alineado con la barra */
-    gap: 50px;
-    flex-grow: 1;
+.section-title{
+    font-size:32px;
+    color:#5a1c11;
+    text-align:center;
+    text-transform:uppercase;
+    letter-spacing:3px;
+    margin-bottom:35px;
+    text-shadow:1px 1px 2px rgba(255,255,255,.5);
 }
 
-/* LOGO */
-.logo-container {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    flex-shrink: 0; /* Evita que el logo se deforme */
+.timeline{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    gap:35px;
 }
 
-.books-logo {
-    position: relative;
-    width: 70px;
-    height: 70px;
+.timeline::before{
+    content:"";
+    position:absolute;
+    top:15px;
+    left:57px;
+    bottom:15px;
+    width:4px;
+    background:#4a150d;
+    border-radius:2px;
+    opacity:.25;
 }
 
-.book {
-    position: absolute;
-    width: 54px;
-    height: 14px;
-    border-radius: 4px;
-    border: 3px solid #2c0906;
+.timeline-item{
+    display:flex;
+    align-items:center;
+    gap:40px;
+    position:relative;
+    width:100%;
+}
+
+/* FECHA */
+
+.date-box{
+    min-width:114px;
+    height:125px;
+    background:linear-gradient(to bottom,#efe3cf,#d5c0a4);
+    border:3px solid #2c0906;
+    border-radius:12px;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    box-shadow:0 6px 12px rgba(0,0,0,.15);
+    z-index:2;
+    transition:transform .25s ease;
+}
+
+.date-info{
+    flex-grow:1;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    padding-top:4px;
+}
+
+.date-box .day{
+    font-size:32px;
+    font-weight:700;
+    color:#4a1f14;
+    line-height:1;
+}
+
+.date-box .month{
+    font-size:14px;
+    font-weight:600;
+    color:#7a2618;
+    letter-spacing:2px;
+    margin-top:2px;
+}
+
+.time-bar{
+    background:linear-gradient(to right,#7f2618,#4a150d);
+    border-top:2px solid #2c0906;
+    color:#efe3cf;
+    font-size:11px;
+    font-weight:bold;
+    text-align:center;
+    padding:5px 0;
+    letter-spacing:1px;
+    font-family:system-ui,-apple-system,sans-serif;
+}
+
+/* TARJETA */
+
+.event-card{
+    flex-grow:1;
+    background:linear-gradient(to bottom,#7f2618,#4a150d);
+    border:3px solid #2c0906;
+    border-radius:14px;
+    padding:22px 25px;
+    color:#efe3cf;
     box-shadow:
-        0 4px 8px rgba(0,0,0,0.18),
-        inset 0 1px 2px rgba(255,255,255,0.08);
+        0 8px 16px rgba(0,0,0,.2),
+        inset 0 1px 2px rgba(255,255,255,.1);
+    position:relative;
+    transition:transform .25s ease,filter .25s ease;
 }
 
-.book-1 {
-    bottom: 0;
-    left: 0;
-    background: linear-gradient(to bottom, #7f2618, #4a150d);
+.event-title{
+    font-size:22px;
+    font-weight:700;
+    margin:0 0 8px;
+    letter-spacing:1px;
+    color:#f2e3cd;
 }
 
-.book-2 {
-    bottom: 18px;
-    left: 8px;
-    background: linear-gradient(to bottom, #8b3b1e, #5a1f12);
+.event-desc{
+    font-size:15px;
+    margin:0;
+    line-height:1.5;
+    opacity:.85;
+    font-family:system-ui,-apple-system,sans-serif;
 }
 
-.book-3 {
-    bottom: 36px;
-    left: 16px;
-    background: linear-gradient(to bottom, #9a4a22, #6b2814);
+/* ETIQUETAS */
+
+.badge{
+    position:absolute;
+    top:-12px;
+    right:20px;
+    padding:4px 14px;
+    font-size:12px;
+    font-weight:bold;
+    text-transform:uppercase;
+    border:2px solid #2c0906;
+    border-radius:20px;
+    box-shadow:0 4px 6px rgba(0,0,0,.15);
 }
 
-.logo-text {
-    display: flex;
-    flex-direction: column;
-    line-height: 0.9;
+.status-completed .badge{
+    background:#d5c0a4;
+    color:#2c0906;
 }
 
-.book-title {
-    font-size: 40px;
-    font-weight: 700;
-    color: #5a1c11;
+.status-pending .badge{
+    background:#9a4a22;
+    color:#efe3cf;
 }
 
-.wellness-title {
-    font-size: 22px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    color: #7a2618;
+.event-card::before{
+    content:"";
+    position:absolute;
+    top:45px;
+    left:-11px;
+    width:16px;
+    height:16px;
+    background:#7f2618;
+    border-left:3px solid #2c0906;
+    border-bottom:3px solid #2c0906;
+    transform:rotate(45deg);
 }
 
-/* CONTENEDOR DE BOTONES */
-.menu-container {
-    display: flex;
-    align-items: center; /* Centrado vertical invariable */
-    flex-wrap: nowrap; /* Impide que los botones salten a otra línea */
-    gap: 20px;
+/* HOVER */
+
+.timeline-item:hover .date-box{
+    transform:scale(1.06);
 }
 
-/* BOTÓN INDIVIDUAL GRANDES */
-.curve-btn {
-    position: relative;
-    width: 220px;
-    height: 110px;
-    background: transparent;
-    border: none;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding-top: 10px;
-    color: #f2e3cd;
-    font-size: 22px;
-    font-weight: bold;
-    font-family: 'Cinzel', serif;
-    text-align: center;
-    line-height: 1.05;
-    cursor: pointer;
-    transition:
-        transform 0.25s ease,
-        filter 0.25s ease;
+.date-box:hover .time-bar{
+    filter:brightness(1.15);
 }
 
-/* =========================
-   CURVA
-========================= */
-.curve-btn::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 220px;
-    height: 58px;
-    background:
-        linear-gradient(
-            to bottom,
-            #7f2618,
-            #4e170f
-        );
-    border-bottom: 4px solid #2b0d08;
-    border-left: 4px solid #2b0d08;
-    border-right: 4px solid #2b0d08;
-    border-bottom-left-radius: 140px 70px;
-    border-bottom-right-radius: 140px 70px;
-    box-shadow:
-        0 6px 12px rgba(0,0,0,0.25),
-        inset 0 2px 2px rgba(255,255,255,0.06);
-    z-index: -1;
+.timeline-item:hover .event-card{
+    transform:translateX(6px);
+    filter:brightness(1.06);
 }
 
-/* =========================
-   PICO CENTRAL
-========================= */
-.curve-btn::after {
-    content: "";
-    position: absolute;
-    top: 49px;
-    left: 50%;
-    transform:
-        translateX(-50%)
-        rotate(45deg);
-    width: 16px;
-    height: 16px;
-    background:
-        linear-gradient(
-            to bottom,
-            #6a1f13,
-            #45120c
-        );
-    border-right: 4px solid #2b0d08;
-    border-bottom: 4px solid #2b0d08;
+/* BOTÓN ATRÁS */
+
+.back-btn-container{
+    position:absolute;
+    left:20px;
+    top:-5px;
+}
+.back-circle-btn{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width:50px;
+    height:50px;
+    background:linear-gradient(to bottom,#7f2618,#4a150d);
+    color:#efe3cf;
+    font-size:24px;
+    font-weight:bold;
+    border:3px solid #2c0906;
+    border-radius:50%;
+    box-shadow:0 6px 12px rgba(0,0,0,.25);
+    transition:transform .25s ease,filter .25s ease;
 }
 
-/* =========================
-   HOVER BOTÓN
-========================= */
-.curve-btn:hover {
-    transform:
-        translateY(5px)
-        scale(1.03);
-    filter: brightness(1.08);
-}
-
-/* BOTÓN USUARIO */
-.user-btn {
-    width: 84px;
-    height: 84px;
-    border-radius: 50%;
-    border: 4px solid #2a0d08;
-    background: linear-gradient(to bottom, #7f2618, #4a150d);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    box-shadow:
-        0 8px 20px rgba(0,0,0,0.25),
-        inset 0 2px 3px rgba(255,255,255,0.06);
-    transition: transform 0.25s ease, filter 0.25s ease;
-    flex-shrink: 0;
-}
-
-.user-btn:hover {
-    transform: scale(1.08); /* Eliminado el rotate por seguridad total de posición */
-    filter: brightness(1.08);
-}
-
-.user-icon {
-    position: relative;
-    width: 38px;
-    height: 38px;
-}
-
-.user-head {
-    width: 16px;
-    height: 16px;
-    background: #efe3cf;
-    border-radius: 50%;
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.user-body {
-    width: 28px;
-    height: 16px;
-    background: #efe3cf;
-    border-radius: 20px 20px 10px 10px;
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-/* DIVISOR SUPERIOR */
-.top-divider {
-    position: absolute;
-    top: 115px;
-    left: 0;
-    width: 100vw;
-    height: 18px;
-    background: linear-gradient(to bottom, #7a2618 0%, #631c12 35%, #4d140d 65%, #2c0906 100%);
-    border-top: 3px solid #a54a33;
-    box-shadow:
-        0 5px 10px rgba(0,0,0,0.18),
-        inset 0 2px 2px rgba(255,255,255,0.08),
-        inset 0 -4px 6px rgba(0,0,0,0.3);
-    z-index: 10;
-}
-
-/* ==========================================================================
-   3. SECCIÓN: APARTADO DE SEGUIMIENTO (Línea de Tiempo)
-   ========================================================================== */
-.tracking-container {
-    max-width: 900px;
-    margin: 140px auto 60px auto; /* Pegado al separador superior */
-    padding: 0 20px;
-    box-sizing: border-box;
-    position: relative; /* Agregado para posicionar correctamente el botón de atrás de manera absoluta */
-}
-
-.section-title {
-    font-size: 32px;
-    color: #5a1c11;
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    margin-bottom: 35px;
-    text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
-}
-
-.timeline {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 35px;
-}
-
-/* Línea vertical conectora */
-.timeline::before {
-    content: "";
-    position: absolute;
-    top: 15px;
-    left: 57px; /* Reajustado por el nuevo ancho del date-box de 114px */
-    bottom: 15px;
-    width: 4px;
-    background: #4a150d;
-    border-radius: 2px;
-    opacity: 0.25;
-}
-
-.timeline-item {
-    display: flex;
-    align-items: center;
-    gap: 40px;
-    position: relative;
-    width: 100%;
-}
-
-/* EL CUADRITO DE FECHA Y HORA ADAPTADO */
-.date-box {
-    min-width: 114px;
-    height: 125px; /* Un poco más alto para dar espacio a la barra inferior */
-    background: linear-gradient(to bottom, #efe3cf, #d5c0a4);
-    border: 3px solid #2c0906;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden; /* Corta las esquinas para que la barra inferior calce perfectamente */
-    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-    z-index: 2;
-    transition: transform 0.25s ease;
-}
-
-/* Contenedor interno del día y mes */
-.date-info {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding-top: 4px;
-}
-
-.date-box .day {
-    font-size: 32px;
-    font-weight: 700;
-    color: #4a1f14;
-    line-height: 1;
-}
-
-.date-box .month {
-    font-size: 14px;
-    font-weight: 600;
-    color: #7a2618;
-    letter-spacing: 2px;
-    margin-top: 2px;
-}
-
-/* CINTURÓN INFERIOR DE LA HORA */
-.time-bar {
-    background: linear-gradient(to right, #7f2618, #4a150d);
-    border-top: 2px solid #2c0906;
-    color: #efe3cf;
-    font-size: 11px;
-    font-weight: bold;
-    text-align: center;
-    padding: 5px 0;
-    letter-spacing: 1px;
-    font-family: system-ui, -apple-system, sans-serif; /* Más compacto y legible para números pequeños */
-}
-
-/* TARJETA DEL EVENTO */
-.event-card {
-    flex-grow: 1;
-    background: linear-gradient(to bottom, #7f2618, #4a150d);
-    border: 3px solid #2c0906;
-    border-radius: 14px;
-    padding: 22px 25px;
-    color: #efe3cf;
-    box-shadow: 
-        0 8px 16px rgba(0,0,0,0.2),
-        inset 0 1px 2px rgba(255,255,255,0.1);
-    position: relative;
-    transition: transform 0.25s ease, filter 0.25s ease;
-}
-
-.event-title {
-    font-size: 22px;
-    font-weight: 700;
-    margin: 0 0 8px 0;
-    letter-spacing: 1px;
-    color: #f2e3cd;
-}
-
-.event-desc {
-    font-size: 15px;
-    margin: 0;
-    line-height: 1.5;
-    opacity: 0.85;
-    font-family: system-ui, -apple-system, sans-serif;
-}
-
-/* Etiquetas */
-.badge {
-    position: absolute;
-    top: -12px;
-    right: 20px;
-    padding: 4px 14px;
-    font-size: 12px;
-    font-weight: bold;
-    text-transform: uppercase;
-    border: 2px solid #2c0906;
-    border-radius: 20px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
-}
-
-.status-completed .badge {
-    background: #d5c0a4;
-    color: #2c0906;
-}
-
-.status-pending .badge {
-    background: #9a4a22;
-    color: #efe3cf;
-}
-
-/* Flechitas conectoras */
-.event-card::before {
-    content: "";
-    position: absolute;
-    top: 45px;
-    left: -11px;
-    width: 16px;
-    height: 16px;
-    background: #7f2618;
-    border-left: 3px solid #2c0906;
-    border-bottom: 3px solid #2c0906;
-    transform: rotate(45deg);
-}
-
-/* INTERACCIONES HOVER */
-.timeline-item:hover .date-box {
-    transform: scale(1.06);
-}
-
-.date-box:hover .time-bar {
-    filter: brightness(1.15); /* Pequeña iluminación al pasar el mouse directo por la fecha */
-}
-
-.timeline-item:hover .event-card {
-    transform: translateX(6px);
-    filter: brightness(1.06);
-}
-
-a{
-    text-decoration: none;
-}
-
-/* ==========================================================================
-   4. ESTILOS EXCLUSIVOS PARA EL BOTÓN "IR ATRÁS"
-   ========================================================================== */
-.back-btn-container {
-    position: absolute;
-    left: 20px; 
-    top: -5px;  
-}
-
-.back-circle-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50px;
-    height: 50px;
-    background: linear-gradient(to bottom, #7f2618, #4a150d); 
-    color: #efe3cf;            
-    font-size: 24px;
-    font-weight: bold;
-    border: 3px solid #2c0906;
-    border-radius: 50%;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
-    transition: transform 0.25s ease, filter 0.25s ease;
-}
-
-.back-circle-btn:hover {
-    transform: scale(1.1);
-    filter: brightness(1.15);
+.back-circle-btn:hover{
+    transform:scale(1.1);
+    filter:brightness(1.15);
 }

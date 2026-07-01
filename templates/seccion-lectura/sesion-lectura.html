@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Wellness - Lectura</title>
 
+    <!-- CSS PRINCIPAL -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+    <!-- CSS LECTURA -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/SeccionLectura2.css') }}">
 
 </head>
@@ -115,14 +119,14 @@
             </div>
 
             <div class="dato">
-    <label id="labelCapLeidos">Capítulos Leídos:</label>
-    <input
-        type="number"
-        id="capLeidos"
-        value="{{ capitulos_leidos if capitulos_leidos else 0 }}"
-        disabled
-        style="opacity:0.6;">
-</div>
+                <label id="labelCapLeidos">Capítulos Leídos:</label>
+                <input
+                    type="number"
+                    id="capLeidos"
+                    value="{{ capitulos_leidos if capitulos_leidos else 0 }}"
+                    disabled
+                    style="opacity:0.6;">
+            </div>
 
             <div class="dato">
                 <label id="labelCapTotal">Capítulos Totales:</label>
@@ -137,22 +141,27 @@
             <div class="dato">
                 <label>Notas del Libro:</label>
                 <a href="{{ url_for('notas') }}">
-                    <button class="btn-notas">
+                    <button class="btn-editar">
                         Botón de notas
                     </button>
                 </a>
             </div>
 
             {% if datos_completos %}
-<div class="dato" style="justify-content: flex-start; padding-left: 275px;">
-    <button id="btnEditar" class="btn-editar" onclick="activarEdicion()">
-        ✏️ Editar datos del libro
-    </button>
-    <button id="btnGuardar" class="btn-guardar" style="display:none;" onclick="guardarEdicion()">
-        💾 Guardar cambios
-    </button>
-</div>
-{% endif %}
+            <div class="dato">
+            
+                <label>Editar datos:</label>
+            
+                <button id="btnEditar" class="btn-editar" onclick="activarEdicion()">
+                    ✏️ Editar datos del libro
+                </button>
+            
+                <button id="btnGuardar" class="btn-guardar" style="display:none;" onclick="guardarEdicion()">
+                    💾 Guardar cambios
+                </button>
+            
+            </div>
+            {% endif %}
 
             <div class="dato">
                 <label>Fecha Inicio:</label>
@@ -181,65 +190,10 @@
      style="display:none;">
 </div>
 
-
-    <script>
-
-        const datosEl = document.getElementById('datos-lectura');
-window.datosLectura = {
-    id_libro: datosEl.dataset.idLibro || null,
-    datosCompletos: datosEl.dataset.completos === 'true',
-    paginasYaGuardadas: datosEl.dataset.paginasGuardadas === 'true',
-    capitulosYaGuardados: datosEl.dataset.capitulosGuardados === 'true'
-};
-
-   function activarEdicion() {
-    document.getElementById('total').disabled = false;
-    document.getElementById('total').style.opacity = '1';
-    document.getElementById('capTotal').disabled = false;
-    document.getElementById('capTotal').style.opacity = '1';
-    document.getElementById('formatoLectura').disabled = false;
-    document.getElementById('btnEditar').style.display = 'none';
-    document.getElementById('btnGuardar').style.display = 'block';
-}
-
-async function guardarEdicion() {
-    const paginas = document.getElementById('total').value;
-    const caps = document.getElementById('capTotal').value;
-    const formato = document.getElementById('formatoLectura').value;
-
-    try {
-        await fetch('/api/iniciar_lectura', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                id_libro: window.datosLectura.id_libro,
-                paginas_totales: paginas,
-                num_caps: caps,
-                formato: formato
-            })
-        });
-
-        // Volver a bloquear
-        document.getElementById('total').disabled = true;
-        document.getElementById('total').style.opacity = '0.6';
-        document.getElementById('capTotal').disabled = true;
-        document.getElementById('capTotal').style.opacity = '0.6';
-        document.getElementById('formatoLectura').disabled = true;
-        document.getElementById('btnGuardar').style.display = 'none';
-        document.getElementById('btnEditar').style.display = 'block';
-
-        alert('Datos actualizados correctamente.');
-        actualizarProgreso();
-
-    } catch (error) {
-        alert('Error al guardar los cambios.');
-    }
-}
-</script>
-
     <script src="{{ url_for('static', filename='js/audiolibroenseccion.js') }}"></script>
     <script src="{{ url_for('static', filename='js/barraprogresoseccion.js') }}"></script>
     <script src="{{ url_for('static', filename='js/iniciar-lectura.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/editar-lectura.js') }}"></script>
 
 </body>
 </html>

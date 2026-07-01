@@ -6,9 +6,10 @@
 
     <title>Book Wellness</title>
 
-    <!-- CSS AGREGAR -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/agregar.css') }}">
 
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+   
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -42,21 +43,21 @@
 
             <div class="menu-container">
 
-                <button class="curve-btn" onclick="window.location.href='estadisticas.html'">
+                <a href="{{ url_for('estadisticas') }}" class="curve-btn">
                     Estadísticas
-                </button>
+                </a>
 
-                <button class="curve-btn" onclick="window.location.href='objetivo.html'">
+                <a href="{{ url_for('objetivo') }}" class="curve-btn">
                     Objetivos
-                </button>
+                </a>
 
-                <button class="curve-btn" onclick="window.location.href='notas.html'">
+                <a href="{{ url_for('notas') }}" class="curve-btn">
                     Notas
-                </button>
+                </a>                
 
-                <button class="curve-btn" onclick="window.location.href='Leidos.html'">
+                <a href="{{ url_for('leidos') }}" class="curve-btn">
                     Leídos
-                </button>
+                </a>
 
             </div>
 
@@ -94,92 +95,40 @@
                         <label for="book-title">📖 Título del Libro <span class="required">*</span></label>
                         <input type="text" id="book-title" placeholder="Ej. El nombre de la rosa" required>
                     </div>
+
+                    <div class="form-group animate-field">
+                        <label for="book-subtitle-field">📜 Subtítulo</label>
+                        <input type="text" id="book-subtitle-field" placeholder="Ej. Una novela histórica gótica">
+                    </div>
                     
                     <div class="form-group animate-field">
                         <label for="book-author">✒️ Autor <span class="required">*</span></label>
                         <input type="text" id="book-author" placeholder="Nombre del autor" required>
                     </div>
-
-                    <div class="form-group animate-field">
-                        <label for="book-translator">🗣️ Traductor</label>
-                        <input type="text" id="book-translator" placeholder="Nombre del traductor (opcional)">
-                    </div>
-                    
-                    <div class="form-group animate-field">
-                        <label for="book-illustrator">🎨 Ilustrador</label>
-                        <input type="text" id="book-illustrator" placeholder="Nombre del ilustrador (opcional)">
-                    </div>
-
-                    <div class="form-group animate-field">
-                        <label for="book-language">🌍 Idioma</label>
-                        <input type="text" id="book-language" placeholder="Ej. Español, Latín">
-                    </div>
                     
                     <div class="form-group animate-field">
                         <label for="book-type">🗂️ Tipo de Formato</label>
-                        <select id="book-type">
-                            <option value="physical">📦 Libro Físico</option>
-                            <option value="digital">📱 Manuscrito Digital</option>
-                            <option value="audio">🎧 Audiolibro / Relato</option>
-                        </select>
+                        <input type="text" id="book-type" placeholder="Ej. Físico, Digital, Audiolibro">
                     </div>
 
                     <div class="form-group animate-field">
                         <label for="book-pages">📄 Número de Páginas</label>
                         <input type="number" id="book-pages" min="1" placeholder="Ej. 512">
                     </div>
-                    
+
                     <div class="form-group animate-field">
-                        <label for="book-volume">🔢 Volumen / Tomo</label>
-                        <input type="text" id="book-volume" placeholder="Ej. Tomo I, Edición Especial">
+                        <label for="book-chapters">🔖 Número de Capítulos</label>
+                        <input type="number" id="book-chapters" min="1" placeholder="Ej. 24">
                     </div>
 
                     <div class="form-group animate-field">
-                        <label for="book-edition">𖨨 Edición / Impresión</label>
-                        <input type="text" id="book-edition" placeholder="Ej. Primera impresión">
+                        <label for="book-published">📅 Año de Publicación</label>
+                        <input type="number" id="book-published" min="0" placeholder="Ej. 1980">
                     </div>
                     
                     <div class="form-group animate-field">
-                        <label for="book-rating">⭐ Tu Calificación (1-5)</label>
-                        <input type="number" id="book-rating" min="1" max="5" placeholder="Puntaje de sabiduría">
-                    </div>
-
-                    <div class="form-group animate-field">
-                        <label for="book-publisher">🏢 Editorial</label>
-                        <input type="text" id="book-publisher" placeholder="Casa editorial gremial">
-                    </div>
-                    
-                    <div class="form-group dropdown-wrapper animate-field">
-                        <label>🏷️ Géneros y Categorías</label>
-                        
-                        <details class="custom-dropdown">
-                            <summary class="dropdown-button">
-                                <span class="button-placeholder">Seleccionar categorias y generos...</span>
-                            </summary>
-                            
-                            <div class="dropdown-content">
-                                <div class="dropdown-info-tip">💡 Marca todas las etiquetas que encajen con tu lectura</div>
-                                
-                                <div class="dropdown-section-title">Géneros Literarios</div>
-                                <label class="checkbox-item"><input type="checkbox" value="misterio"> Misterio / Suspenso</label>
-                                <label class="checkbox-item"><input type="checkbox" value="drama"> Drama</label>
-                                <label class="checkbox-item"><input type="checkbox" value="fantasia"> Fantasía Épica</label>
-                                <label class="checkbox-item"><input type="checkbox" value="ciencia-ficcion"> Ciencia Ficción</label>
-                                <label class="checkbox-item"><input type="checkbox" value="romance"> Romance</label>
-                                <label class="checkbox-item"><input type="checkbox" value="terror"> Terror Gótico</label>
-                                <label class="checkbox-item"><input type="checkbox" value="aventura"> Aventura</label>
-                                <label class="checkbox-item"><input type="checkbox" value="poesia"> Poesía / Lírica</label>
-
-                                <div class="dropdown-section-title">Categorías y Temas</div>
-                                <label class="checkbox-item"><input type="checkbox" value="historia"> Novela Histórica</label>
-                                <label class="checkbox-item"><input type="checkbox" value="biografia"> Biografía / Memorias</label>
-                                <label class="checkbox-item"><input type="checkbox" value="ensayo"> Ensayo / Filosofía</label>
-                                <label class="checkbox-item"><input type="checkbox" value="autoayuda"> Crecimiento Interior</label>
-                                <label class="checkbox-item"><input type="checkbox" value="academia"> Grimorio Técnico / Académico</label>
-                                <label class="checkbox-item"><input type="checkbox" value="divulgacion"> Divulgación del Saber</label>
-                                <label class="checkbox-item"><input type="checkbox" value="infantil"> Juvenil / Leyendas</label>
-                            </div>
-                        </details>
+                        <label for="book-genres">🏷️ Géneros y Categorías</label>
+                        <input type="text" id="book-genres" placeholder="Ej. Misterio, Novela Histórica, Filosofía">
                     </div>
 
                 </div>

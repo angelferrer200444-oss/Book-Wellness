@@ -69,7 +69,9 @@ document.getElementById('btn-pendiente').disabled = true;
                     categoria:categoria,
                     key_libro:datoLibro.key,
                     id_google:datoLibro.id_google,
-                    paginas:datoLibro.paginas
+                    paginas:datoLibro.paginas,
+                    genero: datoLibro.genero,
+                    anio: datoLibro.anio
 
                 })
 
@@ -158,7 +160,9 @@ async function cargarLibro(){
         datoLibro.autor = data.autor;
         datoLibro.descripcion = data.descripcion;
         datoLibro.paginas = (data.paginas !== "Desconocido") ? data.paginas : null;
-        datoLibro.portada = data.portada || datoLibro.portada; 
+        datoLibro.portada = data.portada || datoLibro.portada;
+        datoLibro.genero = data.generos || null;
+        datoLibro.anio = data.anio || null;
 
         const imgPortada = document.getElementById('img-portada');
             if(imgPortada && data.portada) {

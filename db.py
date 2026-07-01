@@ -35,7 +35,7 @@ def buscar_usuario(correo, password):
     conexion.close()
     return usuario
 
-def agregar_libro(id_usuario, titulo, autor, descripcion, portada, categoria, key_libro, paginas, id_google=None):
+def agregar_libro(id_usuario, titulo, autor, descripcion, portada, categoria, key_libro, paginas, id_google=None, genero=None, anio=None):
     conexion = obtener_conexion()
     cursor = conexion.cursor()
     print("ID_GOOGLE RECIBIDO:", id_google)
@@ -51,9 +51,9 @@ def agregar_libro(id_usuario, titulo, autor, descripcion, portada, categoria, ke
         return False
 
     cursor.execute("""
-        INSERT INTO libros (id_usuario, titulo, autor, descripcion, portada, categoria, key_libro, paginas_totales, id_google) 
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-    """, (id_usuario, titulo, autor, descripcion, portada, categoria, key_libro, paginas, id_google))
+        INSERT INTO libros (id_usuario, titulo, autor, descripcion, portada, categoria, key_libro, paginas_totales, id_google, genero, anio) 
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    """, (id_usuario, titulo, autor, descripcion, portada, categoria, key_libro, paginas, id_google, genero, anio))
     conexion.commit()
     cursor.close()
     conexion.close()
@@ -81,7 +81,7 @@ def eliminar_libro(id_libro, id_usuario):
     conexion.commit()
     cursor.close()
     conexion.close()
-    return True
+    
 
 def obtener_libro(id_libro):
     conexion = obtener_conexion()
@@ -199,3 +199,25 @@ def obtener_lectura_en_progreso(id_usuario, id_libro):
     cursor.close()
     conexion.close()
     return lectura
+
+def obtener_libro_completo(id_google=None, key_libro=None):
+    print("BUSCANDO EN BD - id_google:", id_google, "key_libro:", key_libro)
+    conexion = obtener_conexion()
+    cursor = conexion.cursor(dictionary=True)
+    
+    if id_google:
+        cursor.execute("""
+            SELECT * FROM libros WHERE id_google = %s LIMIT 1
+        """, (id_google,))
+    elif key_libro:
+        cursor.execute("""
+            SELECT * FROM libros WHERE key_libro = %s LIMIT 1
+        """, (key_libro,))
+    else:
+        return None
+    
+    libro = cursor.fetchone()
+    print("RESULTADO BD:", libro)
+    cursor.close()
+    conexion.close()
+    return libro

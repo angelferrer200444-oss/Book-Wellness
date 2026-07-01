@@ -9,85 +9,6 @@
 }
 
 /* =========================
-   FONDO GENERAL
-========================= */
-
-body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Cinzel', serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-    overflow-y: auto;
-    background:
-
-    /* PATRÓN */
-    url("545\ sin\ título_20260529172529.png"),
-
-    /* LUZ SUPERIOR */
-       
-    radial-gradient(
-        circle at top,
-        rgba(201,92,38,0.18),
-        transparent 45%
-    ),
-
-    /* DEGRADADO */
-    linear-gradient(
-        to bottom,
-        #efe3cf 0%,
-        #e3d3bd 40%,
-        #d5c0a4 100%
-    );
-
-    /* CONFIGURACIÓN DEL PATRÓN */
-   
-    background-repeat:
-        repeat,
-        no-repeat,
-        no-repeat;
-
-    background-size:
-        700px,
-        cover,
-        cover;
-
-    background-position:
-        center,
-        center,
-        center;
-
-    background-blend-mode:
-        overlay,
-        normal,
-        normal;
-
-    color: #4a1f14;
-}
-
-
-/* =========================
-   DETALLES DECORATIVOS
-========================= */
-
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background:
-    repeating-linear-gradient(
-        90deg,
-        rgba(90,35,20,0.025) 0px,
-        rgba(90,35,20,0.025) 2px,
-        transparent 2px,
-        transparent 6px
-    );
-
-    pointer-events: none;
-    z-index: -1;
-}
-
-/* =========================
    CONTENEDOR PRINCIPAL
 ========================= */
 
@@ -117,10 +38,8 @@ body::before {
     height:450px;
     border-radius:18px;
     overflow:hidden;
-    background:white;
-    box-shadow:
-        0 20px 40px rgba(110,20,15,0.18);
-
+    background:#fff;
+    box-shadow:0 20px 40px rgba(110,20,15,.18);
     transition:.3s;
 }
 
@@ -139,14 +58,13 @@ body::before {
 ========================= */
 
 .info-lectura{
-
+    position:relative;
     flex:1;
-    background:
-        linear-gradient(
-            to bottom,
-            rgba(255,255,255,.18),
-            rgba(255,255,255,.08)
-        );
+    background:linear-gradient(
+        to bottom,
+        rgba(255,255,255,.18),
+        rgba(255,255,255,.08)
+    );
     backdrop-filter:blur(6px);
     border:3px solid #5a1c11;
     border-radius:24px;
@@ -157,24 +75,16 @@ body::before {
 }
 
 .info-lectura::before{
-
     content:"";
     position:absolute;
     inset:0;
     border-radius:24px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255,255,255,.08),
-            transparent 50%
-        );
-
+    background:linear-gradient(
+        135deg,
+        rgba(255,255,255,.08),
+        transparent 50%
+    );
     pointer-events:none;
-}
-
-.info-lectura{
-    position:relative;
 }
 
 /* =========================
@@ -206,8 +116,7 @@ body::before {
     background:#efe0d0;
     border-radius:40px;
     overflow:hidden;
-    box-shadow:
-        inset 0 3px 8px rgba(0,0,0,.08);
+    box-shadow:inset 0 3px 8px rgba(0,0,0,.08);
 }
 
 .progreso-relleno{
@@ -216,20 +125,14 @@ body::before {
     display:flex;
     justify-content:center;
     align-items:center;
-    color:white;
+    color:#fff;
     font-weight:bold;
     position:relative;
     overflow:hidden;
-
-    background:
-        linear-gradient(
-            to right,
-            #8d2d24,
-            #6e140f
-        );
+    opacity:0;
+    transition:.3s;
+    background:linear-gradient(to right,#8d2d24,#6e140f);
 }
-
-/* Rayas animadas */
 
 .progreso-relleno::before{
     content:"";
@@ -238,26 +141,20 @@ body::before {
     left:-100%;
     width:200%;
     height:100%;
-    background:
-        repeating-linear-gradient(
-            -45deg,
-            rgba(255,255,255,.06) 0px,
-            rgba(255,255,255,.06) 12px,
-            transparent 12px,
-            transparent 24px
-        );
-
+    background:repeating-linear-gradient(
+        -45deg,
+        rgba(255,255,255,.06) 0,
+        rgba(255,255,255,.06) 12px,
+        transparent 12px,
+        transparent 24px
+    );
     animation:moverRayas 12s linear infinite;
     pointer-events:none;
 }
 
 @keyframes moverRayas{
-    from{
-        transform:translateX(0);
-    }
-    to{
-        transform:translateX(120px);
-    }
+    from{transform:translateX(0);}
+    to{transform:translateX(120px);}
 }
 
 .progreso-container p{
@@ -278,39 +175,26 @@ body::before {
 
 .stat-card{
     flex:1;
-    background:
-        linear-gradient(
-            to bottom,
-            rgba(255,255,255,.22),
-            rgba(255,255,255,.08)
-        );
-    backdrop-filter: blur(4px);
+    background:linear-gradient(
+        to bottom,
+        rgba(255,255,255,.22),
+        rgba(255,255,255,.08)
+    );
+    backdrop-filter:blur(4px);
     padding:22px;
     border-radius:18px;
     border:1px solid rgba(90,28,17,.25);
-
     box-shadow:
-        0 10px 25px rgba(110,20,15,0.08),
+        0 10px 25px rgba(110,20,15,.08),
         inset 0 1px 2px rgba(255,255,255,.15);
-
     transition:.3s;
 }
 
 .stat-card:hover{
-    transform:
-        translateY(-6px)
-        scale(1.02);
-
+    transform:translateY(-6px) scale(1.02);
     box-shadow:
-        0 18px 35px rgba(110,20,15,0.18),
+        0 18px 35px rgba(110,20,15,.18),
         inset 0 1px 2px rgba(255,255,255,.2);
-}
-
-.stat-card:hover{
-    transform:translateY(-6px);
-
-    box-shadow:
-        0 18px 35px rgba(110,20,15,0.18);
 }
 
 .stat-card h3{
@@ -352,24 +236,21 @@ body::before {
     border:1px solid #ead8c5;
     background:#fffdfb;
     color:#5b463f;
-    font-family:'Cinzel', serif;
+    font-family:'Cinzel',serif;
     font-size:17px;
-    box-shadow:
-        0 8px 18px rgba(110,20,15,.08);
+    box-shadow:0 8px 18px rgba(110,20,15,.08);
     transition:.3s;
 }
-
 
 .dato input:focus,
 .dato select:focus{
     outline:none;
     border-color:#8d2d24;
-    box-shadow:
-        0 0 12px rgba(141,45,36,.25);
+    box-shadow:0 0 12px rgba(141,45,36,.25);
 }
 
 /* =========================
-   BOTÓN NOTAS
+   BOTONES
 ========================= */
 
 .btn-notas{
@@ -378,54 +259,35 @@ body::before {
     border:none;
     border-radius:40px;
     background:#8d5d55;
-    color:white;
-    font-family:'Cinzel', serif;
+    color:#fff;
+    font-family:'Cinzel',serif;
     font-size:15px;
     font-weight:bold;
     cursor:pointer;
     transition:.3s;
-    box-shadow:
-        0 6px 12px rgba(110,20,15,0.15);
+    box-shadow:0 6px 12px rgba(110,20,15,.15);
 }
 
 .btn-notas:hover{
-
     transform:translateY(-2px);
     background:#744941;
-}
-
-/* =========================
-   BOTÓN PRINCIPAL
-========================= */
-
-.btn-empezar{
-    margin-top:40px;
-    float:right;
-    border:none;
-    padding:14px 34px;
-    border-radius:40px;
-    background:#6e140f;
-    color:white;
-    font-size:16px;
-    font-weight:bold;
-    font-family:'Cinzel', serif;
-    cursor:pointer;
-    transition:.3s;
-    box-shadow:
-        0 10px 20px rgba(110,20,15,0.25);
 }
 
 .btn-empezar{
     display:block;
     width:fit-content;
-    margin:40px auto 0 auto;
-    float:none;
-}
-
-.btn-empezar:link,
-.btn-empezar:visited{
+    margin:40px auto 0;
+    border:none;
+    padding:14px 34px;
+    border-radius:40px;
+    background:#6e140f;
     color:#efe3cf;
-    text-decoration:none;
+    font-size:16px;
+    font-weight:bold;
+    font-family:'Cinzel',serif;
+    cursor:pointer;
+    transition:.3s;
+    box-shadow:0 10px 20px rgba(110,20,15,.25);
 }
 
 .btn-empezar:hover{
@@ -433,100 +295,26 @@ body::before {
     background:#52100c;
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media(max-width:1000px){
-
-    .contenedor-lectura{
-        flex-direction:column;
-        align-items:center;
-    }
-
-    .portada{
-        width:260px;
-        height:390px;
-    }
-
-    .info-lectura{
-
-        backdrop-filter:blur(10px);
-    
-        background:
-            linear-gradient(
-                to bottom,
-                rgba(255,255,255,.30),
-                rgba(255,255,255,.14)
-            );
-    }    
-
-    .stats-lectura{
-        flex-direction:column;
-    }
-
-    .dato{
-        flex-direction:column;
-        align-items:flex-start;
-    }
-
-    .dato label{
-        width:auto;
-    }
-
-    .dato input,
-    .dato select,
-    .btn-notas{
-
-        width:100%;
-    }
-
-    .btn-empezar{
-
-        width:100%;
-        float:none;
-    }
-}
-
-/* =========================
-   Boton para atras
-========================= */
-
 .btn-volver{
-
     width:55px;
     height:55px;
     border:none;
     border-radius:50%;
-
-    background:
-        linear-gradient(
-            to bottom,
-            #8d2d24,
-            #6e140f
-        );
-
-    color:white;
+    background:linear-gradient(to bottom,#8d2d24,#6e140f);
+    color:#fff;
     font-size:24px;
     cursor:pointer;
-
-    box-shadow:
-        0 8px 18px rgba(110,20,15,.25);
-
+    box-shadow:0 8px 18px rgba(110,20,15,.25);
     transition:.3s;
 }
 
-
 .btn-volver:hover{
-    transform:
-        translateY(-2px)
-        scale(1.05);
-
+    transform:translateY(-2px) scale(1.05);
     filter:brightness(1.1);
 }
 
 /* =========================
-   INFO DE LA PORTADA
+   PORTADA INFO
 ========================= */
 
 .info-portada{
@@ -554,11 +342,51 @@ body::before {
     font-style:italic;
 }
 
-.progreso-relleno{
-    opacity:0;
-    transition:.3s;
-}
+/* =========================
+   RESPONSIVE
+========================= */
 
+@media(max-width:1000px){
+
+    .contenedor-lectura{
+        flex-direction:column;
+        align-items:center;
+    }
+
+    .portada{
+        width:260px;
+        height:390px;
+    }
+
+    .info-lectura{
+        backdrop-filter:blur(10px);
+        background:linear-gradient(
+            to bottom,
+            rgba(255,255,255,.30),
+            rgba(255,255,255,.14)
+        );
+    }
+
+    .stats-lectura{
+        flex-direction:column;
+    }
+
+    .dato{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .dato label{
+        width:auto;
+    }
+
+    .dato input,
+    .dato select,
+    .btn-notas,
+    .btn-empezar{
+        width:100%;
+    }
+}
 
 .btn-editar {
     background: transparent;
@@ -571,6 +399,8 @@ body::before {
     cursor: pointer;
     margin-top: 10px;
     transition: all 0.3s ease;
+    justify-content: flex-start; 
+    
 }
 
 .btn-editar:hover {

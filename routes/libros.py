@@ -3,6 +3,7 @@ from flask import render_template, request, jsonify
 import Libros as libros_api
 from GoogleLibros import GoogleBooksAPI
 
+import db
 from routes.utilidades import obtener_json
 
 
@@ -74,6 +75,27 @@ def registrar_rutas(app):
         # ===== GOOGLE BOOKS =====
 
         id_google = request.args.get("id")
+        clave = request.args.get("clave")
+
+        libro_bd = None
+        if id_google:
+            libro_bd = db.obtener_libro_completo(id_google=id_google)
+        elif clave:
+            libro_bd = db.obtener_libro_completo(key_libro=clave)
+
+        if libro_bd:
+            return jsonify({
+                "titulo": libro_bd.get("titulo", "Sin título"),
+                "subtitulo": "",
+                "descripcion": libro_bd.get("descripcion", "Descripción no disponible"),
+                "autor": libro_bd.get("autor", "Autor desconocido"),
+                "anio": libro_bd.get("anio", "Desconocido"),
+                "paginas": libro_bd.get("paginas_totales", "Desconocido"),
+                "generos": libro_bd.get("genero", "No disponible"),
+                "pais": "Desconocido",
+                "formato": libro_bd.get("formato", "Desconocido"),
+                "portada": libro_bd.get("portada", "")
+            })
 
         if id_google:
 
