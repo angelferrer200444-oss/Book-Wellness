@@ -10,14 +10,20 @@
     <!-- CSS PRINCIPAL -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 
+    <!-- CSS SEMANA -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/semana.css') }}">
+
     <!-- CSS DEL RELOJ -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/ParteInferior-Superior.css') }}">
 
     <!-- CSS ESTANTERIA -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/estanteria.css') }}">
 
-    <!-- CSS CALENDARIO -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/calendario.css') }}">
+    <!-- CSS layout-index -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout-index.css') }}">
+
+    <!-- CSS panelIA -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/PanelIA.css') }}">
 
     <!-- FUENTES -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -331,36 +337,6 @@
 
                         </div>
 
-                        <!-- LIBRO -->
-                        <div class="book-card">
-
-                            <img 
-                                src="https://covers.openlibrary.org/b/id/9259256-L.jpg" 
-                                alt=""
-                            >
-
-                        </div>
-
-                        <!-- LIBRO -->
-                        <div class="book-card">
-
-                            <img 
-                                src="https://covers.openlibrary.org/b/id/10521270-L.jpg" 
-                                alt=""
-                            >
-
-                        </div>
-
-                        <!-- LIBRO -->
-                        <div class="book-card">
-
-                            <img 
-                                src="https://covers.openlibrary.org/b/id/10594765-L.jpg" 
-                                alt=""
-                            >
-
-                        </div>
-
                     </div>
 
                     <div class="shelf"></div>
@@ -370,63 +346,118 @@
             </div>
 
         </div>
-
-        <!-- =========================
-             SIDEBAR DERECHO
-        ========================== -->
-
-        <aside class="right-sidebar">
-
-            <a href="{{ url_for('seguimiento') }}">
-                <button class="tracker-btn">
-                    Abrir Seguimiento
-                </button>
-            </a>
+        
+        <div class="sidebar-wrapper">
 
             <!-- =========================
-                 CALENDARIO
-            ========================== -->
+                COLUMNA DERECHA
+            ========================= -->
 
-            <div class="calendar-box">
+            <div class="sidebar-column">
 
-                <div class="calendar-header">
-            
-                    <button id="prevMonth">
-                        &lt;
-                    </button>
-            
-                    <h3 id="monthYear"></h3>
-            
-                    <button id="nextMonth">
-                        &gt;
-                    </button>
-            
+                <!-- =========================
+                    TARJETA SUPERIOR
+                ========================== -->
+
+                <aside class="right-sidebar">
+
+                    <a href="{{ url_for('seguimiento') }}">
+                        <button class="tracker-btn">
+                            Abrir Seguimiento
+                        </button>
+                    </a>
+
+                    <!-- =========================
+                        RESUMEN SEMANAL
+                    ========================== -->
+
+                    <div class="week-panel">
+
+                        <h3>Esta semana</h3>
+
+                        <div class="week-grid">
+
+                            <div class="week-item">
+                                <div class="day-number"></div>
+                                <span>Dom</span>
+                            </div>
+
+                            <div class="week-item">
+                                <div class="day-number"></div>
+                                <span>Lun</span>
+                            </div>
+
+                            <div class="week-item">
+                                <div class="day-number"></div>
+                                <span>Mar</span>
+                            </div>
+
+                            <div class="week-item">
+                                <div class="day-number"></div>
+                                <span>Mié</span>
+                            </div>
+
+                            <div class="week-item">
+                                <div class="day-number"></div>
+                                <span>Jue</span>
+                            </div>
+
+                            <div class="week-item">
+                                <div class="day-number"></div>
+                                <span>Vie</span>
+                            </div>
+
+                            <div class="week-item">
+                                <div class="day-number"></div>
+                                <span>Sáb</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </aside>
+
+                <!-- =========================
+                    TARJETA IA
+                ========================== -->
+
+                <div class="bw-ai-card">
+
+                    <div class="bw-ai-panel">
+
+                        <input
+                            type="text"
+                            id="bwAiInput"
+                            class="bw-ai-input"
+                            placeholder="Pregúntame algo..."
+                        >
+
+                        <button
+                            id="bwAiSend"
+                            class="bw-ai-button">
+                            ➜
+                        </button>
+
+
+                    </div>
+                
                 </div>
-            
-                <div class="calendar-days">
-                    <span>Do</span>
-                    <span>Lu</span>
-                    <span>Ma</span>
-                    <span>Mi</span>
-                    <span>Ju</span>
-                    <span>Vi</span>
-                    <span>Sa</span>
-                </div>
-            
-                <div class="calendar-dates" id="calendarDates"></div>
-            
-            </div>            
+                
+            </div>
 
-        </aside>
+                
+        </div>
 
-    </div>
+</div>
+
 
 <script src="{{ url_for('static', filename='js/drag-scroll.js') }}"></script>
-<script src="{{ url_for('static', filename='js/calendario.js') }}"></script>
 <script src="{{ url_for('static', filename='js/generos.js') }}"></script>
 <script src="{{ url_for('static', filename='js/filtro.js') }}"></script>
 <script src="{{ url_for('static', filename='js/usuario.js') }}"></script>
 <script src="{{ url_for('static', filename='js/eliminar-libro.js') }}"></script>
+<script src="{{ url_for('static', filename='js/semana.js') }}"></script>
 
 </body>
 </html>
