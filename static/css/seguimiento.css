@@ -25,13 +25,17 @@
    SECCIÓN: APARTADO DE SEGUIMIENTO (Línea de Tiempo)
    ========================================================================== */
 
-.tracking-container{
-    max-width:900px;
-    margin:140px auto 60px;
+   .tracking-container{
+    display:flex;
+    align-items:flex-start;
+    gap:30px;
+
+    max-width:1400px;
+    margin:90px auto 60px;
     padding:0 20px;
     box-sizing:border-box;
-    position:relative;
 }
+
 
 .section-title{
     font-size:32px;
@@ -233,4 +237,26 @@
 .back-circle-btn:hover{
     transform:scale(1.1);
     filter:brightness(1.15);
+}
+
+/* =========================
+   CONTENIDO IZQUIERDO
+========================= */
+
+.tracking-content{
+    flex:1;
+    min-width:0;
+    position:relative;
+}
+
+/* =========================
+   SIDEBAR DERECHO
+========================= */
+
+.tracking-sidebar{
+    width:300px;
+    flex-shrink:0;
+
+    position:sticky;
+    top:15px;
 }
