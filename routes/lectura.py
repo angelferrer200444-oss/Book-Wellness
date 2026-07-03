@@ -1,4 +1,4 @@
-from flask import render_template, request, jsonify, session
+from flask import app, render_template, request, jsonify, session
 import db
 
 
@@ -115,6 +115,26 @@ def registrar_rutas(app):
             fecha_fin=fecha_fin,
             fecha_limite=fecha_limite
         )
+    
+    @app.route('/api/actualizar_progreso', methods=['POST'])
+    def actualizar_progreso():
+        datos = request.json
+        id_usuario = session.get('id_usuario')
+        id_libro = datos.get('id_libro')
+        pagina_actual = datos.get('pagina_actual')
+        capitulos_leidos = datos.get('capitulos_leidos')
+        fecha_inicio = datos.get('fecha_inicio')
+
+        if not id_usuario:
+            return jsonify({"error": "No hay sesión activa"}), 401
+
+        try:
+            db.actualizar_progreso_lectura(id_usuario, id_libro, pagina_actual, capitulos_leidos, fecha_inicio)
+            return jsonify({"mensaje": "Progreso actualizado"}), 200
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+        
+
 
 
     @app.route('/api/iniciar_lectura', methods=['POST'])
@@ -220,6 +240,9 @@ def registrar_rutas(app):
             id_libro=id_libro,
             pagina_anterior=pagina_anterior
         )
+    
+
+    
 
 
     @app.route('/api/guardar_lectura', methods=['POST'])
@@ -265,3 +288,7 @@ def registrar_rutas(app):
             return jsonify({
                 "error": str(e)
             }), 500
+        
+
+        
+
