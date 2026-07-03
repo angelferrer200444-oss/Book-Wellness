@@ -63,13 +63,12 @@
                 <label>Formato de Lectura:</label>
 
                 <input
-                    type="text"
-                    id="formatoLectura"
-                    list="formatos-lectura"
-                    placeholder="Seleccione o escriba un formato"
-                    value="{{ libro.formato if libro and libro.formato else '' }}"
-                    {{ 'disabled' if datos_completos else '' }}
-                    onchange="actualizarFormato()">
+                type="text"
+                id="formatoLectura"
+                list="formatos-lectura"
+                placeholder="Seleccione o escriba un formato"
+                value="{{ libro.formato if libro and libro.formato else '' }}"
+                {{ 'disabled style=opacity:0.6;' if datos_completos else '' }}>
 
                 <datalist id="formatos-lectura">
 
@@ -147,7 +146,7 @@
                 </a>
             </div>
 
-            {% if datos_completos %}
+            
             <div class="dato">
             
                 <label>Editar datos:</label>
@@ -161,21 +160,27 @@
                 </button>
             
             </div>
-            {% endif %}
+            
 
-            <div class="dato">
+                    <div class="dato">
                 <label>Fecha Inicio:</label>
-                <input type="text" value="{{ fecha_inicio if fecha_inicio else 'Aún no has empezado' }}" disabled style="opacity:0.6;">
+                <input type="date" id="fechaInicio"
+                    value="{{ fecha_inicio if fecha_inicio else '' }}"
+                    disabled style="opacity:0.6;">
             </div>
 
             <div class="dato">
                 <label>Última vez leído:</label>
-                <input type="text" value="{{ fecha_fin if fecha_fin else 'Sin sesiones aún' }}" disabled style="opacity:0.6;">
+                <input type="text" id="fechaFin"
+                    value="{{ fecha_fin if fecha_fin else 'Sin sesiones aún' }}"
+                    disabled style="opacity:0.6;">
             </div>
 
             <div class="dato">
-                <label>Fecha límite:</label>
-                <input type="date" id="fechaLimite" value="{{ fecha_limite if fecha_limite else '' }}" onchange="guardarFechaLimite()">
+                <label>Fecha límite (meta):</label>
+                <input type="date" id="fechaLimite"
+                    value="{{ fecha_limite if fecha_limite else '' }}"
+                    onchange="guardarFechaLimite()">
             </div>
 
         </div>
