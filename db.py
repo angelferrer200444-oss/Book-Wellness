@@ -36,6 +36,9 @@ def buscar_usuario(correo, password):
     return usuario
 
 def agregar_libro(id_usuario, titulo, autor, descripcion, portada, categoria, key_libro, paginas, id_google=None, genero=None, anio=None):
+    if portada and portada.startswith("http://"):
+        portada = portada.replace("http://", "https://", 1)
+
     conexion = obtener_conexion()
     cursor = conexion.cursor()
     print("ID_GOOGLE RECIBIDO:", id_google)
@@ -221,3 +224,25 @@ def obtener_libro_completo(id_google=None, key_libro=None):
     cursor.close()
     conexion.close()
     return libro
+
+def actualizar_progreso_lectura(id_usuario, id_libro, pagina_actual, capitulos_leidos, fecha_inicio=None):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+    
+    campos = "pagina_actual = %s, capitulos_leidos = %s"
+    valores = [pagina_actual, capitulos_leidos]
+    
+    if fecha_inicio:
+        campos += ", fecha_inicio = %s"
+        valores.append(fecha_inicio)
+    
+    valores.extend([id_usuario, id_libro])
+    
+    cursor.execute(f"""
+        UPDATE lecturas 
+        SET {campos}
+        WHERE id_usuario = %s AND id_libro = %s
+    """, valores)
+    conexion.commit()
+    cursor.close()
+    conexion.close()
