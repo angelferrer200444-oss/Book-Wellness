@@ -368,14 +368,41 @@
 #texto-carga-cabecera{
 
     font-family:'Cinzel', serif;
-
     color:#6e140f;
-
     font-size:22px;
-
     font-style:italic;
-
     font-weight:600;
-
     opacity:.85;
 }
+
+#texto-carga-cabecera{
+
+    font-family:'Cinzel', serif;
+    color:#6e140f;
+    font-size:22px;
+    font-style:italic;
+    font-weight:600;
+    opacity:.85;
+}
+
+#recomendaciones .loader-container{
+    width:100%;
+    min-height:280px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    gap:12px;
+}
+
+
+#recomendaciones{
+    width:100%;
+    display:flex;
+    justify-content:flex-start;
+    align-items:flex-start;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
