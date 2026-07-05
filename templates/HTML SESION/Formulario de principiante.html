@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preferencias de Lectura - Book Wellness</title>
+    <link rel="stylesheet" href="Formulario.css">
+</head>
+<body>
+
+    <div class="background"></div>
+
+    <div class="login-container">
+        <span class="leaf">📖</span>
+
+        <h2>Preferencias</h2>
+        <h3>Responde estas breves preguntas para recomendarte tu próximo libro ideal.</h3>
+
+        <form action="" method="POST">
+            
+            <label class="select-label" for="motivacion">1. ¿Qué te motivó a comenzar a leer?</label>
+            <input type="text" id="motivacion" name="motivacion" placeholder="Ej: Aprender algo nuevo, relajarme, entretenimiento..." required>
+
+            <label class="select-label" for="tipo_historias">2. ¿Qué tipo de historias te llaman más la atención?</label>
+            <select name="tipo_historias" id="tipo_historias" class="nivel-select" required>
+                <option value="" disabled selected hidden>Selecciona una opción...</option>
+                <option value="reales">Historias realistas o basadas en hechos reales</option>
+                <option value="ficcion">Mundos fantásticos y ficción</option>
+                <option value="desarrollo">Desarrollo personal y aprendizaje</option>
+                <option value="indiferente">Me da igual, busco una buena trama</option>
+            </select>
+
+            <label class="select-label" for="libro_anterior">3. ¿Has terminado algún libro anteriormente?</label>
+            <select name="libro_anterior" id="libro_anterior" class="nivel-select" required>
+                <option value="" disabled selected hidden>Selecciona una opción...</option>
+                <option value="si">Sí, varios</option>
+                <option value="pocos">Sí, pero muy pocos</option>
+                <option value="no">No, sería mi primer libro entero</option>
+            </select>
+
+            <label class="select-label" for="tiempo_diario">4. ¿Cuánto tiempo crees que puedes dedicar a la lectura cada día?</label>
+            <select name="tiempo_diario" id="tiempo_diario" class="nivel-select" required>
+                <option value="" disabled selected hidden>Selecciona el tiempo...</option>
+                <option value="menos_15">Menos de 15 minutos</option>
+                <option value="15_30">Entre 15 y 30 minutos</option>
+                <option value="30_60">Entre 30 y 60 minutos</option>
+                <option value="mas_60">Más de una hora</option>
+            </select>
+
+            <label class="select-label" for="longitud_libro">5. ¿Prefieres libros cortos o largos?</label>
+            <select name="longitud_libro" id="longitud_libro" class="nivel-select" required>
+                <option value="" disabled selected hidden>Selecciona una preferencia...</option>
+                <option value="cortos">Cortos (historias directas y rápidas)</option>
+                <option value="largos">Largos (tramas profundas y desarrolladas)</option>
+                <option value="indiferente">No me importa la longitud</option>
+            </select>
+
+            <label class="select-label">6. ¿Qué formato prefieres?</label>
+            <div class="radio-group">
+                <label><input type="radio" name="formato" value="fisico" required> Físico</label><br>
+                <label><input type="radio" name="formato" value="ebook"> eBook (Digital)</label><br>
+                <label><input type="radio" name="formato" value="audiolibro"> Audiolibro</label>
+            </div>
+
+            <label class="select-label">7. ¿Qué géneros te llaman la atención?</label>
+            <div class="checkbox-group">
+                <label><input type="checkbox" name="generos[]" value="clasicos"> Literatura Clásica</label><br>
+                <label><input type="checkbox" name="generos[]" value="misterio"> Misterio y Suspenso</label><br>
+                <label><input type="checkbox" name="generos[]" value="fantasia"> Fantasía y Ciencia Ficción</label><br>
+                <label><input type="checkbox" name="generos[]" value="psicologico"> Drama / Realismo Psicológico</label><br>
+                <label><input type="checkbox" name="generos[]" value="autoayuda"> Autoayuda / Bienestar</label>
+            </div>
+
+            <label class="select-label" for="expectativa">8. ¿Qué esperas conseguir con Book Wellness?</label>
+            <input type="text" id="expectativa" name="expectativa" placeholder="Ej: Crear el hábito, reducir estrés, leer más..." required>
+
+            <label class="select-label" for="obras_mente">9. ¿Tienes algunas obras en mente para empezar tu lectura? (Opcional)</label>
+            <input type="text" id="obras_mente" name="obras_mente" placeholder="Ej: El principito, Hábitos atómicos...">
+
+            <label class="select-label" for="importancia_racha">10. ¿Qué tan importante es para ti mantener una racha de lectura?</label>
+            <select name="importancia_racha" id="importancia_racha" class="nivel-select" required>
+                <option value="" disabled selected hidden>Selecciona una opción...</option>
+                <option value="muy_importante">Muy importante (me motiva mucho el progreso continuo)</option>
+                <option value="moderado">Moderado (me gustaría, pero sin presionarme)</option>
+                <option value="indiferente">No es importante para mí</option>
+            </select>
+
+            <button type="submit">Obtener Recomendaciones</button>
+
+            <div class="links">
+                <a href="#">← Volver al inicio</a>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preferencias de Lectura - Book Wellness</title>
+    <link rel="stylesheet" href="Formulario.css">
+</head>
+<body>
+
+    <div class="background"></div>
+
+    <div class="login-container">
+        <span class="leaf">📖</span>
+
+        <h2>Preferencias</h2>
+        <h3>Responde estas breves preguntas para recomendarte tu próximo libro ideal.</h3>
+
+        <form action="" method="POST">
+            
+            <label class="select-label" for="generos">1. ¿Cuáles son tus géneros favoritos?</label>
+            <select name="generos" id="generos" class="nivel-select" required>
+                <option value="" disabled selected hidden>Selecciona una opción...</option>
+                <option value="clasicos">Literatura Clásica</option>
+                <option value="misterio_suspenso">Misterio y Suspenso</option>
+                <option value="fantasia_scifi">Fantasía y Ciencia Ficción</option>
+                <option value="drama_psicologico">Drama / Realismo Psicológico</option>
+                <option value="otros">Otros géneros</option>
+            </select>
+
+            <label class="select-label" for="autores_imprescindibles">2. ¿Qué autores consideras imprescindibles?</label>
+            <input type="text" id="autores_imprescindibles" name="autores_imprescindibles" placeholder="Ej: Fiódor Dostoyevski, Albert Camus, Franz Kafka..." required>
+
+            <label class="select-label" for="lectura_simultanea">3. ¿Lees varios libros simultáneamente?</label>
+            <select name="lectura_simultanea" id="lectura_simultanea" class="nivel-select" required>
+                <option value="" disabled selected hidden>Selecciona una opción...</option>
+                <option value="si">Sí, suelo alternar entre varios</option>
+                <option value="no">No, uno a la vez hasta terminarlo</option>
+            </select>
+
+            <label class="select-label" for="organizacion">4. ¿Cómo organizas tus lecturas?</label>
+            <select name="organizacion" id="organizacion" class="nivel-select" required>
+                <option value="" disabled selected hidden>Selecciona una opción...</option>
+                <option value="listas_digitales">Con listas digitales / aplicaciones</option>
+                <option value="agenda_fisica">En una agenda o cuaderno físico</option>
+                <option value="sin_organizacion">No me organizo, leo de forma espontánea</option>
+            </select>
+
+            <label class="select-label" for="criterio_eleccion">5. ¿Qué criterio utilizas para elegir tu siguiente libro?</label>
+            <select name="criterio_eleccion" id="criterio_eleccion" class="nivel-select" required>
+                <option value="" disabled selected hidden>Selecciona una opción...</option>
+                <option value="estado_animo">Mi estado de ánimo actual</option>
+                <option value="recomendaciones">Recomendaciones y reseñas</option>
+                <option value="lista_pendientes">El orden estricto de mi lista de pendientes</option>
+                <option value="azar">Al azar o el diseño de la portada</option>
+            </select>
+
+            <label class="select-label" for="zona_confort">6. ¿Qué tan dispuesto estás a salir de tu zona de confort?</label>
+            <select name="zona_confort" id="zona_confort" class="nivel-select" required>
+                <option value="" disabled selected hidden>Selecciona una opción...</option>
+                <option value="muy_dispuesto">Muy dispuesto (Me encanta experimentar)</option>
+                <option value="ocasionalmente">Ocasionalmente (Si la premisa es muy buena)</option>
+                <option value="poco_dispuesto">Poco dispuesto (Prefiero ir a lo seguro)</option>
+            </select>
+
+            <label class="select-label" for="importancia_recomendaciones">7. ¿Qué tan importantes son las recomendaciones personalizadas para ti?</label>
+            <select name="importancia_recomendaciones" id="importancia_recomendaciones" class="nivel-select" required>
+                <option value="" disabled selected hidden>Selecciona una opción...</option>
+                <option value="alta">Esenciales (Definen mis próximas lecturas)</option>
+                <option value="media">Útiles (Las tomo en cuenta de vez en cuando)</option>
+                <option value="baja">Poco importantes (Prefiero buscar por mi cuenta)</option>
+            </select>
+
+            <label class="select-label" for="retos_disfrutas">8. ¿Qué tipo de retos disfrutas más?</label>
+            <select name="retos_disfrutas" id="retos_disfrutas" class="nivel-select" required>
+                <option value="" disabled selected hidden>Selecciona una opción...</option>
+                <option value="cantidad">Retos de cantidad (Ej: Leer un número de libros al año)</option>
+                <option value="complejidad">Retos de complejidad (Ej: Obras densas o extensas)</option>
+                <option value="variedad">Retos de variedad (Ej: Leer autores de distintos países)</option>
+                <option value="ninguno">Ninguno, prefiero leer sin la presión de un reto</option>
+            </select>
+
+            <label class="select-label" for="aspecto_valorado">9. ¿Qué aspecto valoras más en una historia?</label>
+            <select name="aspecto_valorado" id="aspecto_valorado" class="nivel-select" required>
+                <option value="" disabled selected hidden>Selecciona una opción...</option>
+                <option value="personajes">El desarrollo y profundidad de los personajes</option>
+                <option value="trama">Una trama intrigante, compleja y bien estructurada</option>
+                <option value="prosa">El estilo de escritura, la prosa y la atmósfera</option>
+                <option value="mensaje">El trasfondo filosófico, moral o psicológico</option>
+            </select>
+
+            <label class="select-label" for="expectativa_app">10. ¿Qué esperas encontrar en Book Wellness que otras aplicaciones no ofrecen?</label>
+            <input type="text" id="expectativa_app" name="expectativa_app" placeholder="Ej: Herramientas de almacenamiento personalizadas, estadísticas más profundas..." required>
+
+            <button type="submit">Obtener recomendaciones </button>
+
+            <div class="links">
+                <a href="#">← Volver al inicio</a>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>
