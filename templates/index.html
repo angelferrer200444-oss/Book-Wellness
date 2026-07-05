@@ -25,6 +25,9 @@
     <!-- CSS panelIA -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/PanelIA.css') }}">
 
+    <!-- CSS detakke-libro para reutilizar la bolita de carga -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/detalle-libro.css') }}">
+
     <!-- FUENTES -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
@@ -325,19 +328,21 @@
 
                     </div>
 
-                    <div class="books-row">
+                    <div class="books-row" id="recomendaciones">
 
-                        <!-- LIBRO -->
-                        <div class="book-card">
-
-                            <img 
-                                src="https://covers.openlibrary.org/b/id/8228691-L.jpg" 
-                                alt=""
-                            >
-
+                        <div class="loader-container">
+                    
+                            <div class="loader"></div>
+                    
+                            <span id="texto-carga">
+                                Generando recomendaciones...
+                            </span>
+                    
                         </div>
-
+                    
                     </div>
+                    
+                    
 
                     <div class="shelf"></div>
 
@@ -424,23 +429,32 @@
 
                 <div class="bw-ai-card">
 
+                    <textarea
+                        id="bwAiResponse"
+                        class="bw-ai-response"
+                        readonly
+                        placeholder="Pregúntame algo...">
+                    </textarea>
+                
                     <div class="bw-ai-panel">
-
+                
                         <input
                             type="text"
                             id="bwAiInput"
                             class="bw-ai-input"
-                            placeholder="Pregúntame algo..."
+                            placeholder="Escribe aquí..."
                         >
-
+                
                         <button
                             id="bwAiSend"
                             class="bw-ai-button">
                             ➜
                         </button>
-
-
+                
                     </div>
+                
+                </div>
+                
                 
                 </div>
                 
@@ -458,6 +472,9 @@
 <script src="{{ url_for('static', filename='js/usuario.js') }}"></script>
 <script src="{{ url_for('static', filename='js/eliminar-libro.js') }}"></script>
 <script src="{{ url_for('static', filename='js/semana.js') }}"></script>
+<script src="{{ url_for('static', filename='js/PanelIA.js') }}"></script>
+<script src="{{ url_for('static', filename='js/recomendaciones.js') }}"></script>
+
 
 </body>
 </html>
