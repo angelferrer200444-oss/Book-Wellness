@@ -1,0 +1,288 @@
+/* RESET */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    background:#efe3cf;
+}
+
+/* FONDO */
+
+.background{
+    position:fixed;
+    inset:0;
+    background:
+    linear-gradient(
+        rgba(239,227,207,0.35),
+        rgba(239,227,207,0.45)
+    ),
+    url("https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1920&auto=format&fit=crop");
+
+    background-size:cover;
+    background-position:center;
+    z-index:-2;
+}
+
+/* TARJETA CON SCROLL INTEGRADO */
+
+.login-container{
+    width:420px;
+    max-width:90%;
+    max-height: 85vh;
+    padding:40px 25px 40px 40px;
+    background:rgba(239,227,207,0.88); 
+    border:1px solid rgba(255,255,255,0.6);
+    border-radius:25px;
+    box-shadow: 0 15px 40px rgba(74,31,20,0.15);
+    animation:fadeUp 0.8s ease;
+    position:relative;
+    
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #4a1f1450 transparent;
+}
+
+/* DISEÑO DE LA BARRA DE DESPLAZAMIENTO (DERECHA) */
+.login-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.login-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.login-container::-webkit-scrollbar-thumb {
+    background-color: rgba(74, 31, 20, 0.4);
+    border-radius: 10px;
+}
+
+/* ICONO */
+
+.leaf{
+    position:absolute;
+    top:20px;
+    right:25px;
+    font-size:28px;
+    animation:float 3s ease-in-out infinite;
+    z-index: 10;
+}
+
+/* TITULO */
+
+h1, h2{
+    text-align:center;
+    color:#4a1f14;
+    margin-bottom:30px;
+    font-size:2rem;
+}
+
+/* INPUTS Y FORMULARIO */
+
+form{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+input{
+    padding:15px;
+    border:none;
+    border-radius:12px;
+    background:#ffffffd0;
+    font-size:15px;
+    outline:none;
+    transition:.3s;
+}
+
+input:focus{
+    box-shadow: 0 0 0 3px rgba(74,31,20,0.15);
+    transform:translateY(-2px);
+}
+
+/* FIELDSET DE PREGUNTAS COMPUESTAS */
+.form-fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* BOTON */
+
+button{
+    padding:15px;
+    border:none;
+    border-radius:12px;
+    background:#4a1f14;
+    color:#efe3cf;
+    font-size:16px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+button:hover{
+    background:#603025;
+    transform:translateY(-2px);
+    box-shadow: 0 10px 20px rgba(74,31,20,0.25);
+}
+
+/* LINKS */
+
+.links{
+    margin-top:10px;
+    display:flex;
+    justify-content:space-between;
+}
+
+.links a{
+    text-decoration:none;
+    color:#4a1f14;
+    font-size:14px;
+    transition:.3s;
+}
+
+.links a:hover{
+    color:#7d4334;
+}
+
+/* ANIMACIONES */
+
+@keyframes fadeUp{
+    from{
+        opacity:0;
+        transform:translateY(30px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+@keyframes float{
+    0%,100%{
+        transform:translateY(0);
+    }
+    50%{
+        transform:translateY(-8px);
+    }
+}
+
+/* RESPONSIVE */
+
+@media(max-width:480px){
+    .login-container{
+        padding:30px 15px 30px 30px;
+    }
+
+    h1, h2{
+        font-size:1.7rem;
+    }
+
+    .links{
+        flex-direction:column;
+        gap:10px;
+        text-align:center;
+    }
+}
+
+/* LABEL */
+
+.select-label{
+    color:#4a1f14;
+    font-size:14px;
+    font-weight:600;
+    margin-bottom:-10px;
+    margin-left:5px;
+}
+
+/* ESTILOS COMPARTIDOS PARA SELECTS E INPUTS DE TEXTO DE PREFERENCIAS */
+.nivel-select, .input-text {
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:12px;
+    background:#ffffffd0;
+    color:#4a1f14;
+    font-size:15px;
+    outline:none;
+    transition:.3s;
+}
+
+.nivel-select:focus, .input-text:focus {
+    box-shadow: 0 0 0 3px rgba(74,31,20,0.15);
+    transform:translateY(-2px);
+}
+
+.nivel-select:hover, .input-text:hover {
+    background-color:#fff;
+}
+
+/* SELECT ESPECÍFICO (Lleva la flecha de botón a la derecha) */
+.nivel-select{
+    cursor:pointer;
+    appearance:none;
+    -webkit-appearance:none;
+    -moz-appearance:none;
+
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='%234a1f14' viewBox='0 0 16 16'%3E%3Cpath d='M1.5 5.5 8 12l6.5-6.5' stroke='%234a1f14' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;
+    background-position:right 15px center;
+    background-size:16px;
+}
+
+/* INPUT DE TEXTO ESPECÍFICO (Se asegura de no tener flecha de botón) */
+.input-text {
+    background-image: none;
+}
+
+h3{
+    text-align:center;
+    color:rgba(74,31,20,0.8);
+    font-size:0.95rem;
+    font-weight:500;
+    line-height:1.7;
+    margin:-15px auto 25px;
+    max-width:320px;
+}
+
+/* ESTILOS PARA OPCIONES MULTIPLES Y UNICAS */
+
+.radio-group, .checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 5px;
+    text-align: left;
+}
+
+.checkbox-group {
+    margin-top: 18px; 
+}
+
+.radio-group label, .checkbox-group label {
+    font-size: 14.5px;
+    color: #4a1f14;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.radio-group input, .checkbox-group input {
+    cursor: pointer;
+    accent-color: #4a1f14;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+}
