@@ -355,7 +355,8 @@ def registrar_rutas(app):
                 "paginas": paginas,
                 "generos": generos,
                 "pais": pais,
-                "formato": formato
+                "formato": formato,
+                "portada": request.args.get("portada", "")
 
             })
 
