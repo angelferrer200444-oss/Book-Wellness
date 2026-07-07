@@ -1,76 +1,17 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends "base.html" %}
 
-    <title>Book Wellness - Estadísticas</title>
-    
-    <!-- CSS PRINCIPAL -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    
-    <!-- CSS ESTADISTICAS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles estadisticas.css') }}">
+{% block title %}
+Book Wellness
+{% endblock %}
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+{% block css %}
 
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
-</head>
+<!-- CSS SEMANA -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styles estadisticas.css') }}">
 
-<body>
+{% endblock %}
 
-    <div class="top-bar">
-
-        <div class="left-section">
-
-            <div class="logo-container">
-
-                <div class="books-logo">
-                    <div class="book book-1"></div>
-                    <div class="book book-2"></div>
-                    <div class="book book-3"></div>
-                </div>
-
-                <div class="logo-text">
-                    <span class="book-title">Book</span>
-                    <span class="wellness-title">Wellness</span>
-                </div>
-
-            </div>
-
-            <div class="menu-container">
-
-                <a href="{{ url_for('estadisticas') }}" class="curve-btn">
-                    Estadísticas
-                </a>
-
-                <a href="{{ url_for('objetivo') }}" class="curve-btn">
-                    Objetivos
-                </a>
-
-                <a href="{{ url_for('notas') }}" class="curve-btn">
-                    Notas
-                </a>                
-
-                <a href="{{ url_for('leidos') }}" class="curve-btn">
-                    Leídos
-                </a>
-
-            </div>
-
-        </div>
-
-        <button class="user-btn">
-            <div class="user-icon">
-                <div class="user-head"></div>
-                <div class="user-body"></div>
-            </div>
-        </button>
-
-    </div>
-
-    <div class="top-divider"></div>
+{% block content %}
 
     <main class="main-content">
 
@@ -131,3 +72,11 @@
 
 </body>
 </html>
+
+{% endblock %}
+
+{% block js %}
+
+
+
+{% endblock %}
