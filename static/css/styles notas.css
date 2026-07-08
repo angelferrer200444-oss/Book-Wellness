@@ -1,22 +1,9 @@
-.left-section{
-    gap:40px;
-}
-
-.user-btn{
-    margin-top:4px;
-    margin-left:auto;
-    flex-shrink:0;
-}
-
-.back-btn-container{
-    top:0;
-}
 
 .main-content { 
     position: relative; 
     z-index: 1; 
     max-width: 1240px; 
-    margin: 20px auto 40px; 
+    margin: -30px auto 40px; 
     padding: 0 24px 0 90px; /* Separación extra a la izquierda para el botón "Ir atrás" sin pisar contenido */
 }
 .welcome-block { margin-bottom: 20px; text-align: center; }
@@ -228,33 +215,4 @@
 @media (max-width: 900px) {
     .notes-layout-container { grid-template-columns: 1fr; gap: 35px; }
     .left-book-column { position: relative; top: 0; }
-}
-
-/* ========================================================
-   ESTILOS EXCLUSIVOS PARA EL BOTÓN "IR ATRÁS"
-   ======================================================== */
-.back-btn-container {
-    position: absolute;
-    left: 24px; 
-    top: 0px;  
-}
-
-.back-circle-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50px;
-    height: 50px;
-    background-color: #5a120c; 
-    color: #efe3cf;            
-    font-size: 24px;
-    font-weight: bold;
-    border-radius: 50%;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    transition: transform 0.2s ease, background-color 0.2s ease;
-}
-
-.back-circle-btn:hover {
-    transform: scale(1.1);
-    background-color: #7a2618;
 }
