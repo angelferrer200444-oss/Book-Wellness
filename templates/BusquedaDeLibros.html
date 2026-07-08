@@ -1,102 +1,19 @@
 <!-- EL HTML PARA LOS RESULTADOS DE LA BUSQUEDA -->
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends "base.html" %}
 
-    <title>Book Wellness</title>
+{% block title %}
+Book Wellness - Busqueda Libro
+{% endblock %}
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/BusquedaDeLibros.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+{% block css %}
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- CSS BusquedaDeLibros -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/BusquedaDeLibros.css') }}">
 
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
-</head>
+{% endblock %}
 
-<body>
-
-    <!-- BARRA SUPERIOR -->
-    <div class="top-bar">
-
-        <div class="left-section">
-
-            <div class="logo-container">
-
-                <div class="books-logo">
-                    <div class="book book-1"></div>
-                    <div class="book book-2"></div>
-                    <div class="book book-3"></div>
-                </div>
-
-                <div class="logo-text">
-                    <span class="book-title">Book</span>
-                    <span class="wellness-title">Wellness</span>
-                </div>
-
-            </div>
-
-            <div class="menu-container">
-
-                <a href="{{ url_for('estadisticas') }}" class="curve-btn">
-                    Estadísticas
-                </a>
-
-                <a href="{{ url_for('objetivo') }}" class="curve-btn">
-                    Objetivos
-                </a>
-
-                <a href="{{ url_for('notas') }}" class="curve-btn">
-                    Notas
-                </a>                
-
-                <a href="{{ url_for('leidos') }}" class="curve-btn">
-                    Leídos
-                </a>
-
-            </div>
-
-        </div>
-
-        <div class="user-menu-container">
-
-            <button class="user-btn" id="btn-usuario">
-        
-                <div class="user-icon">
-        
-                    <div class="user-head"></div>
-        
-                    <div class="user-body"></div>
-        
-                </div>
-        
-            </button>
-        
-            <div
-                class="user-dropdown"
-                id="user-dropdown"
-                style="display:none;"
-            >
-        
-                <p id="nombre-usuario-dropdown">
-                    Usuario
-                </p>
-        
-                <hr>
-        
-                <button id="btn-logout">
-                    Cerrar sesión
-                </button>
-        
-            </div>
-        
-        </div>
-    </div>
-
-    <div class="top-divider"></div>
+{% block content %}
 
     <div class="main-layout">
 
@@ -169,11 +86,16 @@
             </div>
         
         </div>        
-
-<script src="{{ url_for('static', filename='js/generos.js') }}"></script>
-<script src="{{ url_for('static', filename='js/filtro.js') }}"></script>
-<script src="{{ url_for('static', filename='js/usuario.js') }}"></script>
-<script src="{{ url_for('static', filename='js/busqueda-libro.js') }}"></script>
         
 </body>
 </html>
+
+{% endblock %}
+
+{% block js %}
+
+<script src="{{ url_for('static', filename='js/generos.js') }}"></script>
+<script src="{{ url_for('static', filename='js/filtro.js') }}"></script>
+<script src="{{ url_for('static', filename='js/busqueda-libro.js') }}"></script>
+
+{% endblock %}
