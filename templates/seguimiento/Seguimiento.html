@@ -1,70 +1,18 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seguimiento - Book Wellness</title>
+{% extends "base.html" %}
 
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+{% block title %}
+Book Wellness - Seguimiento
+{% endblock %}
 
-    <!-- CSS PRINCIPAL -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+{% block css %}
 
-    <!-- CSS SEGUIMIENTO -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/seguimiento.css') }}">
+<!-- CSS seguimiento -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/seguimiento.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/calendario.css') }}">
 
-    <!-- CSS CALENDARIO -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/calendario.css') }}">
-</head>
+{% endblock %}
 
-<body>
-
-    <header class="top-bar">
-        <div class="left-section">
-            <div class="logo-container">
-                <div class="books-logo">
-                    <div class="book book-1"></div>
-                    <div class="book book-2"></div>
-                    <div class="book book-3"></div>
-                </div>
-
-                <div class="logo-text">
-                    <span class="book-title">BOOK</span>
-                    <span class="wellness-title">WELLNESS</span>
-                </div>
-            </div>
-
-            <div class="menu-container">
-
-                <a href="{{ url_for('estadisticas') }}" class="curve-btn">
-                    Estadísticas
-                </a>
-
-                <a href="{{ url_for('objetivo') }}" class="curve-btn">
-                    Objetivos
-                </a>
-
-                <a href="{{ url_for('notas') }}" class="curve-btn">
-                    Notas
-                </a>
-
-                <a href="{{ url_for('leidos') }}" class="curve-btn">
-                    Leídos
-                </a>
-
-            </div>
-        </div>
-
-        <button class="user-btn" aria-label="Usuario">
-            <div class="user-icon">
-                <div class="user-head"></div>
-                <div class="user-body"></div>
-            </div>
-        </button>
-
-    </header>
-
-    <div class="top-divider"></div>
+{% block content %}
 
     <main class="tracking-container">
 
@@ -270,8 +218,14 @@
         </aside>
 
     </main>
-    
-    <script src="{{ url_for('static', filename='js/calendario.js') }}"></script>
 
 </body>
 </html>
+
+{% endblock %}
+
+{% block js %}
+
+<script src="{{ url_for('static', filename='js/calendario.js') }}"></script>
+
+{% endblock %}
