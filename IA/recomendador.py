@@ -1,5 +1,6 @@
 import json
 import requests
+from flask import Blueprint, jsonify, session, request
 
 from GoogleLibros import GoogleBooksAPI
 import db
@@ -301,9 +302,18 @@ def recomendaciones():
 
     id_usuario = session["id_usuario"]
 
+    forzar = request.args.get('forzar', 'false') == 'true'
+    if not forzar:
+        cache = db.obtener_recomendaciones_cache(id_usuario)
+        if cache:
+            return jsonify(cache)
+
+    
+
     try:
 
         libros = motor.recomendar(id_usuario)
+        db.guardar_recomendaciones(id_usuario, libros)
 
         return jsonify(libros)
 
@@ -315,6 +325,7 @@ def recomendaciones():
         print("=" * 60)
 
         return jsonify([])
+    
 
 
 
