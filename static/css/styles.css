@@ -102,7 +102,7 @@ body::before {
     align-items: flex-start;
     justify-content: space-between;
 
-    z-index: 5;
+    z-index: 20;
 }
 
 /* =========================
@@ -688,11 +688,12 @@ body::before {
     text-align: center;
 }
 
-.user-dropdown p {
-    font-weight: bold;
-    margin-bottom: 8px;
-    color: #333;
+.user-dropdown p{
+    font-weight:bold;
+    color:#333;
+    margin:0 0 8px 0;
 }
+
 
 .user-dropdown hr {
     margin: 8px 0;
@@ -731,4 +732,245 @@ body::before {
 
 a{
     text-decoration: none;
+}
+
+/* =====================================================
+   RESPONSIVE - BARRA SUPERIOR
+===================================================== */
+
+/* ---------- 1500px ---------- */
+@media (max-width:1500px){
+
+    .left-section{
+        gap:75px;
+    }
+
+    .menu-container{
+        gap:17px;
+    }
+
+    .curve-btn{
+        width:215px;
+        height:108px;
+        font-size:22px;
+    }
+
+    .curve-btn::before{
+        width:215px;
+        height:57px;
+    }
+
+    .curve-btn::after{
+        top:48px;
+    }
+
+    .user-btn{
+        width:80px;
+        height:80px;
+    }
+
+    .user-icon{
+        transform:scale(.95);
+    }
+
+}
+
+/* ---------- 1400px ---------- */
+@media (max-width:1400px){
+
+    .left-section{
+        gap:68px;
+    }
+
+    .menu-container{
+        gap:15px;
+    }
+
+    .books-logo{
+        transform:scale(.95);
+        transform-origin:left center;
+    }
+
+    .book-title{
+        font-size:38px;
+    }
+
+    .wellness-title{
+        font-size:21px;
+    }
+
+    .curve-btn{
+        width:205px;
+        height:103px;
+        font-size:21px;
+    }
+
+    .curve-btn::before{
+        width:205px;
+        height:56px;
+    }
+
+    .curve-btn::after{
+        top:46px;
+    }
+
+    .user-btn{
+        width:76px;
+        height:76px;
+    }
+
+    .user-icon{
+        transform:scale(.90);
+    }
+
+}
+
+/* ---------- 1300px ---------- */
+@media (max-width:1300px){
+
+    .left-section{
+        gap:60px;
+    }
+
+    .menu-container{
+        gap:13px;
+    }
+
+    .books-logo{
+        transform:scale(.90);
+        transform-origin:left center;
+    }
+
+    .book-title{
+        font-size:36px;
+    }
+
+    .wellness-title{
+        font-size:20px;
+    }
+
+    .curve-btn{
+        width:195px;
+        height:98px;
+        font-size:20px;
+    }
+
+    .curve-btn::before{
+        width:195px;
+        height:54px;
+    }
+
+    .curve-btn::after{
+        top:45px;
+    }
+
+    .user-btn{
+        width:70px;
+        height:70px;
+    }
+
+    .user-icon{
+        transform:scale(.86);
+    }
+
+}
+
+/* ---------- 1200px ---------- */
+@media (max-width:1200px){
+
+    .left-section{
+        gap:52px;
+    }
+
+    .menu-container{
+        gap:10px;
+    }
+
+    .books-logo{
+        transform:scale(.85);
+        transform-origin:left center;
+    }
+
+    .book-title{
+        font-size:34px;
+    }
+
+    .wellness-title{
+        font-size:19px;
+    }
+
+    .curve-btn{
+        width:185px;
+        height:94px;
+        font-size:19px;
+    }
+
+    .curve-btn::before{
+        width:185px;
+        height:52px;
+    }
+
+    .curve-btn::after{
+        top:43px;
+    }
+
+    .user-btn{
+        width:65px;
+        height:65px;
+    }
+
+    .user-icon{
+        transform:scale(.82);
+    }
+
+}
+
+/* ---------- 1100px ---------- */
+@media (max-width:1100px){
+
+    .left-section{
+        gap:45px;
+    }
+
+    .menu-container{
+        gap:8px;
+    }
+
+    .books-logo{
+        transform:scale(.80);
+        transform-origin:left center;
+    }
+
+    .book-title{
+        font-size:32px;
+    }
+
+    .wellness-title{
+        font-size:18px;
+    }
+
+    .curve-btn{
+        width:175px;
+        height:90px;
+        font-size:18px;
+    }
+
+    .curve-btn::before{
+        width:175px;
+        height:50px;
+    }
+
+    .curve-btn::after{
+        top:41px;
+    }
+
+    .user-btn{
+        width:60px;
+        height:60px;
+    }
+
+    .user-icon{
+        transform:scale(.78);
+    }
+
 }
