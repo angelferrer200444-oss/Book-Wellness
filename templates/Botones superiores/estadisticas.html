@@ -1,25 +1,23 @@
 {% extends "base.html" %}
 
 {% block title %}
-Book Wellness
+Book Wellness - Estadísticas
 {% endblock %}
 
 {% block css %}
 
-<!-- CSS SEMANA -->
+<!-- CSS ESTADISTICAS -->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/styles estadisticas.css') }}">
 
 {% endblock %}
 
 {% block content %}
 
+{% include "boton-atras.html" %}
+
     <main class="main-content">
 
-        <div class="back-btn-container">
-            <button onclick="history.back()" class="back-circle-btn" aria-label="Volver atrás">
-                &larr;
-            </button>
-        </div>
+        
 
         <div class="main-dashboard-card">
             
