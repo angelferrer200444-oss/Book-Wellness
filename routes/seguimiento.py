@@ -27,6 +27,7 @@ def registrar_rutas(app):
                 int(id_libro),
                 int(id_usuario)
             )
+            db.invalidar_cache_recomendaciones(id_usuario)
 
             return jsonify({
                 "mensaje": "Libro eliminado"

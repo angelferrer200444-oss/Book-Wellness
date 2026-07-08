@@ -47,8 +47,10 @@ def registrar_rutas(app):
             )
 
             if resultado:
+                db.invalidar_cache_recomendaciones(id_usuario)
 
                 return jsonify({
+                    
                     "mensaje": "Libro agregado correctamente"
                 }), 201
 
