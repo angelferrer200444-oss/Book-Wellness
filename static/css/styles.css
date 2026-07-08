@@ -974,3 +974,41 @@ a{
     }
 
 }
+
+/* =========================
+   PANTALLAS GRANDES
+========================= */
+@media (min-width:1800px){
+
+    .top-bar{
+
+        display:flex;
+
+        align-items:flex-start;
+
+    }
+
+    .left-section{
+
+        display:flex;
+
+        align-items:flex-start;
+
+        flex:1;
+
+    }
+
+    .logo-container{
+
+        flex-shrink:0;
+
+    }
+
+    .menu-container{
+
+        margin-left:auto;
+        margin-right:auto;
+
+    }
+
+}
