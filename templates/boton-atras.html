@@ -1,0 +1,63 @@
+<style>
+    .seccion-boton {
+        position: relative;
+        display: flex;
+        justify-content: flex-start;
+        margin-top: 30px;
+        margin-left: 40px;
+        z-index: 1000;
+    }
+
+    .back-btn {
+        width: 50px;
+        height: 50px;
+        border: none;
+        border-radius: 50%;
+        background-color: #6e140f;
+        color: #fff;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 24px;
+        font-weight: bold;
+        line-height: 1;
+
+        cursor: pointer;
+        user-select: none;
+
+        box-shadow: 0 8px 20px rgba(110, 20, 15, 0.25);
+        transition: background-color .25s ease, transform .2s ease;
+
+        position: relative;
+        z-index: 1001;
+    }
+
+    .back-btn:hover {
+        background-color: #52100c;
+        transform: scale(1.08);
+    }
+
+    .back-btn:active {
+        transform: scale(0.96);
+    }
+
+    .back-btn:focus {
+        outline: none;
+    }
+</style>
+
+<div class="seccion-boton">
+    <button class="back-btn" type="button" aria-label="Volver" onclick="history.back()">
+        &#8592;
+    </button>
+</div>
+
+
+
+
+
+
+
+    
