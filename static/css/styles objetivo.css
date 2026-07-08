@@ -6,7 +6,7 @@
     position: relative;
     z-index: 1;
     max-width: 1200px;
-    margin: 60px auto 40px;
+    margin: -30px auto 40px;
     padding: 0 24px 0 90px;
     color: #4a1f14;
 }
@@ -430,31 +430,4 @@
 
 .btn-save:hover{
     filter:brightness(1.1);
-}
-
-/* Botón volver */
-.back-btn-container{
-    position:absolute;
-    left:24px;
-    top:15px;
-}
-
-.back-circle-btn{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    width:50px;
-    height:50px;
-    background:#5a120c;
-    color:#efe3cf;
-    font-size:24px;
-    font-weight:bold;
-    border-radius:50%;
-    box-shadow:0 4px 10px rgba(0,0,0,.3);
-    transition:.2s;
-}
-
-.back-circle-btn:hover{
-    transform:scale(1.1);
-    background:#7a2618;
 }
