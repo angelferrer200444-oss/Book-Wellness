@@ -1,24 +1,7 @@
-.left-section{
-    gap:50px;
-}
 
 .top-bar{
     height:90px;
     box-sizing:border-box;
-}
-
-.menu-container{
-    align-items:center;
-    flex-wrap:nowrap;
-    gap:20px;
-}
-
-.user-btn{
-    flex-shrink:0;
-}
-
-.top-divider{
-    top:115px;
 }
 
 /* ==========================================================================
