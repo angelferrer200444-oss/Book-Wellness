@@ -406,3 +406,33 @@
     flex-wrap:wrap;
 }
 
+#descripcion{
+    overflow:hidden;
+    transition:max-height .35s ease;
+}
+
+#descripcion.colapsado{
+    display:-webkit-box;
+    -webkit-line-clamp:5;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+}
+
+#descripcion.expandido{
+    display:block;
+}
+
+.leer-mas-btn{
+    margin-top:10px;
+    background:none;
+    border:none;
+    color:#6e140f;
+    cursor:pointer;
+    font-weight:bold;
+    font-size:14px;
+    padding:0;
+}
+
+.leer-mas-btn:hover{
+    text-decoration:underline;
+}
