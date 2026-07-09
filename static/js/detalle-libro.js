@@ -184,6 +184,50 @@ async function cargarLibro(){
         document.getElementById("descripcion").innerHTML =
             data.descripcion || "Descripción no disponible";
 
+        // -------------------------
+        // Leer más / Leer menos
+        // -------------------------
+
+        const descripcion = document.getElementById("descripcion");
+        const boton = document.getElementById("leer-mas-btn");
+
+        // Reiniciar estado
+        descripcion.classList.remove("expandido");
+        descripcion.classList.add("colapsado");
+
+        boton.style.display = "none";
+        boton.textContent = "Leer más";
+
+        // Esperar a que el navegador renderice el texto
+        requestAnimationFrame(() => {
+
+            if (descripcion.scrollHeight > descripcion.clientHeight + 5) {
+
+                boton.style.display = "inline-block";
+
+                boton.onclick = () => {
+
+                    if (descripcion.classList.contains("colapsado")) {
+
+                        descripcion.classList.remove("colapsado");
+                        descripcion.classList.add("expandido");
+                        boton.textContent = "Leer menos";
+
+                    } else {
+
+                        descripcion.classList.remove("expandido");
+                        descripcion.classList.add("colapsado");
+                        boton.textContent = "Leer más";
+
+                    }
+
+                };
+
+            }
+
+        });
+
+
         document.getElementById("anio").innerHTML =
             data.anio || "Desconocido";
         
