@@ -60,22 +60,47 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: 2px dashed #9a8cff;
-    background: #ffffff;
-    color: #6b5cff;
+    background: transparent;
+    border: none;
+    box-shadow: none;
     cursor: pointer;
+    transition: transform .25s ease;
+}
+
+.add-book:hover{
+    transform: translateY(-6px);
 }
 
 .add-book span{
-    font-size: 55px;
+    font-size: 75px;
     line-height: 1;
+    color: #7a2618;
+
+    /* Contorno muy fino */
+    -webkit-text-stroke: 0.5px #7a2618;
+
+    transition: all .25s ease;
 }
 
 .add-book p{
-    margin-top: 10px;
-    font-size: 14px;
-    font-weight: bold;
+    margin-top: 8px;
+    font-size: 15px;
+    font-family: 'Cinzel', serif;
+    font-weight: 600;
+    color: #7a2618;
+
+    /* Contorno muy fino */
+    -webkit-text-stroke: 0.25px #8B6A3E;
+
+    transition: all .25s ease;
 }
+
+.add-book:hover span,
+.add-book:hover p{
+    color: #F37D59;
+    -webkit-text-stroke: 0.5px #B95A3C;
+}
+
 
 /* ESTANTE */
 .shelf{
