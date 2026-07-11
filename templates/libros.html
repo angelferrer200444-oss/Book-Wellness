@@ -178,9 +178,10 @@ Book Wellness - Detalle Libro
     <script>
 
    window.datoLibro = {
-    portada: "{{ portada }}",
-    key: "{{ clave }}",
-    id_google: "{{ id_google }}",  
+    portada: "{{ portada or '' }}",
+    key: "{{ clave or '' }}",
+    id_google: "{{ id_google or '' }}",
+    id_libro: "{{ id_libro or '' }}",
     titulo: "",
     autor: "",
     descripcion: "",
@@ -190,8 +191,7 @@ Book Wellness - Detalle Libro
     </script>
 
 
-</body>
-</html>
+
 
 {% endblock %}
 

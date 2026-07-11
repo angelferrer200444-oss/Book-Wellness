@@ -141,13 +141,12 @@ Book Wellness
 
                         <!-- AGREGAR -->
 
-                            <a href="{{ url_for('agregar') }}" class="book-card add-book">
-
-                                <span>+</span>
-                            
-                                <p>Agregar</p>
-                            
-                            </a>
+                            <a href="/agregar?categoria=leyendo">
+    <div class="book-card add-book">
+        <span>+</span>
+        <p>Agregar</p>
+    </div>
+</a>
                         
 {% for libro in libros_leyendo %}
 <div class="book-card-wrapper">
@@ -182,17 +181,20 @@ Book Wellness
 
                     <div class="books-row">
 
-                        <a href="{{ url_for('agregar') }}" class="book-card add-book">
-
-                            <span>+</span>
-                        
-                            <p>Agregar</p>
-                        
-                        </a>                        
+                                <a href="/agregar?categoria=pendiente">
+            <div class="book-card add-book">
+                <span>+</span>
+                <p>Agregar</p>
+            </div>
+        </a>                       
                     
                         {% for libro in libros_pendientes %}
 <div class="book-card-wrapper">
+    {% if libro.es_agregado_manualmente %}
+    <a href="/libro-manual?id_libro={{ libro.id_libro }}">
+    {% else %}
     <a href="/libro?clave={{ libro.key_libro }}&portada={{ libro.portada }}&id_google={{ libro.id_google or '' }}">
+    {% endif %}
         <div class="book-card">
             <img src="{{ libro.portada }}" alt="{{ libro.titulo }}">
         </div>
