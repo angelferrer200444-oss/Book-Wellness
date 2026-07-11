@@ -178,19 +178,41 @@ def guardar_fecha_limite(id_usuario, id_libro, fecha_limite):
     conexion.close()
 
 
-def guardar_notas_lectura(id_lectura, respuestas):
+def guardar_notas_lectura(
+    id_lectura,
+    como_te_sientes,
+    continuara,
+    notas,
+    tipo_reflexion,
+    respuesta_reflexion
+):
     conexion = obtener_conexion()
     cursor = conexion.cursor()
+
     cursor.execute("""
-        INSERT INTO notas_lectura 
-        (id_lectura, como_te_sientes, que_aprendiste, palabras_nuevas, personaje_destacado, 
-         escena_impacto, continuara, parecer_sesion, recuerdo_vida, notas_observaciones, 
-         buscaba_al_leer, encontro_lo_buscado)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-    """, (id_lectura, *respuestas))
+        INSERT INTO notas_lectura
+        (
+            id_lectura,
+            como_te_sientes,
+            continuara,
+            notas_observaciones,
+            tipo_reflexion,
+            respuesta_reflexion
+        )
+        VALUES (%s, %s, %s, %s, %s, %s)
+    """, (
+        id_lectura,
+        como_te_sientes,
+        continuara,
+        notas,
+        tipo_reflexion,
+        respuesta_reflexion
+    ))
+
     conexion.commit()
     cursor.close()
     conexion.close()
+
 
 def obtener_lectura_en_progreso(id_usuario, id_libro):
     conexion = obtener_conexion()
