@@ -1,7 +1,6 @@
 from flask import app, render_template, request, jsonify, session
 import db
 
-
 def registrar_rutas(app):
 
     # -------------------------
@@ -242,10 +241,6 @@ def registrar_rutas(app):
             id_libro=id_libro,
             pagina_anterior=pagina_anterior
         )
-    
-
-    
-
 
     @app.route('/api/guardar_lectura', methods=['POST'])
     def guardar_lectura_ruta():
@@ -272,13 +267,21 @@ def registrar_rutas(app):
                 capitulos_leidos=datos.get('capitulos_leidos', 0)
             )
 
-            respuestas = datos.get('respuestas', [])
-
-            if respuestas:
+            # Guardar la reflexión únicamente si llegó información
+            if (
+                datos.get("estado_animo") or
+                datos.get("notas") or
+                datos.get("tipo_reflexion") or
+                datos.get("respuesta_reflexion")
+            ):
 
                 db.guardar_notas_lectura(
-                    id_lectura,
-                    respuestas
+                    id_lectura=id_lectura,
+                    como_te_sientes=datos.get("estado_animo"),
+                    continuara=datos.get("estado"),
+                    notas=datos.get("notas"),
+                    tipo_reflexion=datos.get("tipo_reflexion"),
+                    respuesta_reflexion=datos.get("respuesta_reflexion")
                 )
 
             return jsonify({
@@ -290,7 +293,3 @@ def registrar_rutas(app):
             return jsonify({
                 "error": str(e)
             }), 500
-        
-
-        
-
