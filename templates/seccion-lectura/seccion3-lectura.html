@@ -44,208 +44,243 @@
             <div class="separador-decorativo">
 
                 <span>❦</span>
-            
-            </div>            
+
+            </div>
 
         </div>
 
-       <div class="grid-reflexion">
+        <div class="grid-reflexion">
 
-    <div class="pregunta activa">
-        <h3>¿En qué página te quedaste?</h3>
-        <p style="opacity:0.7; font-size:14px; margin-bottom:10px;">
-            Ibas en la página {{ pagina_anterior }}
-        </p>
-        <input type="number" id="paginaActual" placeholder="Ej: 150">
-    </div>
-    <div class="pregunta">
-    <h3>¿Cuántos capítulos leíste hoy?</h3>
-    <input type="number" id="capitulosHoy" placeholder="Ej: 3">
-</div>
+            <!-- PREGUNTA 1 -->
+
+            <div class="pregunta activa">
+
+                <h3>¿En qué página te quedaste?</h3>
+
+                <p style="opacity:0.7; font-size:14px; margin-bottom:10px;">
+                    Ibas en la página {{ pagina_anterior }}
+                </p>
+
+                <input
+                    type="number"
+                    id="paginaActual"
+                    placeholder="Ej: 150">
+
+            </div>
+
+            <!-- PREGUNTA 2 -->
 
             <div class="pregunta">
 
-                <h3>¿Cómo te sientes?</h3>
-        
-                <select>
-                    <option>😊 Feliz</option>
-                    <option>😌 Tranquilo</option>
-                    <option>🤔 Reflexivo</option>
-                    <option>😮 Sorprendido</option>
-                    <option>😢 Triste</option>
-                    <option>😰 Ansioso</option>
-                </select>
-        
+                <h3>¿Cuántos capítulos leíste hoy?</h3>
+
+                <input
+                    type="number"
+                    id="capitulosHoy"
+                    placeholder="Ej: 3">
+
             </div>
-        
+
+            <!-- PREGUNTA 3 -->
+
             <div class="pregunta">
-        
-                <h3>¿Qué aprendiste hoy?</h3>
-        
-                <textarea></textarea>
-        
-            </div>
-        
-            <div class="pregunta">
-        
-                <h3>¿Palabras nuevas?</h3>
-        
-                <textarea></textarea>
-        
-            </div>
-        
-            <div class="pregunta">
-        
-                <h3>Personaje destacado</h3>
-        
-                <textarea></textarea>
-        
-            </div>
-        
-            <div class="pregunta">
-        
-                <h3>Escena que más te impactó</h3>
-        
-                <textarea></textarea>
-        
-            </div>
-        
-            <div class="pregunta">
-        
+
                 <h3>¿Continuarás esta lectura?</h3>
-        
-                <select>
+
+                <select id="continuarLectura">
+
                     <option>Sí, continuaré leyendo</option>
                     <option>No por ahora</option>
                     <option>He terminado el libro</option>
+
                 </select>
-        
+
             </div>
-        
-            <div class="pregunta">
-        
+
+            <!-- =========================
+                 PREGUNTAS ALEATORIAS
+            ========================== -->
+
+            <div class="pregunta aleatoria" data-id="aprendiste">
+
+                <h3>¿Qué aprendiste hoy?</h3>
+
+                <textarea class="respuestaAleatoria"></textarea>
+
+            </div>
+
+            <div class="pregunta aleatoria" data-id="palabras">
+
+                <h3>¿Palabras nuevas?</h3>
+
+                <textarea class="respuestaAleatoria"></textarea>
+
+            </div>
+
+            <div class="pregunta aleatoria" data-id="personaje">
+
+                <h3>Personaje destacado</h3>
+
+                <textarea class="respuestaAleatoria"></textarea>
+
+            </div>
+
+            <div class="pregunta aleatoria" data-id="escena">
+
+                <h3>Escena que más te impactó</h3>
+
+                <textarea class="respuestaAleatoria"></textarea>
+
+            </div>
+
+            <div class="pregunta aleatoria" data-id="sesion">
+
                 <h3>¿Qué te pareció esta sesión?</h3>
-        
-                <textarea></textarea>
-        
+
+                <textarea class="respuestaAleatoria"></textarea>
+
             </div>
-        
-            <div class="pregunta">
-        
+
+            <div class="pregunta aleatoria" data-id="vida">
+
                 <h3>¿Te recordó algo de tu vida?</h3>
-        
-                <textarea></textarea>
-        
+
+                <textarea class="respuestaAleatoria"></textarea>
+
             </div>
-        
-            <div class="pregunta">
-        
-                <h3>Notas y observaciones</h3>
-        
-                <textarea></textarea>
-        
-            </div>
-        
-            <div class="pregunta">
-        
+
+            <div class="pregunta aleatoria" data-id="objetivo">
+
                 <h3>¿Qué buscabas al leer?</h3>
-        
-                <select>
+
+                <select class="respuestaAleatoria">
+
                     <option>Aprender</option>
                     <option>Relajarme</option>
                     <option>Entretenerme</option>
                     <option>Inspirarme</option>
                     <option>Comprender algo</option>
                     <option>Curiosidad</option>
+
                 </select>
-        
+
             </div>
-        
-            <div class="pregunta">
-        
+
+            <div class="pregunta aleatoria" data-id="encontraste">
+
                 <h3>¿Encontraste lo que buscabas?</h3>
-        
-                <select>
+
+                <select class="respuestaAleatoria">
                     <option>Sí</option>
                     <option>Parcialmente</option>
                     <option>No</option>
+
                 </select>
-        
+
             </div>
-        
+
+            <!-- PREGUNTA 5 -->
+
+            <div class="pregunta">
+
+                <h3>¿Cómo te sientes?</h3>
+
+                <select id="estadoAnimo">
+
+                    <option>😊 Feliz</option>
+                    <option>😌 Tranquilo</option>
+                    <option>🤔 Reflexivo</option>
+                    <option>😮 Sorprendido</option>
+                    <option>😢 Triste</option>
+                    <option>😰 Ansioso</option>
+
+                </select>
+
+            </div>
+
+            <!-- PREGUNTA 6 -->
+
+            <div class="pregunta">
+
+                <h3>Notas y observaciones</h3>
+
+                <textarea
+                    id="notas"
+                    placeholder="Escribe aquí cualquier pensamiento, cita o idea que quieras recordar..."></textarea>
+
+            </div>
+
         </div>
-        
+
         <div class="navegacion-reflexion">
 
             <button class="btn-atras" id="btnAtras">
-        
+
                 ← Atrás
-        
-            </button>        
-        
+
+            </button>
+
             <div class="indicadores">
-        
+
                 <span class="punto activo"></span>
                 <span class="punto"></span>
                 <span class="punto"></span>
                 <span class="punto"></span>
                 <span class="punto"></span>
                 <span class="punto"></span>
-                <span class="punto"></span>
-                <span class="punto"></span>
-                <span class="punto"></span>
-                <span class="punto"></span>
-                <span class="punto"></span>
-        
+
             </div>
-        
+
             <button class="btn-guardar" id="btnContinuar">
-        
+
                 Continuar
-        
+
             </button>
-            
 
         </div>
 
         <div class="separador-decorativo">
 
             <span>❦</span>
-        
+
         </div>
 
         <div class="boton-menu">
 
             <button id="btnMenu">
-        
+
                 🏠 Menú
-        
+
             </button>
-        
+
         </div>
-        
-        </div>
-        
+
     </div>
 
+    <script>
 
-<script>
-    const segundosTotal = parseInt(localStorage.getItem('tiempo_lectura') || 0);
-    const horas = Math.floor(segundosTotal / 3600);
-    const minutos = Math.floor((segundosTotal % 3600) / 60);
-    const segs = segundosTotal % 60;
-    const tiempoFormateado = 
-        String(horas).padStart(2,"0") + ":" +
-        String(minutos).padStart(2,"0") + ":" +
-        String(segs).padStart(2,"0");
+        const segundosTotal = parseInt(localStorage.getItem('tiempo_lectura') || 0);
 
-    document.querySelector('.tiempo-total').textContent = tiempoFormateado;
-</script>
+        const horas = Math.floor(segundosTotal / 3600);
+        const minutos = Math.floor((segundosTotal % 3600) / 60);
+        const segs = segundosTotal % 60;
 
-<script>
-    window.paginaAnterior = "{{ pagina_anterior }}";
-</script>
-<script src="{{ url_for('static', filename='js/reflexion.js') }}"></script>
+        const tiempoFormateado =
+            String(horas).padStart(2, "0") + ":" +
+            String(minutos).padStart(2, "0") + ":" +
+            String(segs).padStart(2, "0");
+
+        document.querySelector(".tiempo-total").textContent = tiempoFormateado;
+
+    </script>
+
+    <script>
+
+        window.paginaAnterior = "{{ pagina_anterior }}";
+
+    </script>
+
+    <script src="{{ url_for('static', filename='js/reflexion.js') }}"></script>
 
 </body>
 
