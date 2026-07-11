@@ -74,6 +74,8 @@ def registrar_rutas(app):
 
         # ===== GOOGLE BOOKS =====
 
+        
+        id_libro = request.args.get("id_libro")
         id_google = request.args.get("id")
         clave = request.args.get("clave")
 
@@ -83,6 +85,23 @@ def registrar_rutas(app):
         elif clave:
             libro_bd = db.obtener_libro_completo(key_libro=clave)
 
+
+        if id_libro:
+            libro_bd = db.obtener_libro(id_libro)
+            if libro_bd:
+                return jsonify({
+                    "titulo": libro_bd.get("titulo", "Sin título"),
+                    "subtitulo": "",
+                    "descripcion": libro_bd.get("descripcion", "Descripción no disponible"),
+                    "autor": libro_bd.get("autor", "Autor desconocido"),
+                    "anio": libro_bd.get("anio", "Desconocido"),
+                    "paginas": libro_bd.get("paginas_totales", "Desconocido"),
+                    "generos": libro_bd.get("genero", "No disponible"),
+                    "pais": "Desconocido",
+                    "formato": libro_bd.get("formato", "Desconocido"),
+                    "portada": libro_bd.get("portada", "")
+                })
+        
         if libro_bd:
             return jsonify({
                 "titulo": libro_bd.get("titulo", "Sin título"),
@@ -365,6 +384,20 @@ def registrar_rutas(app):
             return jsonify({
                 "error": str(e)
             }), 500
+        
+    @app.route("/libro-manual")
+    def libro_manual():
+        id_libro = request.args.get("id_libro")
+        libro = None
+        if id_libro:
+            libro = db.obtener_libro(id_libro)
+        return render_template("libros.html",
+            clave=None,
+            portada=libro.get('portada') if libro else None,
+            id_google=None,
+            id_libro=id_libro,
+            libro_manual=libro
+        )
 
     # -------------------------
     # FILTRO POR GÉNERO
