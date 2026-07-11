@@ -120,6 +120,8 @@ CREATE TABLE IF NOT EXISTS `notas_lectura` (
   `notas_observaciones` text COLLATE utf8mb4_unicode_ci,
   `buscaba_al_leer` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `encontro_lo_buscado` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tipo_reflexion` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `respuesta_reflexion` text COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`id_nota`),
   KEY `id_lectura` (`id_lectura`)
 ) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
