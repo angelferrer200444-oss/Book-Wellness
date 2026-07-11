@@ -135,17 +135,18 @@ async function cargarLibro(){
 
         let url;
         
-        if(datoLibro.id_google && datoLibro.id_google !== 'None' && datoLibro.id_google !== '') {
-            url = `/api/libro?id=${encodeURIComponent(datoLibro.id_google)}`;
-        } else if(datoLibro.key && datoLibro.key !== 'None' && datoLibro.key !== '') {
-            url = `/api/libro?clave=${encodeURIComponent(datoLibro.key)}`;
-        } else {
-            // No hay clave, mostrar error
-            document.getElementById("cabecera-libro").innerHTML = '<h1>Sin información</h1>';
-            document.getElementById('btn-leyendo').disabled = false;
-            document.getElementById('btn-pendiente').disabled = false;
-            return;
-        }
+        if(datoLibro.id_libro && datoLibro.id_libro !== '' && datoLibro.id_libro !== 'None') {
+    url = `/api/libro?id_libro=${encodeURIComponent(datoLibro.id_libro)}`;
+} else if(datoLibro.id_google && datoLibro.id_google !== 'None' && datoLibro.id_google !== '') {
+    url = `/api/libro?id=${encodeURIComponent(datoLibro.id_google)}`;
+} else if(datoLibro.key && datoLibro.key !== 'None' && datoLibro.key !== '') {
+    url = `/api/libro?clave=${encodeURIComponent(datoLibro.key)}&portada=${encodeURIComponent(datoLibro.portada || '')}`;
+} else {
+    document.getElementById("cabecera-libro").innerHTML = '<h1>Sin información</h1>';
+    document.getElementById('btn-leyendo').disabled = false;
+    document.getElementById('btn-pendiente').disabled = false;
+    return;
+}
 
         const respuesta = await fetch(url);
         const data = await respuesta.json();
