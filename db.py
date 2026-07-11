@@ -35,8 +35,8 @@ def buscar_usuario(correo, password):
     conexion.close()
     return usuario
 
-def agregar_libro(id_usuario, titulo, autor, descripcion, portada, categoria, key_libro, paginas, id_google=None, genero=None, anio=None):
-    if portada and portada.startswith("http://"):
+def agregar_libro(id_usuario, titulo, autor, descripcion, portada, categoria, key_libro, paginas, id_google=None, genero=None, anio=None, es_manual=False, formato=None):
+    if portada and isinstance(portada, str) and portada.startswith("http://"):
         portada = portada.replace("http://", "https://", 1)
 
     conexion = obtener_conexion()
@@ -54,19 +54,20 @@ def agregar_libro(id_usuario, titulo, autor, descripcion, portada, categoria, ke
         return False
 
     cursor.execute("""
-        INSERT INTO libros (id_usuario, titulo, autor, descripcion, portada, categoria, key_libro, paginas_totales, id_google, genero, anio) 
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-    """, (id_usuario, titulo, autor, descripcion, portada, categoria, key_libro, paginas, id_google, genero, anio))
+        INSERT INTO libros (id_usuario, titulo, autor, descripcion, portada, categoria, key_libro, paginas_totales, id_google, genero, anio, es_agregado_manualmente, formato) 
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    """, (id_usuario, titulo, autor, descripcion, portada, categoria, key_libro, paginas, id_google, genero, anio, es_manual, formato))
     conexion.commit()
+    id_nuevo = cursor.lastrowid
     cursor.close()
     conexion.close()
-    return True
+    return id_nuevo
 
 def obtener_libros_usuario(id_usuario, categoria):
     conexion = obtener_conexion()
     cursor = conexion.cursor(dictionary=True)
     cursor.execute("""
-        SELECT id_libro, titulo, autor, portada, key_libro, id_google FROM libros 
+        SELECT id_libro, titulo, autor, portada, key_libro, id_google, es_agregado_manualmente FROM libros 
         WHERE id_usuario = %s AND categoria = %s
     """, (id_usuario, categoria))
     libros = cursor.fetchall()
