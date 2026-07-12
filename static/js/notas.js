@@ -36,7 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.dropdown-item').forEach(item => {
         item.addEventListener('click', (e) => {
             currentSelectedCategory = e.target.getAttribute('data-value');
-            dropdownFilterBtn.innerHTML = `${currentSelectedCategory} <span class="arrow-down"></span>`;
+            const buttonText = e.target.textContent;
+            dropdownFilterBtn.innerHTML = `${buttonText} <span class="arrow-down"></span>`;
             dropdownMenuOptions.classList.remove('show-menu');
             dropdownFilterBtn.classList.remove('active-filter');
             filterNotes(currentSelectedCategory);
