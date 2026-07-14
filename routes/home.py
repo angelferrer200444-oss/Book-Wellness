@@ -10,28 +10,23 @@ def registrar_rutas(app):
 
     @app.route("/")
     def home():
-
         libros_leyendo = []
         libros_pendientes = []
+        racha_actual = 0
 
         id_usuario = session.get("id_usuario")
 
         if id_usuario:
-
-            libros_leyendo = db.obtener_libros_usuario(
-                id_usuario,
-                "leyendo"
-            )
-
-            libros_pendientes = db.obtener_libros_usuario(
-                id_usuario,
-                "pendiente"
-            )
+            libros_leyendo = db.obtener_libros_usuario(id_usuario, "leyendo")
+            libros_pendientes = db.obtener_libros_usuario(id_usuario, "pendiente")
+            perfil = db.obtener_perfil_lectura(id_usuario)
+            racha_actual = perfil['racha_actual']
 
         return render_template(
             "index.html",
             libros_leyendo=libros_leyendo,
-            libros_pendientes=libros_pendientes
+            libros_pendientes=libros_pendientes,
+            racha_actual=racha_actual
         )
 
 
@@ -70,11 +65,13 @@ def registrar_rutas(app):
     # -------------------------
     # BOTONES SUPERIORES
     # -------------------------
-
     @app.route("/estadisticas")
     def estadisticas():
+        id_usuario = session.get('id_usuario')
+        perfil = db.obtener_perfil_lectura(id_usuario) if id_usuario else None
         return render_template(
-            "Botones superiores/estadisticas.html"
+            "Botones superiores/estadisticas.html",
+            perfil=perfil
         )
 
 
@@ -115,3 +112,4 @@ def registrar_rutas(app):
         return render_template(
             "agregar.html"
         )
+
