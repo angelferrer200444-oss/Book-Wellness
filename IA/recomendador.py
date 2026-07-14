@@ -3,6 +3,8 @@ import requests
 from flask import Blueprint, jsonify, session, request
 
 from GoogleLibros import GoogleBooksAPI
+import Libros as libros_api
+
 import db
 
 from flask import Blueprint
@@ -47,6 +49,12 @@ class RecomendadorLibros:
         self.google = GoogleBooksAPI()
 
         self.google.__init__()
+
+        self.openlibrary = libros_api.LibroAPI()
+
+        self.openlibrary.url_base = "https://openlibrary.org/search.json"
+
+
 
         self.url = (
             "https://generativelanguage.googleapis.com/v1beta/models/"
@@ -184,7 +192,15 @@ class RecomendadorLibros:
             resultados = self.google.buscar_libros(consulta)
 
             if len(resultados) == 0:
+
+                print("Google Books no encontró resultados.")
+                print("Buscando en OpenLibrary...")
+
+                resultados = self.openlibrary.buscar_libros(consulta)
+
+            if len(resultados) == 0:
                 continue
+
 
             libro = resultados[0]
 
@@ -194,19 +210,22 @@ class RecomendadorLibros:
 
                 "autor": libro["autor"],
 
-                "descripcion": libro["descripcion"],
+                "descripcion": libro.get("descripcion", ""),
 
                 "portada": libro["portada"],
 
-                "paginas": libro["paginas"],
+                "paginas": libro.get("paginas", "Desconocido"),
 
-                "generos": libro["generos"],
+                "generos": libro.get("generos", ""),
 
                 "anio": libro["anio"],
 
-                "id_google": libro["id_google"]
+                "id_google": libro.get("id_google", ""),
+
+                "key": libro.get("key", "")
 
             })
+
 
         return libros
 
@@ -325,7 +344,3 @@ def recomendaciones():
         print("=" * 60)
 
         return jsonify([])
-    
-
-
-
