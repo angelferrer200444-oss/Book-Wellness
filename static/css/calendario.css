@@ -131,3 +131,45 @@
     color: white !important;
 }
 
+/* ==========================================================
+   AJUSTES PARA AGRANDAR EL CALENDARIO SOLO EN SEGUIMIENTO
+============================================================ */
+
+.tracking-sidebar {
+    width: 420px;
+    transition: width 0.3s ease;
+}
+
+.tracking-sidebar .calendar-box {
+    padding: 30px 35px;
+}
+
+.tracking-sidebar .calendar-header {
+    margin-bottom: 15px;
+}
+
+.tracking-sidebar .calendar-header h3 {
+    font-size: 28px; 
+}
+
+.tracking-sidebar .calendar-header button {
+    width: 46px;
+    height: 46px;
+    font-size: 22px;
+}
+
+.tracking-sidebar .calendar-days {
+    gap: 14px 18px;
+    font-size: 18px;
+    margin-bottom: 12px;
+}
+
+.tracking-sidebar .calendar-dates {
+    gap: 14px 18px;
+}
+
+.tracking-sidebar .calendar-dates span {
+    padding: 16px 0;
+    font-size: 18px;
+    font-weight: 600;
+}
