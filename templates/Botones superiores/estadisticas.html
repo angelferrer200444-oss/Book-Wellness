@@ -25,44 +25,73 @@ Book Wellness - Estadísticas
                 ESTADÍSTICAS DEL USUARIO
             </div>
 
-            <div class="dashboard-body">
+           <div class="dashboard-body">
 
-                <div class="dashboard-row">
-                    <div class="row-left">
-                        <span class="row-icon">📖</span>
-                        <span class="row-label">Páginas Leídas</span>
-                    </div>
-                    <span class="row-value">1,245</span>
-                </div>
+    <div class="dashboard-row">
+        <div class="row-left">
+            <span class="row-icon">📖</span>
+            <span class="row-label">Páginas Leídas</span>
+        </div>
+        <span class="row-value">{{ perfil.total_paginas if perfil else 0 }}</span>
+    </div>
 
-                <div class="dashboard-row highlight-row">
-                    <div class="row-left">
-                        <span class="row-icon">🔥</span>
-                        <span class="row-label">Racha Máxima</span>
-                    </div>
-                    <span class="row-value">24 Días</span>
-                </div>
+    <div class="dashboard-row">
+        <div class="row-left">
+            <span class="row-icon">⏱️</span>
+            <span class="row-label">Tiempo Total</span>
+        </div>
+        <span class="row-value">{{ (perfil.total_minutos // 60) if perfil else 0 }} hrs</span>
+    </div>
 
-                <div class="dashboard-row">
-                    <div class="row-left">
-                        <span class="row-icon">😊</span>
-                        <span class="row-label">Estado de Ánimo</span>
-                    </div>
-                    <span class="row-value">Motivado</span>
-                </div>
+    <div class="dashboard-row">
+        <div class="row-left">
+            <span class="row-icon">📚</span>
+            <span class="row-label">Libros Leídos</span>
+        </div>
+        <span class="row-value">{{ perfil.libros_leidos if perfil else 0 }}</span>
+    </div>
 
-                <div class="dashboard-row">
-                    <div class="row-left">
-                        <span class="row-icon">🎯</span>
-                        <span class="row-label">Géneros Preferidos</span>
-                    </div>
-                    <div class="tags-container">
-                        <span class="tag">Fantasía</span>
-                        <span class="tag">Sci-Fi</span>
-                    </div>
-                </div>
+    <div class="dashboard-row highlight-row">
+        <div class="row-left">
+            <span class="row-icon">🔥</span>
+            <span class="row-label">Racha Actual</span>
+        </div>
+        <span class="row-value">{{ perfil.racha_actual if perfil else 0 }} Días</span>
+    </div>
 
-            </div>
+    <div class="dashboard-row highlight-row">
+        <div class="row-left">
+            <span class="row-icon">🏆</span>
+            <span class="row-label">Racha Máxima</span>
+        </div>
+        <span class="row-value">{{ perfil.racha_maxima if perfil else 0 }} Días</span>
+    </div>
+
+    <div class="dashboard-row">
+        <div class="row-left">
+            <span class="row-icon">😊</span>
+            <span class="row-label">Estado de Ánimo</span>
+        </div>
+        <span class="row-value">{{ perfil.animo if perfil else 'Sin datos' }}</span>
+    </div>
+
+    <div class="dashboard-row">
+        <div class="row-left">
+            <span class="row-icon">🎯</span>
+            <span class="row-label">Géneros Preferidos</span>
+        </div>
+        <div class="tags-container">
+            {% if perfil and perfil.generos_top %}
+                {% for g in perfil.generos_top %}
+                    <span class="tag">{{ g }}</span>
+                {% endfor %}
+            {% else %}
+                <span class="row-value">Sin datos</span>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
 
         </div>
 
