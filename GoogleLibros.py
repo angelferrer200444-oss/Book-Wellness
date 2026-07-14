@@ -1,10 +1,12 @@
 import requests
 
+from routes.utilidades import obtener_json
+
 class GoogleBooksAPI:
 
     def __init__(self):
         self.url_base = "https://www.googleapis.com/books/v1/volumes"
-        self.api_key = "LA KEY NO SE PUEDE PUBLICAR"
+        self.api_key = ""
 
 
     def buscar_libros(self, texto):
@@ -14,19 +16,28 @@ class GoogleBooksAPI:
 
         try:
 
-            respuesta = requests.get(
+            print("=" * 60)
+            print("GOOGLE BOOKS - NUEVA BÚSQUEDA")
+            print("Texto:", texto)
+
+            parametros = {
+                "q": texto,
+                "maxResults": 20,
+                "key": self.api_key
+            }
+
+            datos = obtener_json(
                 self.url_base,
-                params={
-                    "q": texto,
-                    "maxResults": 20,
-                    "key": self.api_key
-                },
+                params=parametros,
                 timeout=5
             )
 
-            respuesta.raise_for_status()
+            if not datos:
+                return []
+    
+            print("Claves recibidas:", datos.keys())
+            print("Cantidad de resultados:", len(datos.get("items", [])))
 
-            datos = respuesta.json()
 
             resultados = []
 
@@ -100,30 +111,48 @@ class GoogleBooksAPI:
 
                 })
 
+            print("Resultados procesados:", len(resultados))
+
             return resultados
 
         except Exception as e:
 
-            print("="*50)
+            import traceback
+
+            print("=" * 60)
             print("ERROR GOOGLE BOOKS")
-            print(e)
-            print("="*50)
+            print("Tipo:", type(e).__name__)
+            print("Mensaje:", e)
+            traceback.print_exc()
+            print("=" * 60)
 
             return []
 
 
+
     def obtener_libro(self, id_google):
 
-        respuesta = requests.get(
+        print("=" * 60)
+        print("OBTENIENDO LIBRO")
+        print("ID:", id_google)
+
+
+        datos = obtener_json(
             f"{self.url_base}/{id_google}",
             params={
                 "key": self.api_key
-            }
+            },
+            timeout=5
         )
 
-        datos = respuesta.json()
+        if not datos:
+            raise Exception("Google Books no respondió.")
+
+
+        print("Claves:", datos.keys())
 
         info = datos["volumeInfo"]
+
 
         imagen = info.get(
             "imageLinks",
