@@ -1,16 +1,20 @@
 import requests
 import time
 
-def obtener_json(url, intentos=5):
+def obtener_json(url, params=None, timeout=(10, 20), intentos=5):
 
     for i in range(intentos):
 
         try:
 
+            print(f"Intento {i + 1}/{intentos} -> {url}")
+
             respuesta = requests.get(
                 url,
-                timeout=(10, 20)
+                params=params,
+                timeout=timeout
             )
+
 
             respuesta.raise_for_status()
 
@@ -23,8 +27,9 @@ def obtener_json(url, intentos=5):
             print("ERROR:", e)
 
             if i < intentos - 1:
+                print("Reintentando en 1 segundo...\n")
                 time.sleep(1)
 
-    print("Se agotaron los intentos")
+    print(f"Se agotaron los {intentos} intentos.")
 
     return None
