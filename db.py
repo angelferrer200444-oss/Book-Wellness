@@ -250,22 +250,33 @@ def obtener_libro_completo(id_google=None, key_libro=None):
 
 def actualizar_progreso_lectura(id_usuario, id_libro, pagina_actual, capitulos_leidos, fecha_inicio=None):
     conexion = obtener_conexion()
-    cursor = conexion.cursor()
-    
-    campos = "pagina_actual = %s, capitulos_leidos = %s"
-    valores = [pagina_actual, capitulos_leidos]
-    
-    if fecha_inicio:
-        campos += ", fecha_inicio = %s"
-        valores.append(fecha_inicio)
-    
-    valores.extend([id_usuario, id_libro])
-    
-    cursor.execute(f"""
-        UPDATE lecturas 
-        SET {campos}
+    cursor = conexion.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT id_lectura FROM lecturas 
         WHERE id_usuario = %s AND id_libro = %s
-    """, valores)
+    """, (id_usuario, id_libro))
+    existente = cursor.fetchone()
+
+    if existente:
+        campos = "pagina_actual = %s, capitulos_leidos = %s"
+        valores = [pagina_actual, capitulos_leidos]
+
+        if fecha_inicio:
+            campos += ", fecha_inicio = %s"
+            valores.append(fecha_inicio)
+
+        valores.extend([id_usuario, id_libro])
+        cursor.execute(f"""
+            UPDATE lecturas SET {campos}
+            WHERE id_usuario = %s AND id_libro = %s
+        """, valores)
+    else:
+        cursor.execute("""
+            INSERT INTO lecturas (id_usuario, id_libro, pagina_actual, capitulos_leidos, fecha_inicio)
+            VALUES (%s, %s, %s, %s, %s)
+        """, (id_usuario, id_libro, pagina_actual, capitulos_leidos, fecha_inicio))
+
     conexion.commit()
     cursor.close()
     conexion.close()
@@ -323,3 +334,101 @@ def invalidar_cache_recomendaciones(id_usuario):
     conexion.commit()
     cursor.close()
     conexion.close()
+
+def obtener_perfil_lectura(id_usuario):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor(dictionary=True)
+
+    # Páginas y tiempo total
+    cursor.execute("""
+        SELECT 
+            COALESCE(SUM(paginas_leidas), 0) as total_paginas,
+            COALESCE(SUM(tiempo_minutos), 0) as total_minutos
+        FROM lecturas 
+        WHERE id_usuario = %s
+    """, (id_usuario,))
+    totales = cursor.fetchone()
+
+    # Libros terminados
+    cursor.execute("""
+        SELECT COUNT(*) as libros_leidos FROM lecturas 
+        WHERE id_usuario = %s AND estado = 'Terminé'
+    """, (id_usuario,))
+    leidos = cursor.fetchone()
+
+    # Estado de ánimo más frecuente
+    cursor.execute("""
+        SELECT nl.como_te_sientes, COUNT(*) as freq
+        FROM notas_lectura nl
+        JOIN lecturas l ON nl.id_lectura = l.id_lectura
+        WHERE l.id_usuario = %s AND nl.como_te_sientes IS NOT NULL
+        GROUP BY nl.como_te_sientes
+        ORDER BY freq DESC
+        LIMIT 1
+    """, (id_usuario,))
+    animo = cursor.fetchone()
+
+    # Géneros preferidos
+    cursor.execute("""
+        SELECT genero FROM libros
+        WHERE id_usuario = %s AND genero IS NOT NULL AND genero != ''
+    """, (id_usuario,))
+    filas_generos = cursor.fetchall()
+
+    # Contar géneros individuales
+    from collections import Counter
+    contador = Counter()
+    for fila in filas_generos:
+        for g in fila['genero'].split(','):
+            g = g.strip()
+            if g:
+                contador[g] += 1
+    generos_top = [g for g, _ in contador.most_common(3)]
+
+    # Rachas — días con sesión registrada
+    cursor.execute("""
+        SELECT DISTINCT DATE(fecha_fin) as dia
+        FROM lecturas
+        WHERE id_usuario = %s AND fecha_fin IS NOT NULL
+        ORDER BY dia ASC
+    """, (id_usuario,))
+    dias = [row['dia'] for row in cursor.fetchall()]
+
+    from datetime import date, timedelta
+
+    racha_actual = 0
+    racha_maxima = 0
+    racha_temp = 1
+
+    if dias:
+        # Racha máxima
+        for i in range(1, len(dias)):
+            if (dias[i] - dias[i-1]).days == 1:
+                racha_temp += 1
+                racha_maxima = max(racha_maxima, racha_temp)
+            else:
+                racha_temp = 1
+        racha_maxima = max(racha_maxima, racha_temp)
+
+        # Racha actual
+        hoy = date.today()
+        if dias[-1] == hoy or dias[-1] == hoy - timedelta(days=1):
+            racha_actual = 1
+            for i in range(len(dias)-1, 0, -1):
+                if (dias[i] - dias[i-1]).days == 1:
+                    racha_actual += 1
+                else:
+                    break
+
+    cursor.close()
+    conexion.close()
+
+    return {
+        "total_paginas": totales['total_paginas'],
+        "total_minutos": totales['total_minutos'],
+        "libros_leidos": leidos['libros_leidos'],
+        "animo": animo['como_te_sientes'] if animo else "Sin datos",
+        "generos_top": generos_top,
+        "racha_actual": racha_actual,
+        "racha_maxima": racha_maxima
+    }
