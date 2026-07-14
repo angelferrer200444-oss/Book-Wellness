@@ -160,7 +160,8 @@ body{
 ========================= */
 
 .pregunta textarea,
-.pregunta select{
+.pregunta select,
+.pregunta input[type="number"]{
     width:95%;
     max-width:none;
     padding:18px;
@@ -170,6 +171,24 @@ body{
     background:white;
     font-family:'Cinzel',serif;
     color:#4a1f14;
+    outline:none;
+    transition:.25s;
+}
+
+.pregunta input[type="number"]:focus,
+.pregunta textarea:focus,
+.pregunta select:focus{
+    border-color:#9a4a22;
+    box-shadow:0 0 0 4px rgba(154,74,34,.15);
+}
+
+.pregunta input[type="number"]{
+    min-height:60px;
+    text-align:center;
+}
+
+.pregunta input[type="number"]::placeholder{
+    color:#9a8d83;
 }
 
 .pregunta textarea{
@@ -263,6 +282,7 @@ body{
     cursor:pointer;
     transition:.3s;
 }
+
 
 #btnMenu:hover{
     transform:translateY(-2px);
