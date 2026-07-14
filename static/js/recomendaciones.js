@@ -38,10 +38,20 @@ async function cargarRecomendaciones() {
 
             card.addEventListener("click", () => {
 
-                window.location.href =
-                    `/libro?id_google=${encodeURIComponent(libro.id_google)}`;
-
+                if (libro.id_google) {
+            
+                    window.location.href =
+                        `/libro?id_google=${encodeURIComponent(libro.id_google)}&portada=${encodeURIComponent(libro.portada)}`;
+            
+                } else {
+            
+                    window.location.href =
+                        `/libro?clave=${encodeURIComponent(libro.key)}&portada=${encodeURIComponent(libro.portada)}`;
+            
+                }
+            
             });
+            
 
             const imagen = document.createElement("img");
 
@@ -75,5 +85,3 @@ async function cargarRecomendaciones() {
     }
 
 }
-
-
