@@ -432,3 +432,53 @@ def obtener_perfil_lectura(id_usuario):
         "racha_actual": racha_actual,
         "racha_maxima": racha_maxima
     }
+
+
+def obtener_fechas_calendario(id_usuario):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT DATE(fecha_inicio) as fecha, 'sesion' as tipo
+        FROM lecturas
+        WHERE id_usuario = %s AND fecha_inicio IS NOT NULL
+        UNION
+        SELECT DATE(fecha_limite) as fecha, 'fin_libro' as tipo
+        FROM lecturas
+        WHERE id_usuario = %s AND fecha_limite IS NOT NULL
+    """, (id_usuario, id_usuario))
+
+    filas = cursor.fetchall()
+    cursor.close()
+    conexion.close()
+
+    fechas = {}
+    for fila in filas:
+        fecha_str = str(fila['fecha'])
+        if fecha_str not in fechas:
+            fechas[fecha_str] = fila['tipo']
+        elif fila['tipo'] == 'fin_libro':
+            fechas[fecha_str] = 'fin_libro'
+
+    return fechas
+
+def obtener_libros_por_fecha(id_usuario, fecha):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor(dictionary=True)
+    cursor.execute("""
+        SELECT l.titulo, l.autor, l.portada, l.id_libro,
+               'sesion' as tipo
+        FROM lecturas lec
+        JOIN libros l ON lec.id_libro = l.id_libro
+        WHERE lec.id_usuario = %s AND DATE(lec.fecha_inicio) = %s
+        UNION
+        SELECT l.titulo, l.autor, l.portada, l.id_libro,
+               'fecha_limite' as tipo
+        FROM lecturas lec
+        JOIN libros l ON lec.id_libro = l.id_libro
+        WHERE lec.id_usuario = %s AND DATE(lec.fecha_limite) = %s
+    """, (id_usuario, fecha, id_usuario, fecha))
+    libros = cursor.fetchall()
+    cursor.close()
+    conexion.close()
+    return libros
