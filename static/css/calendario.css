@@ -131,6 +131,30 @@
     color: white !important;
 }
 
+.sesion-day {
+    outline: 2px solid #7c1f16;
+    outline-offset: -2px;
+}
+
+.fin-libro-day {
+    outline: 2px solid #c8a84b;
+    outline-offset: -2px;
+    font-weight: bold;
+}
+
+.week-item.sesion-day .day-number {
+    outline: 2px solid #7c1f16;
+    outline-offset: 2px;
+    border-radius: 50%;
+}
+
+.week-item.fin-libro-day .day-number {
+    outline: 2px solid #c8a84b;
+    outline-offset: 2px;
+    border-radius: 50%;
+    font-weight: bold;
+}
+
 /* ==========================================================
    AJUSTES PARA AGRANDAR EL CALENDARIO SOLO EN SEGUIMIENTO
 ============================================================ */
