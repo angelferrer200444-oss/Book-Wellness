@@ -199,6 +199,26 @@ def registrar_rutas(app):
             return jsonify({
                 "error": str(e)
             }), 500
+        
+    @app.route('/api/fechas_calendario')
+    def fechas_calendario():
+        id_usuario = session.get('id_usuario')
+        if not id_usuario:
+            return jsonify({}), 401
+        fechas = db.obtener_fechas_calendario(id_usuario)
+        return jsonify(fechas)
+
+
+    @app.route('/api/libros_por_fecha')
+    def libros_por_fecha():
+        id_usuario = session.get('id_usuario')
+        fecha = request.args.get('fecha')
+        if not id_usuario or not fecha:
+            return jsonify([]), 400
+        libros = db.obtener_libros_por_fecha(id_usuario, fecha)
+        return jsonify(libros)
+
+
 
     @app.route("/seccion2-lectura")
     def seccion2_lectura():
