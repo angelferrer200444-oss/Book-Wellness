@@ -89,3 +89,22 @@ async function guardarEdicion() {
         alert('Error al guardar los cambios.');
     }
 }
+
+async function guardarFechaLimite() {
+    const fechaLimite = document.getElementById('fechaLimite').value;
+    
+    if (!fechaLimite) return;
+
+    try {
+        await fetch('/api/guardar_fecha_limite', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                id_libro: window.datosLectura.id_libro,
+                fecha_limite: fechaLimite
+            })
+        });
+    } catch (error) {
+        alert('Error al guardar la fecha límite.');
+    }
+}
