@@ -16,6 +16,19 @@ Book Wellness - Seguimiento
 
     <main class="tracking-container">
 
+
+
+                <div id="modal-fecha" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+            background:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;">
+            <div style="background:#f3e7d3; border:3px solid #5b120d; border-radius:20px; padding:30px;
+                        max-width:400px; width:90%; position:relative;">
+                <button onclick="cerrarModal()" style="position:absolute; top:10px; right:15px;
+                        background:none; border:none; font-size:20px; cursor:pointer; color:#5b120d;">✕</button>
+                <h3 id="modal-fecha-titulo" style="color:#5b120d; margin-bottom:15px;"></h3>
+                <div id="modal-libros"></div>
+            </div>
+                </div>
+
         <!-- =========================
              CONTENIDO IZQUIERDO
         ========================== -->
