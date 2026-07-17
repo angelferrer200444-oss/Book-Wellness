@@ -96,4 +96,13 @@ def registrar_rutas(app):
             }), 500
         
 
+    @app.route('/api/eventos_seguimiento')
+    def eventos_seguimiento():
+        id_usuario = session.get('id_usuario')
+        fecha = request.args.get('fecha')
+        if not id_usuario or not fecha:
+            return jsonify([]), 400
+        eventos = db.obtener_eventos_por_fecha(id_usuario, fecha)
+        return jsonify(eventos)
+
 
