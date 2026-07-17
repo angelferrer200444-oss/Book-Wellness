@@ -462,23 +462,33 @@ def obtener_fechas_calendario(id_usuario):
 
     return fechas
 
-def obtener_libros_por_fecha(id_usuario, fecha):
+def obtener_eventos_por_fecha(id_usuario, fecha):
     conexion = obtener_conexion()
     cursor = conexion.cursor(dictionary=True)
+
+    # Sesiones iniciadas en esa fecha
     cursor.execute("""
         SELECT l.titulo, l.autor, l.portada, l.id_libro,
+               lec.paginas_leidas, lec.tiempo_minutos,
+               lec.fecha_inicio, lec.capitulos_leidos,
                'sesion' as tipo
         FROM lecturas lec
         JOIN libros l ON lec.id_libro = l.id_libro
         WHERE lec.id_usuario = %s AND DATE(lec.fecha_inicio) = %s
-        UNION
+    """, (id_usuario, fecha))
+    sesiones = cursor.fetchall()
+
+    # Fechas límite en ese día
+    cursor.execute("""
         SELECT l.titulo, l.autor, l.portada, l.id_libro,
+               lec.fecha_limite, lec.estado,
                'fecha_limite' as tipo
         FROM lecturas lec
         JOIN libros l ON lec.id_libro = l.id_libro
         WHERE lec.id_usuario = %s AND DATE(lec.fecha_limite) = %s
-    """, (id_usuario, fecha, id_usuario, fecha))
-    libros = cursor.fetchall()
+    """, (id_usuario, fecha))
+    limites = cursor.fetchall()
+
     cursor.close()
     conexion.close()
-    return libros
+    return sesiones + limites
