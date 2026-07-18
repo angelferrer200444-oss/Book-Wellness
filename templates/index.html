@@ -18,10 +18,13 @@ Book Wellness
 <!-- CSS layout-index -->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/layout-index.css') }}">
 
+<!-- CSS emociones -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/emociones.css') }}">
+
 <!-- CSS panelIA -->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/PanelIA.css') }}">
 
-<!-- CSS detakke-libro para reutilizar la bolita de carga -->
+<!-- CSS detalle-libro para reutilizar la bolita de carga -->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/detalle-libro.css') }}">
 
 {% endblock %}
@@ -57,7 +60,7 @@ Book Wellness
                     </div>
 
                     <span class="streak-number">
-                       {{racha_actual}} Días
+                       {{racha_actual}} 
                     </span>
 
                     <!-- HERRAMIENTAS -->
@@ -249,75 +252,253 @@ Book Wellness
         
         <div class="sidebar-wrapper">
 
+
             <!-- =========================
-                COLUMNA DERECHA
-            ========================= -->
-
-            <div class="sidebar-column">
-
-                <!-- =========================
-                    TARJETA SUPERIOR
-                ========================== -->
-
-                <aside class="right-sidebar">
-
-                    <a href="{{ url_for('seguimiento') }}">
-                        <button class="tracker-btn">
-                            Abrir Seguimiento
-                        </button>
-                    </a>
-
-                    <!-- =========================
-                        RESUMEN SEMANAL
-                    ========================== -->
-
-                    <div class="week-panel">
-
-                        <h3>Esta semana</h3>
-
-                        <div class="week-grid">
-
-                            <div class="week-item">
-                                <div class="day-number"></div>
-                                <span class="day-name"></span>
+                 CARRUSEL SEMANA
+            ========================== -->
+        
+            <div class="sidebar-carousel">
+        
+        
+                <!-- COLUMNA 1 -->
+                <div class="sidebar-column activo">
+        
+        
+                    <aside class="right-sidebar">
+        
+        
+                        <a href="{{ url_for('seguimiento') }}">
+                            <button class="tracker-btn">
+                                Abrir Seguimiento
+                            </button>
+                        </a>
+        
+        
+                        <!-- =========================
+                             RESUMEN SEMANAL
+                        ========================== -->
+        
+                        <div class="week-panel">
+        
+                            <h3>Esta semana</h3>
+        
+        
+                            <div class="week-grid">
+        
+        
+                                <div class="week-item">
+                                    <div class="day-number"></div>
+                                    <span class="day-name"></span>
+                                </div>
+        
+        
+                                <div class="week-item">
+                                    <div class="day-number"></div>
+                                    <span class="day-name"></span>
+                                </div>
+        
+        
+                                <div class="week-item">
+                                    <div class="day-number"></div>
+                                    <span class="day-name"></span>
+                                </div>
+        
+        
+                                <div class="week-item">
+                                    <div class="day-number"></div>
+                                    <span class="day-name"></span>
+                                </div>
+        
+        
+                                <div class="week-item">
+                                    <div class="day-number"></div>
+                                    <span class="day-name"></span>
+                                </div>
+        
+        
+                                <div class="week-item">
+                                    <div class="day-number"></div>
+                                    <span class="day-name"></span>
+                                </div>
+        
+        
+                                <div class="week-item">
+                                    <div class="day-number"></div>
+                                    <span class="day-name"></span>
+                                </div>
+        
+        
                             </div>
-                        
-                            <div class="week-item">
-                                <div class="day-number"></div>
-                                <span class="day-name"></span>
-                            </div>
-                        
-                            <div class="week-item">
-                                <div class="day-number"></div>
-                                <span class="day-name"></span>
-                            </div>
-                        
-                            <div class="week-item">
-                                <div class="day-number"></div>
-                                <span class="day-name"></span>
-                            </div>
-                        
-                            <div class="week-item">
-                                <div class="day-number"></div>
-                                <span class="day-name"></span>
-                            </div>
-                        
-                            <div class="week-item">
-                                <div class="day-number"></div>
-                                <span class="day-name"></span>
-                            </div>
-                        
-                            <div class="week-item">
-                                <div class="day-number"></div>
-                                <span class="day-name"></span>
-                            </div>
-                        
+        
+        
                         </div>
-                        
+        
+        
+                    </aside>
+        
+        
+                </div>
+        
+        
+        
+                <!-- COLUMNA 2 VACÍA -->
+                <div class="sidebar-column">
 
+                    <div class="emociones-wrapper">
+                
+                        <div class="emociones-panel">
+                
+                            <h2>¿Cómo te sientes hoy?</h2>
+                
+                            <div class="bw-container">
+                
+                                <!-- FELIZ -->
+                                <div class="bw-card feliz">
+                            
+                                    <div class="bw-face">
+                            
+                                        <div class="bw-eye-left"></div>
+                                        <div class="bw-eye-right"></div>
+                            
+                                        <div class="bw-mouth"></div>
+                            
+                                        <div class="bw-cheek-left"></div>
+                                        <div class="bw-cheek-right"></div>
+                            
+                                    </div>
+                            
+                                    <h3>Feliz</h3>
+                            
+                                </div>
+                            
+                                <!-- TRANQUILO -->
+                                <div class="bw-card tranquilo">
+                            
+                                    <div class="bw-face">
+                            
+                                        <div class="bw-eye-left"></div>
+                                        <div class="bw-eye-right"></div>
+                            
+                                        <div class="bw-mouth"></div>
+                            
+                                        <div class="bw-cheek-left"></div>
+                                        <div class="bw-cheek-right"></div>
+                            
+                                    </div>
+                            
+                                    <h3>Tranquilo</h3>
+                            
+                                </div>
+                            
+                                <!-- REFLEXIVO -->
+                                <div class="bw-card reflexivo">
+                            
+                                    <div class="bw-face">
+                            
+                                        <div class="bw-eye-left">
+                                        <div class="bw-pupil"></div>
+                                        
+                                        </div>
+                                        
+                                        <div class="bw-eye-right">
+                                        
+                                            <div class="bw-pupil"></div>
+                                        
+                                        </div>
+                                        
+                            
+                                        <div class="bw-mouth"></div>
+                            
+                                        <div class="bw-cheek-left"></div>
+                                        <div class="bw-cheek-right"></div>
+                            
+                                    </div>
+                            
+                                    <h3>Reflexivo</h3>
+                            
+                                </div>
+                            
+                                <!-- SORPRENDIDO -->
+                                <div class="bw-card sorprendido">
+                            
+                                    <div class="bw-face">
+                            
+                                        <div class="bw-eye-left"></div>
+                                        <div class="bw-eye-right"></div>
+                            
+                                        <div class="bw-mouth"></div>
+                            
+                                        <div class="bw-cheek-left"></div>
+                                        <div class="bw-cheek-right"></div>
+                            
+                                    </div>
+                            
+                                    <h3>Sorprendido</h3>
+                            
+                                </div>
+                            
+                                <!-- TRISTE -->
+                                <div class="bw-card triste">
+                            
+                                    <div class="bw-face">
+                            
+                                        <div class="bw-eye-left"></div>
+                                        <div class="bw-eye-right"></div>
+                            
+                                        <div class="bw-mouth"></div>
+                            
+                                        <div class="bw-cheek-left"></div>
+                                        <div class="bw-cheek-right"></div>
+                            
+                                    </div>
+                            
+                                    <h3>Triste</h3>
+                            
+                                </div>
+                            
+                                <!-- ANSIOSO -->
+                                <div class="bw-card ansioso">
+                            
+                                    <div class="bw-face">
+
+                                        <span></span>
+                                    
+                                        <div class="bw-eye-left"></div>
+                                        <div class="bw-eye-right"></div>
+                                    
+                                        <div class="bw-mouth"></div>
+                                    
+                                        <div class="bw-cheek-left"></div>
+                                        <div class="bw-cheek-right"></div>
+                                    
+                                    </div>
+                                    
+                            
+                                    <h3>Ansioso</h3>
+                            
+                                </div>
+                
+                            </div>
+                
+                        </div>
+                
                     </div>
-
-                </aside>
+                
+                </div>
+                
+        
+        
+        
+                <!-- COLUMNA 3 VACÍA -->
+                <div class="sidebar-column">
+        
+        
+                </div>
+        
+        
+        
+            </div>
+        
 
                 <!-- =========================
                     TARJETA IA
@@ -373,5 +554,6 @@ Book Wellness
 <script src="{{ url_for('static', filename='js/semana.js') }}"></script>
 <script src="{{ url_for('static', filename='js/PanelIA.js') }}"></script>
 <script src="{{ url_for('static', filename='js/recomendaciones.js') }}"></script>
+<script src="{{ url_for('static', filename='js/sidebar-carousel.js') }}"></script>
 
 {% endblock %}
