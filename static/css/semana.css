@@ -106,3 +106,25 @@
     width: 100%;
     margin: 0 0 15px 0;
 }
+
+.sidebar-wrapper{
+    overflow:hidden;
+}
+
+
+.sidebar-carousel{
+    display:flex;
+    width:300%;
+    transition:transform 0.8s ease;
+    margin-bottom: 25px;
+}
+
+
+.sidebar-column{
+    width:33.333%;
+    flex-shrink:0;
+}
+
+.right-sidebar{
+    transform:translateX(20px);
+}
