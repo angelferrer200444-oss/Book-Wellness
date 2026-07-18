@@ -1,0 +1,1216 @@
+/*=========================
+        CIRCULO BASE
+=========================*/
+
+.bw-face{
+
+    width:55px;
+    height:55px;
+
+    position:relative;
+
+    border-radius:50%;
+
+    border:4px solid #5b120d;
+
+    transition:.35s ease;
+
+}
+
+.bw-eye-left,
+.bw-eye-right{
+
+    position:absolute;
+
+    width:8px;
+    height:8px;
+
+    background:#5b120d;
+
+    border-radius:50%;
+
+    top:22px;
+
+}
+
+.bw-eye-left{
+    left:12px;
+}
+
+
+.bw-eye-right{
+    right:12px;
+}
+
+.bw-mouth{
+
+    position:absolute;
+
+    left:50%;
+
+    bottom:12px;
+
+    transform:translateX(-50%);
+
+    width:25px;
+
+    height:10px;
+
+    border-bottom:3px solid #5b120d;
+
+    border-radius:0 0 30px 30px;
+
+}
+
+/*=========================
+      MEJILLAS BASE
+=========================*/
+
+.bw-cheek-left,
+.bw-cheek-right{
+
+    position:absolute;
+
+    width:8px;
+    height:8px;
+
+    border-radius:50%;
+
+    background:#5b120d;
+
+    opacity:0;
+
+    transition:.35s ease;
+
+}
+
+
+.bw-cheek-left{
+
+    left:8px;
+
+    bottom:15px;
+
+}
+
+
+.bw-cheek-right{
+
+    right:8px;
+
+    bottom:15px;
+
+}
+
+/*=========================
+        CARITA FELIZ BASE
+=========================*/
+
+.feliz .bw-eye-left,
+.feliz .bw-eye-right{
+
+    position:absolute;
+
+    width:8px;
+    height:8px;
+
+    background:#5b120d;
+
+    border-radius:50%;
+
+    top:22px;
+
+}
+
+/* posición ojos */
+
+.feliz .bw-eye-left{
+    left:16px;
+}
+
+
+.feliz .bw-eye-right{
+    right:16px;
+}
+
+/* sonrisa */
+
+.feliz .bw-mouth{
+    position:absolute;
+    left:50%;
+    bottom:12px;
+    transform:translateX(-50%);
+    width:28px;
+    height:14px;
+    border-bottom:3px solid #5b120d;
+    border-radius:0 0 30px 30px;
+}
+
+.feliz .bw-cheek-right{
+
+    right:8px;
+
+    bottom:17px;
+
+}
+
+/*=========================
+        HOVER FELIZ
+=========================*/
+
+
+.feliz:is(:hover, .active) .bw-face{
+
+    transform:
+    translateY(-5px)
+    scale(1.12);
+
+    border-color:#FFD86A;
+
+    box-shadow:
+    0 0 8px rgba(255,216,106,.5),
+    0 0 18px rgba(255,216,106,.35);
+
+}
+
+
+/* Ojos felices hover */
+
+.feliz:is(:hover, .active) .bw-eye-left,
+.feliz:is(:hover, .active) .bw-eye-right{
+
+    background:#FFD86A;
+
+    width:12px;
+
+    height:4px;
+
+    top:24px;
+
+}
+
+/* Separación durante hover */
+
+.feliz:is(:hover, .active) .bw-eye-left{
+
+    transform:
+    rotate(18deg)
+    translateX(-2px);
+
+}
+
+.feliz:is(:hover, .active) .bw-eye-right{
+
+    transform:
+    rotate(-18deg)
+    translateX(2px);
+
+}
+
+/* Sonrisa más marcada */
+
+.feliz:is(:hover, .active) .bw-mouth{
+
+    width:34px;
+
+    height:18px;
+
+    border-color:#FFD86A;
+
+}
+
+/* Texto */
+
+.feliz:is(:hover, .active) h3{
+
+    color:#D38A00;
+
+}
+
+/*=========================
+        😌 TRANQUILO BASE
+=========================*/
+
+.bw-card.tranquilo .bw-eye-left,
+.bw-card.tranquilo .bw-eye-right{
+
+    width:14px;
+    height:4px;
+
+    top:23px;
+    
+
+    border-radius:20px;
+
+}
+
+/* Separar ojos */
+
+.bw-card.tranquilo .bw-eye-left{
+
+    left:12px;
+
+}
+
+.bw-card.tranquilo .bw-eye-right{
+
+    right:12px;
+
+}
+
+/* Boca tranquila */
+
+.bw-card.tranquilo .bw-mouth{
+
+    width:25px;
+
+    height:10px;
+
+    bottom:14px;
+
+}
+
+/*=========================
+        😌 TRANQUILO HOVER
+=========================*/
+
+
+.tranquilo:is(:hover, .active) .bw-face{
+
+    transform:scale(1.08);
+
+    border-color:#74C69D;
+
+    box-shadow:
+    0 0 10px rgba(116,198,157,.45),
+    0 0 20px rgba(116,198,157,.30);
+
+}
+
+/* Ojos */
+
+.tranquilo:is(:hover, .active) .bw-eye-left,
+.tranquilo:is(:hover, .active) .bw-eye-right{
+
+    background:#74C69D;
+
+}
+
+/* Boca */
+
+.tranquilo:is(:hover, .active) .bw-mouth{
+
+    border-color:#74C69D;
+
+}
+
+/* Título */
+
+.tranquilo:is(:hover, .active) h3{
+
+    color:#4A8C68;
+
+}
+
+/*=========================
+      CEJAS TRANQUILO
+=========================*/
+
+
+.tranquilo:is(:hover, .active) .bw-face::before,
+.tranquilo:is(:hover, .active) .bw-face::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:12px;
+
+    height:5px;
+
+    top:13px;
+
+    opacity:0;
+
+    transition:.35s ease;
+
+    border-top:2px solid #74C69D;
+
+    border-radius:50%;
+
+}
+
+/* Ceja izquierda */
+
+.tranquilo:is(:hover, .active) .bw-face::before{
+
+    left:12px;
+
+    transform:rotate(-12deg);
+
+}
+
+/* Ceja derecha */
+
+.tranquilo:is(:hover, .active) .bw-face::after{
+
+    right:12px;
+
+    transform:rotate(12deg);
+
+}
+
+/* Mostrar cejas */
+
+.tranquilo:is(:hover, .active) .bw-face::before,
+.tranquilo:is(:hover, .active) .bw-face::after{
+
+    opacity:1;
+
+}
+
+/*=========================
+      MEJILLAS TRANQUILO
+=========================*/
+
+
+.tranquilo:is(:hover, .active) .bw-cheek-left,
+.tranquilo:is(:hover, .active) .bw-cheek-right{
+
+    opacity:1;
+
+    background:#A8E6CF;
+
+    box-shadow:
+    0 0 8px #A8E6CF;
+
+}
+
+/*=========================
+      🤔 REFLEXIVO BASE
+=========================*/
+
+/* Los ojos contendrán las pupilas */
+
+.bw-card.reflexivo .bw-eye-left,
+.bw-card.reflexivo .bw-eye-right{
+
+    overflow:hidden;
+
+}
+
+/* Pupilas */
+
+.bw-card.reflexivo .bw-pupil{
+
+    position:absolute;
+
+    width:3px;
+    height:3px;
+
+    background:white;
+
+    border-radius:50%;
+
+    left:2px;
+    top:2px;
+
+    transition:.35s ease;
+
+}
+
+
+/*=========================
+      🤔 REFLEXIVO HOVER
+=========================*/
+
+.reflexivo:is(:hover, .active) .bw-face{
+
+    transform:
+        rotate(-8deg)
+        scale(1.08);
+
+    border-color:#A08BFF;
+
+    box-shadow:
+        0 0 15px rgba(160,139,255,.55);
+
+}
+
+/* Ojos */
+
+.reflexivo:is(:hover, .active) .bw-eye-left,
+.reflexivo:is(:hover, .active) .bw-eye-right{
+
+    background:#7B68D9;
+
+}
+
+/* Pupilas mirando arriba a la derecha */
+
+.reflexivo:is(:hover, .active) .bw-pupil{
+
+    transform:translate(2px,-2px);
+
+}
+
+/* Boca pensativa */
+
+.reflexivo:is(:hover, .active) .bw-mouth{
+
+    border-color:#7B68D9;
+
+    width:18px;
+
+    height:0;
+
+    border-radius:0;
+
+    transform:
+        translateX(-50%)
+        rotate(-8deg);
+
+}
+
+/* Título */
+
+.reflexivo:is(:hover, .active) h3{
+
+    color:#7B68D9;
+
+}
+
+/*=========================
+      CEJAS REFLEXIVO
+=========================*/
+
+.reflexivo:is(:hover, .active) .bw-face::before,
+.reflexivo:is(:hover, .active) .bw-face::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:10px;
+    height:2px;
+
+    background:#8B7AE8;
+
+    border-radius:20px;
+
+    top:14px;
+
+    opacity:0;
+
+    transition:.35s ease;
+
+}
+
+.reflexivo:is(:hover, .active) .bw-face::before{
+
+    left:11px;
+
+}
+
+.reflexivo:is(:hover, .active) .bw-face::after{
+
+    right:11px;
+
+}
+
+.reflexivo:is(:hover, .active) .bw-face::before{
+
+    opacity:1;
+
+    transform:
+        translateY(-2px)
+        rotate(-20deg);
+
+}
+
+.reflexivo:is(:hover, .active) .bw-face::after{
+
+    opacity:1;
+
+    transform:rotate(8deg);
+
+}
+
+
+/*=========================
+       LAS DEMAS EMOCIONES  ESTAN ABAJO
+=========================*/
+
+/* =========================
+   PANEL EMOCIONES
+========================= */
+
+.emociones-panel{
+
+    width:260px;
+
+    margin:auto;
+
+    background:#F7EFE6;
+
+    border:3px solid #5b120d;
+
+    border-radius:25px;
+
+    padding:20px;
+
+    box-sizing:border-box;
+
+    overflow:hidden;
+
+}
+
+.emociones-panel h3{
+
+    text-align:center;
+
+    color:#5b120d;
+
+    font-family:'Cinzel',serif;
+
+    font-size:20px;
+
+    margin-bottom:20px;
+
+}
+
+/* GRID DE EMOCIONES */
+
+.emociones-panel .bw-container{
+
+    width:100%;
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:12px;
+
+}
+
+/* Ajuste de tamaño para sidebar */
+
+.emociones-panel .bw-face{
+
+    width:55px;
+
+    height:55px;
+
+}
+
+.emociones-panel .bw-eye-left,
+.emociones-panel .bw-eye-right{
+
+    top:22px;
+
+}
+
+.emociones-panel .bw-mouth{
+
+    bottom:14px;
+
+}
+
+.emociones-panel .bw-card h3{
+
+    font-size:12px;
+
+    margin-top:8px;
+
+}
+
+/* =========================
+   IGUALAR ALTURA EMOCIONES
+========================= */
+
+.emociones-panel{
+
+    height:330px;
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.emociones-panel .bw-container{
+
+    flex:1;
+
+    align-items:center;
+
+}
+
+.emociones-panel{
+
+    width:350px;
+
+    height:280px;
+
+    margin:auto;
+
+    margin-top:60px;
+
+    background:#F3E6D3;
+
+    border:3px solid #5b120d;
+
+    border-radius:25px;
+
+    padding:15px;
+
+    box-sizing:border-box;
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+/* Titulo */
+
+.emociones-panel h3{
+
+    margin:0 0 10px 0;
+
+    font-size:18px;
+
+}
+
+
+/* GRID */
+
+.emociones-panel .bw-container{
+
+    flex:1;
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    grid-template-rows:repeat(3,1fr);
+
+    gap:5px;
+
+    align-items:center;
+
+    justify-items:center;
+
+}
+
+/* Tarjetas */
+
+.emociones-panel .bw-card{
+
+    transform:none;
+
+}
+
+/* Texto */
+
+.emociones-panel .bw-card h3{
+
+    font-size:11px;
+
+    margin-top:6px;
+
+}
+
+/* TITULOS */
+
+.emociones-panel .bw-card h3{
+
+    font-size:11px;
+
+    margin-top:5px;
+
+}
+
+.emociones-panel > *{
+
+    transform:translateY(-20px);
+
+}
+
+.emociones-panel h2{
+    transform:translateX(15px);
+    position:relative; 
+    top:-10px;
+}
+
+/*=========================
+       😯 SORPRENDIDO
+=========================*/
+
+
+.sorprendido .bw-eye-left,
+.sorprendido .bw-eye-right{
+
+    width:14px;
+    height:14px;
+
+    top:12px;
+
+    background:#5b120d;
+
+    border-radius:50%;
+
+}
+
+
+.sorprendido .bw-eye-left{
+
+    left:11px;
+
+}
+
+
+.sorprendido .bw-eye-right{
+
+    right:11px;
+
+}
+
+
+
+/* Boca abierta */
+
+.sorprendido .bw-mouth{
+
+    width:14px;
+    height:14px;
+
+    bottom:10px;
+
+    border:3px solid #5b120d;
+
+    border-radius:50%;
+
+}
+
+/*=========================
+      HOVER SORPRENDIDO
+=========================*/
+
+.bw-card.sorprendido:is(:hover, .active) .bw-face{
+
+    transform:
+        translateX(8px)
+        translateY(-5px)
+        scale(1.08);
+
+    border-color:#FF9F43;
+
+    box-shadow:
+        0 0 15px rgba(255,159,67,.65),
+        0 0 35px rgba(255,159,67,.35);
+
+}
+
+
+.sorprendido:is(:hover, .active) .bw-eye-left,
+.sorprendido:is(:hover, .active) .bw-eye-right{
+
+    width:16px;
+    height:16px;
+
+    top:10px;
+
+    background:#FFB66B;
+
+}
+
+.sorprendido:is(:hover, .active) .bw-mouth{
+
+    width:20px;
+    height:20px;
+
+    bottom:8px;
+
+    border-color:#FF9F43;
+
+    box-shadow:
+
+    0 0 10px #FF9F43;
+
+}
+
+.sorprendido:is(:hover, .active) h3{
+
+    color:#E67E22;
+
+}
+
+
+
+/*=========================
+          😢 TRISTE
+=========================*/
+
+
+.triste .bw-eye-left,
+.triste .bw-eye-right{
+
+    width:10px;
+    height:10px;
+
+    top:18px;
+
+    background:#5b120d;
+
+}
+
+
+.triste .bw-eye-left{
+
+    left:13px;
+
+    transform:rotate(25deg);
+
+}
+
+
+.triste .bw-eye-right{
+
+    right:13px;
+
+    transform:rotate(-25deg);
+
+}
+
+
+
+/* Boca triste */
+
+.triste .bw-mouth{
+
+    width:22px;
+    height:12px;
+
+    bottom:10px;
+
+    border-bottom:none;
+
+    border-top:3px solid #5b120d;
+
+    border-radius:50% 50% 0 0;
+
+}
+
+/* Lágrima */
+
+.triste .bw-face::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:6px;
+    height:12px;
+
+    background:#74C0FC;
+
+    border-radius:50%;
+
+    left:15px;
+    top:22px;
+
+    opacity:0;
+
+    transition:.35s ease;
+
+}
+
+/* Hover triste */
+
+.triste:is(:hover, .active) .bw-face{
+
+    transform:
+
+    translateY(4px)
+    scale(1.05);
+
+    border-color:#6FA8DC;
+
+    box-shadow:
+
+    0 0 15px #6FA8DC;
+
+}
+
+.triste:is(:hover, .active) .bw-eye-left,
+.triste:is(:hover, .active) .bw-eye-right{
+
+    background:#6FA8DC;
+
+}
+
+.triste:is(:hover, .active) .bw-mouth{
+
+    width:26px;
+    height:15px;
+
+    border-color:#6FA8DC;
+
+}
+
+.triste:is(:hover, .active) .bw-face::before{
+
+    opacity:1;
+
+    transform:
+
+    translateY(8px);
+
+    box-shadow:
+
+    0 0 8px #74C0FC;
+
+}
+
+.triste:is(:hover, .active) h3{
+
+    color:#4A86C5;
+
+}
+
+/*=========================
+          😰 ANSIOSO
+=========================*/
+
+
+.ansioso .bw-eye-left,
+.ansioso .bw-eye-right{
+
+    width:10px;
+    height:10px;
+
+    top:18px;
+
+    background:#5b120d;
+
+}
+
+/* Boca nerviosa */
+
+.ansioso .bw-mouth{
+
+    width:18px;
+    height:10px;
+
+    bottom:12px;
+
+    border:3px solid #5b120d;
+
+    border-top:none;
+
+    border-radius:
+
+    0 0 15px 15px;
+
+}
+
+/* Mejillas */
+
+.ansioso .bw-cheek-left,
+.ansioso .bw-cheek-right{
+
+    opacity:.25;
+
+    width:8px;
+    height:8px;
+
+    background:#FFD6D6;
+
+}
+
+.ansioso .bw-cheek-left{
+
+    left:10px;
+
+    bottom:18px;
+
+}
+
+.ansioso .bw-cheek-right{
+    right:10px;
+    bottom:18px;
+}
+
+/* Cejas */
+
+.ansioso .bw-face::before,
+.ansioso .bw-face::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:14px;
+    height:3px;
+
+    background:#5b120d;
+
+    border-radius:20px;
+
+    top:11px;
+
+}
+
+.ansioso .bw-face::before{
+    left:12px;
+    transform:rotate(-25deg);
+}
+
+.ansioso .bw-face::after{
+    right:12px;
+    transform:rotate(25deg);
+}
+
+/*=========================
+      HOVER ANSIOSO
+=========================*/
+
+.ansioso:is(:hover, .active) .bw-face{
+    animation:bwShake .35s infinite alternate;
+    border-color:#FF6B6B;
+    box-shadow:
+    0 0 15px #FF6B6B;
+}
+
+.ansioso:is(:hover, .active) .bw-eye-left,
+.ansioso:is(:hover, .active) .bw-eye-right{
+    width:13px;
+    height:13px;
+    background:#FF6B6B;
+}
+
+.ansioso:is(:hover, .active) .bw-mouth{
+    width:22px;
+    height:12px;
+    border-color:#FF6B6B;
+}
+
+.ansioso:is(:hover, .active) .bw-cheek-left,
+.ansioso:is(:hover, .active) .bw-cheek-right{
+    opacity:1;
+    background:#FFC6C6;
+    box-shadow:
+    0 0 10px #FFC6C6;
+}
+
+.ansioso:is(:hover, .active) .bw-face::before{
+background:#FF6B6B;
+    transform:
+    rotate(-35deg)
+    translateY(-2px);
+}
+
+.ansioso:is(:hover, .active) .bw-face::after{
+    background:#FF6B6B;
+    transform:
+    rotate(35deg)
+    translateY(-2px);
+}
+
+.ansioso:is(:hover, .active) h3{
+
+    color:#D94B4B;
+
+}
+
+/* Animación */
+
+@keyframes bwShake{
+
+    from{
+
+        transform:
+        translateX(-2px)
+        rotate(-2deg);
+
+    }
+
+
+    to{
+
+        transform:
+        translateX(2px)
+        rotate(2deg);
+
+    }
+
+}
+
+.sorprendido .bw-face{
+
+    transform:translateX(8px);
+
+}
+
+/* =========================
+   EMOCIÓN SELECCIONADA
+========================= */
+
+
+.bw-card.active .bw-face{
+
+    transform:
+    translateY(-5px)
+    scale(1.08);
+
+    transition:.35s ease;
+
+}
+
+.bw-card.feliz.active .bw-face{
+
+    border-color:#FFD86A;
+    box-shadow:0 0 15px #FFD86A;
+
+}
+
+
+.bw-card.tranquilo.active .bw-face{
+
+    border-color:#74C69D;
+    box-shadow:0 0 15px #74C69D;
+
+}
+
+
+.bw-card.reflexivo.active .bw-face{
+
+    border-color:#8B7AE8;
+    box-shadow:0 0 15px #8B7AE8;
+
+}
+
+
+.bw-card.sorprendido.active .bw-face{
+
+    border-color:#FF9F43;
+    box-shadow:0 0 15px #FF9F43;
+
+}
+
+
+.bw-card.triste.active .bw-face{
+
+    border-color:#6FA8DC;
+    box-shadow:0 0 15px #6FA8DC;
+
+}
+
+
+.bw-card.ansioso.active .bw-face{
+
+    border-color:#FF6B6B;
+    box-shadow:0 0 15px #FF6B6B;
+
+}
