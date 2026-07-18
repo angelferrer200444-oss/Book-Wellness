@@ -60,16 +60,47 @@
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
+/* =========================
+   SIDEBAR CARRUSEL CONTROL
+========================= */
+
 .sidebar-wrapper{
-    position: sticky;
-    top: -30px;
+
+    width:380px;
+
+    position:sticky;
+
+    top:-30px;
+
     align-self:flex-start;
+
+    overflow:hidden;
+
 }
 
-.sidebar-column{
+
+.sidebar-carousel{
+
     display:flex;
+
+    width:1140px;
+
+    transition:transform .8s ease;
+
+}
+
+
+.sidebar-column{
+
+    width:380px;
+
+    flex-shrink:0;
+
+    display:flex;
+
     flex-direction:column;
+
     gap:25px;
-    width:100%;
+
 }
 
