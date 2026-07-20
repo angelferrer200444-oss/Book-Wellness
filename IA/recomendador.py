@@ -11,7 +11,7 @@ from flask import Blueprint
 from flask import jsonify
 from flask import session
 
-API_KEY = "LA KEY NO SE PUBLICA"
+API_KEY = ""
 
 PROMPT_RECOMENDADOR = """
 Eres un experto en literatura.
@@ -28,6 +28,9 @@ Reglas:
 - No escribas markdown.
 - No repitas libros.
 - Los libros deben existir realmente.
+- No recomiendes ningún libro que aparezca en la lista "Libros que ya posee o ha leído el usuario".
+- Si un libro ya fue leído por el usuario, elige otro.
+- Verifica cuidadosamente la lista antes de generar las cinco recomendaciones.
 
 Formato EXACTO:
 
@@ -37,6 +40,7 @@ Formato EXACTO:
         "autor":"..."
     }
 ]
+
 """
 
 
@@ -105,15 +109,59 @@ class RecomendadorLibros:
 
         return contador
 
+    
+
+    ##########################################################
+    # OBTENER TÍTULOS DEL USUARIO
+    ##########################################################
+
+    def obtener_titulos(self, id_usuario):
+
+        conexion = db.obtener_conexion()
+
+        cursor = conexion.cursor()
+
+        cursor.execute(
+            """
+            SELECT titulo
+            FROM libros
+            WHERE id_usuario = %s
+            """,
+            (id_usuario,)
+        )
+
+        filas = cursor.fetchall()
+
+        cursor.close()
+        conexion.close()
+
+        titulos = []
+
+        for fila in filas:
+
+            if fila[0]:
+
+                titulos.append(fila[0].strip())
+
+        return titulos
+
     ##########################################################
     # CONSTRUIR EL PROMPT
     ##########################################################
 
-    def construir_prompt(self, generos):
+    def construir_prompt(self, generos, titulos):
 
         texto = PROMPT_RECOMENDADOR
 
         texto += "\n\n"
+
+        texto += "Libros que ya posee o ha leído el usuario:\n\n"
+
+        for titulo in titulos:
+
+            texto += f"- {titulo}\n"
+
+        texto += "\n"
 
         texto += "Géneros favoritos del usuario:\n\n"
 
@@ -201,8 +249,20 @@ class RecomendadorLibros:
             if len(resultados) == 0:
                 continue
 
+            libro = None
 
-            libro = resultados[0]
+            for resultado in resultados:
+
+                portada = resultado.get("portada", "")
+
+                if portada and portada.strip():
+
+                    libro = resultado
+                    break
+
+            if libro is None:
+                continue
+
 
             libros.append({
 
@@ -272,17 +332,44 @@ class RecomendadorLibros:
 
     def recomendar(self, id_usuario):
 
+        print("=" * 60)
+        print("INICIANDO RECOMENDADOR")
+        print(f"Usuario: {id_usuario}")
+
+
         generos = self.obtener_generos(id_usuario)
+
+        print("\nGÉNEROS DEL USUARIO:")
+
+        for genero, cantidad in generos.items():
+            print(f"- {genero}: {cantidad}")
+
+        titulos = self.obtener_titulos(id_usuario)
+
+        print("\nLIBROS DEL USUARIO:")
+
+        for titulo in titulos:
+            print(f"- {titulo}")
 
         if len(generos) == 0:
 
             return self.recomendaciones_defecto()
 
-        prompt = self.construir_prompt(generos)
+        prompt = self.construir_prompt(generos, titulos)
+
+        print("\nENVIANDO PROMPT A GEMINI...")
+        print("-" * 60)
+        print(prompt)
+        print("-" * 60)
 
         try:
 
             recomendaciones = self.consultar_gemini(prompt)
+
+            print("\nRESPUESTA DE GEMINI:")
+
+            for libro in recomendaciones:
+                print(f"- {libro['titulo']} | {libro['autor']}")
 
         except Exception as e:
 
