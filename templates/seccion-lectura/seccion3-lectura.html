@@ -17,6 +17,11 @@
         rel="stylesheet"
         href="{{ url_for('static', filename='css/SeccionLectura3.css') }}">
 
+    <!-- Conexión al CSS de notas -->
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/styles notas.css') }}">
+
     <link
         href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap"
         rel="stylesheet">
@@ -198,15 +203,49 @@
 
             </div>
 
-            <!-- PREGUNTA 6 -->
+            <!-- PREGUNTA 6 (SECCIÓN DE NOTAS AMPLIADA Y REGULADA POR CSS) -->
 
-            <div class="pregunta">
+            <div class="pregunta pregunta-notas-ampliada">
 
                 <h3>Notas y observaciones</h3>
 
-                <textarea
-                    id="notas"
-                    placeholder="Escribe aquí cualquier pensamiento, cita o idea que quieras recordar..."></textarea>
+                <form id="new-note-form" class="note-form form-notas-compacto">
+
+                    <input 
+                        type="text" 
+                        id="note-title-input" 
+                        placeholder="Título de la nota..." 
+                        class="form-input" 
+                        required>
+
+                    <textarea 
+                        id="note-content-input" 
+                        placeholder="Escribe aquí cualquier pensamiento, cita o idea que quieras recordar..." 
+                        class="form-textarea" 
+                        rows="3" 
+                        required></textarea>
+
+                    <div class="form-group">
+                        <label for="note-category-select" class="form-label">Categoría:</label>
+                        <select id="note-category-select" class="form-select" required>
+                            <!-- Categorías Base -->
+                            <option value="Reflexiones">Reflexiones</option>
+                            <option value="Personajes">Personajes</option>
+                            <option value="Citas">Citas</option>
+                            <option value="Vocabulario">Vocabulario</option>
+                            <!-- Categorías de Sección Lectura 3 -->
+                            <option value="Aprendizaje">Aprendizaje</option>
+                            <option value="Escenas">Escenas Impactantes</option>
+                            <option value="Sesión de Lectura">Impresión de la Sesión</option>
+                            <option value="Mi Vida">Conexión Personal (Mi Vida)</option>
+                            <option value="Estado de Ánimo">Estado de Ánimo</option>
+                        </select>
+                    </div>
+
+                    <!-- Lista oculta para garantizar compatibilidad con el JS -->
+                    <div id="notes-list-layout" style="display: none;"></div>
+
+                </form>
 
             </div>
 
@@ -280,7 +319,11 @@
 
     </script>
 
+    <!-- Script de reflexión -->
     <script src="{{ url_for('static', filename='js/reflexion.js') }}"></script>
+
+    <!-- Conexión al JS de notas -->
+    <script src="{{ url_for('static', filename='js/notas.js') }}"></script>
 
 </body>
 
