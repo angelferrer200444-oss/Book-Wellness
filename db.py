@@ -19,19 +19,6 @@ def registrar_usuario(nombre, correo, password):
     )
     conexion.commit()
     id_generado = cursor.lastrowid
-
-    cursor.execute("""
-        DELETE FROM usuario_encuesta_temporal
-    """)
-
-    cursor.execute("""
-        INSERT INTO usuario_encuesta_temporal
-        (id_usuario)
-        VALUES (%s)
-    """, (id_generado,))
-
-    conexion.commit()
-
     cursor.close()
     conexion.close()
     return id_generado
@@ -506,67 +493,90 @@ def obtener_eventos_por_fecha(id_usuario, fecha):
     conexion.close()
     return sesiones + limites
 
-
-# PreguntasPorNivel
-
-def obtener_preguntas_por_nivel(nivel):
+def obtener_notas_usuario(id_usuario):
     conexion = obtener_conexion()
     cursor = conexion.cursor(dictionary=True)
-
+    
+    # Notas manuales
     cursor.execute("""
-        SELECT id_pregunta, nombre_campo
-        FROM preguntas_encuesta
-        WHERE nivel = %s
-        ORDER BY id_pregunta
-    """, (nivel,))
+        SELECT n.id_nota, n.id_libro, n.titulo, n.contenido, n.categoria, n.fecha_creacion,
+               l.titulo as libro_titulo, l.autor as libro_autor, l.portada,
+               'manual' as tipo
+        FROM notas_usuario n
+        LEFT JOIN libros l ON n.id_libro = l.id_libro
+        WHERE n.id_usuario = %s
+        ORDER BY n.fecha_creacion DESC
+    """, (id_usuario,))
+    notas_manuales = cursor.fetchall()
 
-
-    preguntas = cursor.fetchall()
+    # Notas de sesión
+    cursor.execute("""
+        SELECT nl.id_nota, nl.como_te_sientes, nl.que_aprendiste, nl.palabras_nuevas,
+               nl.personaje_destacado, nl.escena_impacto, nl.parecer_sesion,
+               nl.recuerdo_vida, nl.notas_observaciones, nl.buscaba_al_leer,
+               nl.encontro_lo_buscado, nl.tipo_reflexion, nl.respuesta_reflexion,
+               lec.fecha_fin as fecha_creacion,
+               l.id_libro, l.titulo as libro_titulo, l.autor as libro_autor, l.portada,
+               'sesion' as tipo
+        FROM notas_lectura nl
+        JOIN lecturas lec ON nl.id_lectura = lec.id_lectura
+        JOIN libros l ON lec.id_libro = l.id_libro
+        WHERE lec.id_usuario = %s AND lec.fecha_fin IS NOT NULL
+        ORDER BY lec.fecha_fin DESC
+    """, (id_usuario,))
+    notas_sesion = cursor.fetchall()
 
     cursor.close()
     conexion.close()
+    return notas_manuales, notas_sesion
 
-    return preguntas
 
-def guardar_respuestas_encuesta(id_usuario, nivel, respuestas):
-
+def agregar_nota_usuario(id_usuario, id_libro, titulo, contenido, categoria):
     conexion = obtener_conexion()
     cursor = conexion.cursor()
-
     cursor.execute("""
-        SELECT id_pregunta, nombre_campo
-        FROM preguntas_encuesta
-        WHERE nivel = %s
-        ORDER BY id_pregunta
-    """, (nivel,))
-
-    preguntas = cursor.fetchall()
-
-    for id_pregunta, nombre_campo in preguntas:
-
-        print("Campo BD:", nombre_campo)
-        print("Existe en respuestas:", nombre_campo in respuestas)
-
-        respuesta = respuestas.get(nombre_campo)
-
-        print("Valor:", respuesta)
+        INSERT INTO notas_usuario (id_usuario, id_libro, titulo, contenido, categoria, fecha_creacion)
+        VALUES (%s, %s, %s, %s, %s, CURDATE())
+    """, (id_usuario, id_libro, titulo, contenido, categoria))
+    conexion.commit()
+    id_nueva = cursor.lastrowid
+    cursor.close()
+    conexion.close()
+    return id_nueva
 
 
-        respuesta = respuestas.get(nombre_campo)
+def editar_nota_usuario(id_nota, titulo, contenido, categoria):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+    cursor.execute("""
+        UPDATE notas_usuario SET titulo=%s, contenido=%s, categoria=%s
+        WHERE id_nota=%s
+    """, (titulo, contenido, categoria, id_nota))
+    conexion.commit()
+    cursor.close()
+    conexion.close()
 
-        if isinstance(respuesta, list):
-            respuesta = ", ".join(respuesta)
 
-        cursor.execute("""
-            INSERT INTO respuestas_encuesta
-            (id_usuario, id_pregunta, respuesta)
-            VALUES (%s, %s, %s)
-        """, (
-            id_usuario,
-            id_pregunta,
-            respuesta
-        ))
+def eliminar_nota_usuario(id_nota):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+    cursor.execute("DELETE FROM notas_usuario WHERE id_nota=%s", (id_nota,))
+    conexion.commit()
+    cursor.close()
+    conexion.close()
 
+
+def editar_nota_sesion(id_nota, campo, valor):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+    campos_permitidos = [
+        'como_te_sientes', 'que_aprendiste', 'palabras_nuevas',
+        'personaje_destacado', 'escena_impacto', 'parecer_sesion',
+        'recuerdo_vida', 'notas_observaciones', 'respuesta_reflexion'
+    ]
+    if campo not in campos_permitidos:
+        return
+    cursor.execute(f"UPDATE notas_lectura SET {campo}=%s WHERE id_nota=%s", (valor, id_nota))
     conexion.commit()
     cursor.close()
     conexion.close()
