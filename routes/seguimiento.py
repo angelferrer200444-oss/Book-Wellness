@@ -104,5 +104,3 @@ def registrar_rutas(app):
             return jsonify([]), 400
         eventos = db.obtener_eventos_por_fecha(id_usuario, fecha)
         return jsonify(eventos)
-
-
