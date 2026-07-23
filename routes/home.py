@@ -1,4 +1,8 @@
-from flask import render_template, session
+from flask import render_template
+from flask import request
+from flask import session
+from flask import jsonify
+
 import db
 
 
@@ -113,3 +117,71 @@ def registrar_rutas(app):
             "agregar.html"
         )
 
+    # -------------------------
+    # FORMULUARIO REGISTRO
+    # -------------------------
+
+    @app.route("/formulario-principiante")
+    def formulario_principiante():
+        return render_template("HTML SESION/Formulario de principiante.html")
+
+    @app.route("/formulario-intermedio")
+    def formulario_intermedio():
+        return render_template("HTML SESION/Formulario intermedio.html")
+
+    @app.route("/formulario-experto")
+    def formulario_experto():
+        return render_template("HTML SESION/Formulario de experto.html")
+
+    @app.route("/api/guardar_encuesta", methods=["POST"])
+    def guardar_encuesta():
+
+        datos = request.json
+
+        conexion = db.obtener_conexion()
+        cursor = conexion.cursor()
+
+        cursor.execute("""
+            SELECT id_usuario
+            FROM usuario_encuesta_temporal
+            LIMIT 1
+        """)
+
+        fila = cursor.fetchone()
+
+        if not fila:
+
+            cursor.close()
+            conexion.close()
+
+            return jsonify({
+                "error": "No existe un usuario pendiente."
+            }), 400
+
+        id_usuario = fila[0]
+
+        cursor.close()
+        conexion.close()
+
+        db.guardar_respuestas_encuesta(
+            id_usuario,
+            datos["nivel"],
+            datos["respuestas"]
+        )
+
+        conexion = db.obtener_conexion()
+        cursor = conexion.cursor()
+
+        cursor.execute("""
+            DELETE FROM usuario_encuesta_temporal
+            WHERE id_usuario=%s
+        """, (id_usuario,))
+
+        conexion.commit()
+
+        cursor.close()
+        conexion.close()
+
+        return jsonify({
+            "mensaje": "Encuesta guardada correctamente."
+        }), 200
