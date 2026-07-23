@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Preferencias de Lectura - Book Wellness</title>
-    
-    <!-- CSS FORMULARIO -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/formulario.css') }}">
 
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/formulario.css') }}">
 </head>
 <body>
 
@@ -21,14 +19,11 @@
 
         <form id="formulario-preferencias">
 
-            <input
-                type="hidden"
-                name="nivel"
-                value="intermedio">
-            
+            <input type="hidden" name="nivel" value="intermedio">
+
             <!-- 1. Géneros -->
             <label class="select-label" for="genero">1. ¿Cuáles son tus géneros favoritos?</label>
-            <select name="genero" id="genero" class="nivel-select" required>
+            <select name="generos_favoritos" id="genero" class="nivel-select" required>
                 <option value="" disabled selected hidden>Selecciona un género...</option>
                 <option value="clasicos">Literatura Clásica</option>
                 <option value="misterio">Misterio y Suspenso</option>
@@ -39,11 +34,17 @@
 
             <!-- 2. Autor -->
             <label class="select-label" for="autor_favorito">2. ¿Qué autor disfrutas más?</label>
-            <input type="text" id="autor_favorito" name="autor_favorito" class="input-text" placeholder="Ej: Gabriel García Márquez, Agatha Christie..." required>
+            <input
+                type="text"
+                id="autor_favorito"
+                name="autor_favorito"
+                class="input-text"
+                placeholder="Ej: Gabriel García Márquez, Agatha Christie..."
+                required>
 
             <!-- 3. Cantidad de libros -->
             <label class="select-label" for="libros_ano">3. ¿Cuántos libros lees aproximadamente al año?</label>
-            <select name="libros_ano" id="libros_ano" class="nivel-select" required>
+            <select name="libros_anio" id="libros_ano" class="nivel-select" required>
                 <option value="" disabled selected hidden>Selecciona una opción...</option>
                 <option value="menos_5">Menos de 5 libros</option>
                 <option value="5_12">De 5 a 12 libros</option>
@@ -53,16 +54,16 @@
 
             <!-- 4. Formato -->
             <label class="select-label" for="formato">4. ¿Qué formato utilizas con mayor frecuencia?</label>
-            <select name="formato" id="formato" class="nivel-select" required>
+            <select name="formato_frecuente" id="formato" class="nivel-select" required>
                 <option value="" disabled selected hidden>Selecciona un formato...</option>
-                <option value="fisico">Libro físico </option>
+                <option value="fisico">Libro físico</option>
                 <option value="digital">Ebook</option>
                 <option value="audiolibro">Audiolibro</option>
             </select>
 
-            <!-- 5. Multitasking -->
+            <!-- 5. Varios libros -->
             <label class="select-label" for="multitasking">5. ¿Sueles leer varios libros al mismo tiempo?</label>
-            <select name="multitasking" id="multitasking" class="nivel-select" required>
+            <select name="varios_libros" id="multitasking" class="nivel-select" required>
                 <option value="" disabled selected hidden>Selecciona una opción...</option>
                 <option value="si">Sí, suelo alternar entre varios</option>
                 <option value="no">No, uno a la vez hasta terminarlo</option>
@@ -70,14 +71,13 @@
 
             <!-- 6. Abandono -->
             <label class="select-label" for="abandonar">6. ¿Qué tan seguido abandonas un libro?</label>
-            <select name="abandonar" id="abandonar" class="nivel-select" required>
+            <select name="abandona_libros" id="abandonar" class="nivel-select" required>
                 <option value="" disabled selected hidden>Selecciona una opción...</option>
                 <option value="nunca">Casi nunca (lo termino aunque no me guste)</option>
                 <option value="algunas">A veces (si realmente no me engancha)</option>
                 <option value="seguido">Muy seguido (si no me atrapa al inicio)</option>
             </select>
-
-            <!-- 7. Tipo de autor (Modificada a Sí / No) -->
+           <!-- 7. Autores nuevos -->
             <label class="select-label" for="autores_nuevos">7. ¿Prefieres descubrir autores nuevos?</label>
             <select name="autores_nuevos" id="autores_nuevos" class="nivel-select" required>
                 <option value="" disabled selected hidden>Selecciona una opción...</option>
@@ -88,34 +88,44 @@
             <!-- 8. Qué valoras -->
             <fieldset class="form-fieldset">
                 <legend class="select-label">8. ¿Qué valoras más al elegir un libro? (Puedes marcar varias)</legend>
+
                 <div class="checkbox-group">
-                    <label><input type="checkbox" name="valoras[]" value="historia"> Historia</label>
-                    <label><input type="checkbox" name="valoras[]" value="personajes"> Personajes</label>
-                    <label><input type="checkbox" name="valoras[]" value="mundo"> Mundo / Ambientación</label>
-                    <label><input type="checkbox" name="valoras[]" value="resenas"> Reseñas</label>
-                    <label><input type="checkbox" name="valoras[]" value="autor"> Autor</label>
+                    <label><input type="checkbox" name="valor_libro[]" value="historia"> Historia</label>
+                    <label><input type="checkbox" name="valor_libro[]" value="personajes"> Personajes</label>
+                    <label><input type="checkbox" name="valor_libro[]" value="mundo"> Mundo / Ambientación</label>
+                    <label><input type="checkbox" name="valor_libro[]" value="resenas"> Reseñas</label>
+                    <label><input type="checkbox" name="valor_libro[]" value="autor"> Autor</label>
                 </div>
             </fieldset>
 
-            <!-- 9. Retos (Modificada a Sí / No) -->
+            <!-- 9. Retos -->
             <label class="select-label" for="retos">9. ¿Te gusta participar en retos de lectura?</label>
-            <select name="retos" id="retos" class="nivel-select" required>
+            <select name="retos_lectura" id="retos" class="nivel-select" required>
                 <option value="" disabled selected hidden>Selecciona una opción...</option>
                 <option value="si">Sí, me motivan mucho</option>
                 <option value="no">No, prefiero leer a mi propio ritmo</option>
             </select>
 
-            <!-- 10. Expectativa Book Wellness -->
-            <label class="select-label" for="expectativa">10. ¿Qué esperas que Book Wellness haga por ti?</label>
-            <input type="text" id="expectativa_app" name="expectativa_app" placeholder="Ej: Mejore mi vocabulario, estadísticas más profundas..." required>
+            <!-- 10. Objetivo -->
+            <label class="select-label" for="expectativa_app">10. ¿Qué esperas que Book Wellness haga por ti?</label>
+            <input
+                type="text"
+                id="expectativa_app"
+                name="objetivo_bookwellness"
+                placeholder="Ej: Mejore mi vocabulario, estadísticas más profundas..."
+                required>
 
             <button type="submit">Obtener Recomendaciones</button>
 
             <div class="links">
                 <a href="#">← Volver al inicio</a>
             </div>
+
         </form>
+
     </div>
+
     <script src="/static/js/formulario.js"></script>
+
 </body>
 </html>
