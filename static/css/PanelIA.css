@@ -132,4 +132,24 @@
     transform:scale(.95);
 }
 
+/* CABECERA DEL PANEL IA */
 
+.bw-ai-header{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    margin-bottom:14px;
+
+    color:#705547;
+    font-family:'Cinzel', serif;
+    font-size:17px;
+}
+
+.bw-ai-header::before,
+.bw-ai-header::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:rgba(91,18,13,.15);
+}
