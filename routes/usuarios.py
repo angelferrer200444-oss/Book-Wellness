@@ -1,7 +1,6 @@
 from flask import request, jsonify, session
 import db
 
-
 def registrar_rutas(app):
 
     # -------------------------
@@ -24,28 +23,11 @@ def registrar_rutas(app):
                     "error": "Todos los campos son obligatorios"
                 }), 400
 
-            conexion = db.obtener_conexion()
-            cursor = conexion.cursor()
-
-            cursor.execute(
-                """
-                INSERT INTO usuarios
-                (nombre, correo, password)
-                VALUES (%s, %s, %s)
-                """,
-                (
-                    nombre_usuario,
-                    correo_usuario,
-                    password_usuario
-                )
+            id_generado = db.registrar_usuario(
+                nombre_usuario,
+                correo_usuario,
+                password_usuario
             )
-
-            conexion.commit()
-
-            id_generado = cursor.lastrowid
-
-            cursor.close()
-            conexion.close()
 
             return jsonify({
                 "mensaje": f"¡Usuario {nombre_usuario} registrado con éxito!",
@@ -69,6 +51,7 @@ def registrar_rutas(app):
             return jsonify({
                 "error": f"Error inesperado: {str(e)}"
             }), 500
+
 
 
     @app.route('/api/login', methods=['POST'])
