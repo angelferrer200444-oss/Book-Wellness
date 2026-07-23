@@ -5,13 +5,23 @@ Book Wellness - Notas
 {% endblock %}
 
 {% block css %}
-
-<!-- CSS STYLES NOTAS -->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/styles notas.css') }}">
-
 {% endblock %}
 
 {% block content %}
+
+<script>
+window.librosCarrusel = [
+    {% for libro in libros_leyendo %}
+    {
+        id: {{ libro.id_libro }},
+        titulo: "{{ libro.titulo }}",
+        autor: "{{ libro.autor }}",
+        portada: "{{ libro.portada or '' }}"
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+];
+</script>
 
 {% include "boton-atras.html" %}
 
@@ -29,19 +39,17 @@ Book Wellness - Notas
                 <div class="book-current-section">
                     
                     <div class="book-carousel-nav">
-                        <button type="button" id="prev-book-btn" class="nav-arrow-btn" title="Libro anterior">&lsaquo;</button>
-                        
-                        <div class="book-cover-placeholder">
+                        <button type="button" id="prev-book-btn" class="nav-arrow-btn">&lsaquo;</button>
+                        <div class="book-cover-placeholder" id="book-cover-display">
                             <span>Portada<br>Libro</span>
                         </div>
-                        
-                        <button type="button" id="next-book-btn" class="nav-arrow-btn" title="Siguiente libro">&rsaquo;</button>
+                        <button type="button" id="next-book-btn" class="nav-arrow-btn">&rsaquo;</button>
                     </div>
 
                     <div class="book-metadata-display">
-                        <div id="current-book-title" class="book-meta-title">El Alquimista</div>
-                        <div id="current-book-author" class="book-meta-author">Paulo Coelho</div>
-                        <div id="current-book-date" class="book-meta-date">Publicación: 1988</div>
+                        <div id="current-book-title" class="book-meta-title">-</div>
+                        <div id="current-book-author" class="book-meta-author">-</div>
+                        <div id="current-book-date" class="book-meta-date"></div>
                     </div>
 
                     <button type="button" id="toggle-form-btn" class="new-note-btn">Nueva Nota</button>
@@ -50,25 +58,21 @@ Book Wellness - Notas
                 <div id="note-form-container" class="note-form-container">
                     <form id="new-note-form" class="note-form">
                         <input type="text" id="note-title-input" placeholder="Título de la nota..." class="form-input" required>
-                        <textarea id="note-content-input" placeholder="¿Qué tienes en mente hoy? Escribe aquí tu nota..." class="form-textarea" rows="5" required></textarea>
-                        
+                        <textarea id="note-content-input" placeholder="Escribe aquí tu nota..." class="form-textarea" rows="5" required></textarea>
                         <div class="form-group">
-                            <label for="note-category-select" class="form-label">Categoría de la Nota:</label>
+                            <label for="note-category-select" class="form-label">Categoría:</label>
                             <select id="note-category-select" class="form-select" required>
-                                <!-- Categorías Base -->
                                 <option value="Reflexiones">Reflexiones</option>
                                 <option value="Personajes">Personajes</option>
                                 <option value="Citas">Citas</option>
                                 <option value="Vocabulario">Vocabulario</option>
-                                <!-- Categorías de Sección Lectura 3 -->
                                 <option value="Aprendizaje">Aprendizaje</option>
                                 <option value="Escenas">Escenas Impactantes</option>
                                 <option value="Sesión de Lectura">Impresión de la Sesión</option>
-                                <option value="Mi Vida">Conexión Personal (Mi Vida)</option>
+                                <option value="Mi Vida">Conexión Personal</option>
                                 <option value="Estado de Ánimo">Estado de Ánimo</option>
                             </select>
                         </div>
-
                         <div class="form-actions">
                             <button type="button" id="cancel-note-btn" class="cancel-note-btn">Cancelar</button>
                             <button type="submit" class="submit-note-btn">Guardar Nota</button>
@@ -80,21 +84,18 @@ Book Wellness - Notas
             <div class="right-notes-column">
                 <div class="notes-header-filter">
                     <h2 class="section-subtitle inline-subtitle">Notas Guardadas de</h2>
-                    
                     <div class="dropdown-filter-container">
                         <button type="button" id="dropdown-filter-btn" class="filter-option-btn">Todos <span class="arrow-down"></span></button>
                         <div id="dropdown-menu-options" class="dropdown-menu-options">
                             <button type="button" class="dropdown-item" data-value="Todos">Todos</button>
-                            <!-- Categorías Base -->
                             <button type="button" class="dropdown-item" data-value="Personajes">Personajes</button>
                             <button type="button" class="dropdown-item" data-value="Citas">Citas</button>
                             <button type="button" class="dropdown-item" data-value="Reflexiones">Reflexiones</button>
                             <button type="button" class="dropdown-item" data-value="Vocabulario">Vocabulario</button>
-                            <!-- Categorías de Sección Lectura 3 -->
                             <button type="button" class="dropdown-item" data-value="Aprendizaje">Aprendizaje</button>
                             <button type="button" class="dropdown-item" data-value="Escenas">Escenas Impactantes</button>
                             <button type="button" class="dropdown-item" data-value="Sesión de Lectura">Impresión de la Sesión</button>
-                            <button type="button" class="dropdown-item" data-value="Mi Vida">Conexión Personal (Mi Vida)</button>
+                            <button type="button" class="dropdown-item" data-value="Mi Vida">Conexión Personal</button>
                             <button type="button" class="dropdown-item" data-value="Estado de Ánimo">Estado de Ánimo</button>
                         </div>
                     </div>
@@ -102,40 +103,107 @@ Book Wellness - Notas
 
                 <div class="saved-notes-scroll">
                     <div id="notes-list-layout" class="notes-list-layout">
-                        
-                        <div class="note-card" data-category="Citas">
+                        <!-- Notas de sesión -->
+                        {% for nota in notas_sesion %}
+                        {% if nota.como_te_sientes %}
+                        <div class="note-card" data-category="Estado de Ánimo" data-id="{{ nota.id_nota }}" data-tipo="sesion" data-campo="como_te_sientes" data-libro="{{ nota.id_libro or '' }}">
                             <div class="note-header">
                                 <div class="note-title-wrapper">
-                                    <h3 class="note-title">Cita - El Alquimista</h3>
-                                    <span class="note-category-badge">Citas</span>
+                                    <h3 class="note-title">{{ nota.libro_titulo }} — Estado de ánimo</h3>
+                                    <span class="note-category-badge">Estado de Ánimo</span>
                                 </div>
-                                <span class="note-date">14 Jun 2026</span>
+                                <span class="note-date">{{ nota.fecha_creacion }}</span>
                             </div>
-                            <div class="note-body">
-                                <p>"Cuando quieres algo, todo el universo conspira para que realices tu deseo." Una frase hermosa para recordar en el capítulo 3.</p>
-                            </div>
+                            <div class="note-body"><p>{{ nota.como_te_sientes }}</p></div>
                             <div class="note-footer">
                                 <button class="note-action-btn edit-btn">Editar</button>
-                                <button class="note-action-btn delete-btn">Borrar</button>
+                                <button class="note-action-btn delete-btn" disabled style="opacity:0.4;">Borrar</button>
                             </div>
                         </div>
-
-                        <div class="note-card" data-category="Reflexiones">
+                        {% endif %}
+                        {% if nota.que_aprendiste %}
+                        <div class="note-card" data-category="Aprendizaje" data-id="{{ nota.id_nota }}" data-tipo="sesion" data-campo="que_aprendiste" data-libro="{{ nota.id_libro or '' }}">
                             <div class="note-header">
                                 <div class="note-title-wrapper">
-                                    <h3 class="note-title">Reflexión Cap. 5</h3>
+                                    <h3 class="note-title">{{ nota.libro_titulo }} — Aprendizaje</h3>
+                                    <span class="note-category-badge">Aprendizaje</span>
+                                </div>
+                                <span class="note-date">{{ nota.fecha_creacion }}</span>
+                            </div>
+                            <div class="note-body"><p>{{ nota.que_aprendiste }}</p></div>
+                            <div class="note-footer">
+                                <button class="note-action-btn edit-btn">Editar</button>
+                                <button class="note-action-btn delete-btn" disabled style="opacity:0.4;">Borrar</button>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if nota.escena_impacto %}
+                        <div class="note-card" data-category="Escenas" data-id="{{ nota.id_nota }}" data-tipo="sesion" data-campo="escena_impacto" data-libro="{{ nota.id_libro or '' }}">
+                            <div class="note-header">
+                                <div class="note-title-wrapper">
+                                    <h3 class="note-title">{{ nota.libro_titulo }} — Escena impactante</h3>
+                                    <span class="note-category-badge">Escenas</span>
+                                </div>
+                                <span class="note-date">{{ nota.fecha_creacion }}</span>
+                            </div>
+                            <div class="note-body"><p>{{ nota.escena_impacto }}</p></div>
+                            <div class="note-footer">
+                                <button class="note-action-btn edit-btn">Editar</button>
+                                <button class="note-action-btn delete-btn" disabled style="opacity:0.4;">Borrar</button>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if nota.recuerdo_vida %}
+                        <div class="note-card" data-category="Mi Vida" data-id="{{ nota.id_nota }}" data-tipo="sesion" data-campo="recuerdo_vida" data-libro="{{ nota.id_libro or '' }}">
+                            <div class="note-header">
+                                <div class="note-title-wrapper">
+                                    <h3 class="note-title">{{ nota.libro_titulo }} — Conexión personal</h3>
+                                    <span class="note-category-badge">Mi Vida</span>
+                                </div>
+                                <span class="note-date">{{ nota.fecha_creacion }}</span>
+                            </div>
+                            <div class="note-body"><p>{{ nota.recuerdo_vida }}</p></div>
+                            <div class="note-footer">
+                                <button class="note-action-btn edit-btn">Editar</button>
+                                <button class="note-action-btn delete-btn" disabled style="opacity:0.4;">Borrar</button>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if nota.notas_observaciones %}
+                        <div class="note-card" data-category="Reflexiones" data-id="{{ nota.id_nota }}" data-tipo="sesion" data-campo="notas_observaciones" data-libro="{{ nota.id_libro or '' }}">
+                            <div class="note-header">
+                                <div class="note-title-wrapper">
+                                    <h3 class="note-title">{{ nota.libro_titulo }} — Observaciones</h3>
                                     <span class="note-category-badge">Reflexiones</span>
                                 </div>
-                                <span class="note-date">12 Jun 2026</span>
+                                <span class="note-date">{{ nota.fecha_creacion }}</span>
                             </div>
-                            <div class="note-body">
-                                <p>El desarrollo del antagonista en este punto se siente un poco apresurado. Anotar si mejora en las próximas páginas.</p>
+                            <div class="note-body"><p>{{ nota.notas_observaciones }}</p></div>
+                            <div class="note-footer">
+                                <button class="note-action-btn edit-btn">Editar</button>
+                                <button class="note-action-btn delete-btn" disabled style="opacity:0.4;">Borrar</button>
                             </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+
+                        <!-- Notas manuales -->
+                        {% for nota in notas_manuales %}
+                        <div class="note-card" data-category="{{ nota.categoria }}" data-id="{{ nota.id_nota }}" data-tipo="manual"data-libro="{{ nota.id_libro or '' }}">
+                            <div class="note-header">
+                                <div class="note-title-wrapper">
+                                    <h3 class="note-title">{{ nota.titulo }}</h3>
+                                    <span class="note-category-badge">{{ nota.categoria }}</span>
+                                </div>
+                                <span class="note-date">{{ nota.fecha_creacion }}</span>
+                            </div>
+                            <div class="note-body"><p>{{ nota.contenido }}</p></div>
                             <div class="note-footer">
                                 <button class="note-action-btn edit-btn">Editar</button>
                                 <button class="note-action-btn delete-btn">Borrar</button>
                             </div>
                         </div>
+                        {% endfor %}
 
                     </div>
                 </div>
@@ -144,13 +212,8 @@ Book Wellness - Notas
         </div>
     </main>
 
-</body>
-</html>
-
 {% endblock %}
 
 {% block js %}
-
 <script src="{{ url_for('static', filename='js/notas.js') }}"></script>
-
 {% endblock %}
