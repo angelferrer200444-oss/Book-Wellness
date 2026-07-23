@@ -313,3 +313,48 @@ def registrar_rutas(app):
             return jsonify({
                 "error": str(e)
             }), 500
+
+    @app.route("/notas")
+    def notas():
+        id_usuario = session.get('id_usuario')
+        notas_manuales, notas_sesion = db.obtener_notas_usuario(id_usuario) if id_usuario else ([], [])
+        libros_leyendo = db.obtener_libros_usuario(id_usuario, 'leyendo') if id_usuario else []
+        return render_template(
+            "Botones superiores/notas.html",
+            notas_manuales=notas_manuales,
+            notas_sesion=notas_sesion,
+            libros_leyendo=libros_leyendo
+        )
+
+    @app.route('/api/agregar_nota', methods=['POST'])
+    def agregar_nota():
+        id_usuario = session.get('id_usuario')
+        if not id_usuario:
+            return jsonify({"error": "No hay sesión"}), 401
+        datos = request.json
+        id_nueva = db.agregar_nota_usuario(
+            id_usuario,
+            datos.get('id_libro'),
+            datos.get('titulo'),
+            datos.get('contenido'),
+            datos.get('categoria')
+        )
+        return jsonify({"id_nota": id_nueva}), 201
+
+    @app.route('/api/editar_nota', methods=['POST'])
+    def editar_nota():
+        datos = request.json
+        tipo = datos.get('tipo')
+        if tipo == 'manual':
+            db.editar_nota_usuario(datos.get('id_nota'), datos.get('titulo'), datos.get('contenido'), datos.get('categoria'))
+        elif tipo == 'sesion':
+            db.editar_nota_sesion(datos.get('id_nota'), datos.get('campo'), datos.get('valor'))
+        return jsonify({"mensaje": "Nota actualizada"}), 200
+
+    @app.route('/api/eliminar_nota', methods=['DELETE'])
+    def eliminar_nota():
+        datos = request.json
+        tipo = datos.get('tipo')
+        if tipo == 'manual':
+            db.eliminar_nota_usuario(datos.get('id_nota'))
+        return jsonify({"mensaje": "Nota eliminada"}), 200
