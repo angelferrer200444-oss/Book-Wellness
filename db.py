@@ -19,6 +19,19 @@ def registrar_usuario(nombre, correo, password):
     )
     conexion.commit()
     id_generado = cursor.lastrowid
+
+    cursor.execute("""
+        DELETE FROM usuario_encuesta_temporal
+    """)
+
+    cursor.execute("""
+        INSERT INTO usuario_encuesta_temporal
+        (id_usuario)
+        VALUES (%s)
+    """, (id_generado,))
+
+    conexion.commit()
+
     cursor.close()
     conexion.close()
     return id_generado
@@ -492,3 +505,68 @@ def obtener_eventos_por_fecha(id_usuario, fecha):
     cursor.close()
     conexion.close()
     return sesiones + limites
+
+
+# PreguntasPorNivel
+
+def obtener_preguntas_por_nivel(nivel):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT id_pregunta, nombre_campo
+        FROM preguntas_encuesta
+        WHERE nivel = %s
+        ORDER BY id_pregunta
+    """, (nivel,))
+
+
+    preguntas = cursor.fetchall()
+
+    cursor.close()
+    conexion.close()
+
+    return preguntas
+
+def guardar_respuestas_encuesta(id_usuario, nivel, respuestas):
+
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+
+    cursor.execute("""
+        SELECT id_pregunta, nombre_campo
+        FROM preguntas_encuesta
+        WHERE nivel = %s
+        ORDER BY id_pregunta
+    """, (nivel,))
+
+    preguntas = cursor.fetchall()
+
+    for id_pregunta, nombre_campo in preguntas:
+
+        print("Campo BD:", nombre_campo)
+        print("Existe en respuestas:", nombre_campo in respuestas)
+
+        respuesta = respuestas.get(nombre_campo)
+
+        print("Valor:", respuesta)
+
+
+        respuesta = respuestas.get(nombre_campo)
+
+        if isinstance(respuesta, list):
+            respuesta = ", ".join(respuesta)
+
+        cursor.execute("""
+            INSERT INTO respuestas_encuesta
+            (id_usuario, id_pregunta, respuesta)
+            VALUES (%s, %s, %s)
+        """, (
+            id_usuario,
+            id_pregunta,
+            respuesta
+        ))
+
+    conexion.commit()
+    cursor.close()
+    conexion.close()
