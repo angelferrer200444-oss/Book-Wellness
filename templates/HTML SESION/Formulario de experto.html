@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Preferencias de Lectura - Book Wellness</title>
-    <link rel="stylesheet" href="Formulario.css">
+
+    <!-- CSS FORMULARIO -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/formulario.css') }}">
+
 </head>
 <body>
 
@@ -16,7 +19,13 @@
         <h2>Preferencias</h2>
         <h3>Responde estas breves preguntas para recomendarte tu próximo libro ideal.</h3>
 
-        <form action="" method="POST">
+        <form id="formulario-preferencias">
+
+            <input
+                type="hidden"
+                name="nivel"
+                value="maestro">        
+            
             
             <label class="select-label" for="generos">1. ¿Cuáles son tus géneros favoritos?</label>
             <select name="generos" id="generos" class="nivel-select" required>
@@ -99,6 +108,6 @@
             </div>
         </form>
     </div>
-
+<script src="/static/js/formulario.js"></script>
 </body>
 </html>
