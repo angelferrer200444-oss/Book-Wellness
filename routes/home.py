@@ -86,13 +86,6 @@ def registrar_rutas(app):
         )
 
 
-    @app.route("/notas")
-    def notas():
-        return render_template(
-            "Botones superiores/notas.html"
-        )
-
-
     @app.route("/leidos")
     def leidos():
         return render_template(
