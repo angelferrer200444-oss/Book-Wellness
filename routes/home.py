@@ -4,7 +4,7 @@ from flask import session
 from flask import jsonify
 
 import db
-
+from models.Preferencias import Preferencias
 
 def registrar_rutas(app):
 
@@ -156,11 +156,14 @@ def registrar_rutas(app):
         cursor.close()
         conexion.close()
 
-        db.guardar_respuestas_encuesta(
-            id_usuario,
-            datos["nivel"],
-            datos["respuestas"]
+        preferencias = Preferencias(
+            id_usuario=id_usuario,
+            nivel=datos["nivel"],
+            respuestas=datos["respuestas"]
         )
+
+        preferencias.guardar()
+
 
         conexion = db.obtener_conexion()
         cursor = conexion.cursor()
