@@ -1,5 +1,8 @@
 from flask import request, jsonify, session
+
 import db
+from models.Usuario import Usuario
+
 
 def registrar_rutas(app):
 
@@ -14,20 +17,22 @@ def registrar_rutas(app):
 
             datos = request.json
 
-            nombre_usuario = datos.get('nombre')
-            correo_usuario = datos.get('correo')
-            password_usuario = datos.get('password')
+            nombre_usuario = datos.get("nombre")
+            correo_usuario = datos.get("correo")
+            password_usuario = datos.get("password")
 
             if not nombre_usuario or not correo_usuario or not password_usuario:
                 return jsonify({
                     "error": "Todos los campos son obligatorios"
                 }), 400
 
-            id_generado = db.registrar_usuario(
-                nombre_usuario,
-                correo_usuario,
-                password_usuario
+            usuario = Usuario(
+                nombre=nombre_usuario,
+                correo=correo_usuario,
+                password=password_usuario
             )
+
+            id_generado = usuario.registrar()
 
             return jsonify({
                 "mensaje": f"¡Usuario {nombre_usuario} registrado con éxito!",
@@ -53,34 +58,41 @@ def registrar_rutas(app):
             }), 500
 
 
-
     @app.route('/api/login', methods=['POST'])
     def login_usuario():
 
         datos = request.json
-        correo = datos.get('correo')
-        password = datos.get('password')
+
+        correo = datos.get("correo")
+        password = datos.get("password")
 
         if not correo or not password:
-            return jsonify({"error": "Rellena todos los campos"}), 400
+            return jsonify({
+                "error": "Rellena todos los campos"
+            }), 400
 
-        usuario = db.buscar_usuario(correo, password)
+        usuario = Usuario.iniciar_sesion(
+            correo,
+            password
+        )
 
         if usuario:
 
-            session['id_usuario'] = usuario['id_usuario']
-            session['nombre'] = usuario['nombre']
+            session["id_usuario"] = usuario.id_usuario
+            session["nombre"] = usuario.nombre
 
             return jsonify({
-                "mensaje": f"¡Bienvenido, {usuario['nombre']}!",
-                "usuario": usuario
+                "mensaje": f"¡Bienvenido, {usuario.nombre}!",
+                "usuario": {
+                    "id_usuario": usuario.id_usuario,
+                    "nombre": usuario.nombre,
+                    "correo": usuario.correo
+                }
             }), 200
 
-        else:
-
-            return jsonify({
-                "error": "Credenciales incorrectas"
-            }), 401
+        return jsonify({
+            "error": "Credenciales incorrectas"
+        }), 401
 
 
     @app.route('/api/logout', methods=['POST'])
