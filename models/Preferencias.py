@@ -1,5 +1,4 @@
-import db
-
+from db import obtener_conexion
 
 class Preferencias:
 
@@ -15,39 +14,110 @@ class Preferencias:
 
 
     @classmethod
+    def obtener_usuario_pendiente(cls):
+        """
+        Obtiene el ID del usuario que debe
+        completar la encuesta.
+        """
+
+        conexion = obtener_conexion()
+        cursor = conexion.cursor()
+
+        cursor.execute("""
+            SELECT id_usuario
+            FROM usuario_encuesta_temporal
+            LIMIT 1
+        """)
+
+        fila = cursor.fetchone()
+
+        cursor.close()
+        conexion.close()
+
+        if not fila:
+            return None
+
+        return fila[0]
+
+
+    @classmethod
     def obtener_preguntas(cls, nivel):
         """
         Obtiene las preguntas correspondientes
         al nivel seleccionado.
         """
 
-        print(f"[Preferencias] Obteniendo preguntas del nivel: {nivel}")
+        conexion = obtener_conexion()
+        cursor = conexion.cursor(dictionary=True)
 
-        return db.obtener_preguntas_por_nivel(
-            nivel
-        )
+        cursor.execute("""
+            SELECT id_pregunta, nombre_campo
+            FROM preguntas_encuesta
+            WHERE nivel = %s
+            ORDER BY id_pregunta
+        """, (nivel,))
+
+        preguntas = cursor.fetchall()
+
+        cursor.close()
+        conexion.close()
+
+        return preguntas
 
 
     def guardar(self):
         """
-        Guarda las respuestas de la encuesta
-        del usuario.
+        Guarda las respuestas de la encuesta.
         """
 
-        print(f"[Preferencias] Guardando respuestas del usuario {self.id_usuario}")
+        conexion = obtener_conexion()
+        cursor = conexion.cursor()
 
-        # Llama al método para comprobar que pasa por la clase.
-        # De momento no usamos el resultado porque db.py
-        # ya vuelve a consultar las preguntas.
-        self.obtener_preguntas(
+        preguntas = self.obtener_preguntas(
             self.nivel
         )
 
-        db.guardar_respuestas_encuesta(
-            self.id_usuario,
-            self.nivel,
-            self.respuestas
-        )
+        for pregunta in preguntas:
 
-        print("[Preferencias] Respuestas guardadas correctamente.")
+            respuesta = self.respuestas.get(
+                pregunta["nombre_campo"]
+            )
 
+            if isinstance(respuesta, list):
+                respuesta = ", ".join(respuesta)
+
+            cursor.execute("""
+                INSERT INTO respuestas_encuesta
+                (id_usuario, id_pregunta, respuesta)
+                VALUES (%s, %s, %s)
+            """, (
+                self.id_usuario,
+                pregunta["id_pregunta"],
+                respuesta
+            ))
+
+        conexion.commit()
+
+        cursor.close()
+        conexion.close()
+
+
+    @classmethod
+    def limpiar_usuario_pendiente(cls, id_usuario):
+        """
+        Elimina al usuario de la tabla temporal
+        una vez finalizada la encuesta.
+        """
+
+        conexion = obtener_conexion()
+        cursor = conexion.cursor()
+
+        cursor.execute("""
+            DELETE FROM usuario_encuesta_temporal
+            WHERE id_usuario = %s
+        """, (id_usuario,))
+
+        conexion.commit()
+
+        cursor.close()
+        conexion.close()
