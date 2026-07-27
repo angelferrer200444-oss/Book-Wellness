@@ -126,35 +126,22 @@ def registrar_rutas(app):
     def formulario_experto():
         return render_template("HTML SESION/Formulario de experto.html")
 
+    # -------------------------
+    # FORMULUARIO REGISTRO GUARDADO
+    # -------------------------
+
     @app.route("/api/guardar_encuesta", methods=["POST"])
     def guardar_encuesta():
 
         datos = request.json
 
-        conexion = db.obtener_conexion()
-        cursor = conexion.cursor()
+        id_usuario = Preferencias.obtener_usuario_pendiente()
 
-        cursor.execute("""
-            SELECT id_usuario
-            FROM usuario_encuesta_temporal
-            LIMIT 1
-        """)
-
-        fila = cursor.fetchone()
-
-        if not fila:
-
-            cursor.close()
-            conexion.close()
+        if not id_usuario:
 
             return jsonify({
                 "error": "No existe un usuario pendiente."
             }), 400
-
-        id_usuario = fila[0]
-
-        cursor.close()
-        conexion.close()
 
         preferencias = Preferencias(
             id_usuario=id_usuario,
@@ -164,19 +151,9 @@ def registrar_rutas(app):
 
         preferencias.guardar()
 
-
-        conexion = db.obtener_conexion()
-        cursor = conexion.cursor()
-
-        cursor.execute("""
-            DELETE FROM usuario_encuesta_temporal
-            WHERE id_usuario=%s
-        """, (id_usuario,))
-
-        conexion.commit()
-
-        cursor.close()
-        conexion.close()
+        Preferencias.limpiar_usuario_pendiente(
+            id_usuario
+        )
 
         return jsonify({
             "mensaje": "Encuesta guardada correctamente."
