@@ -1,6 +1,7 @@
 from flask import request, jsonify, session
 
-import db
+import mysql.connector
+
 from models.Usuario import Usuario
 
 
@@ -10,7 +11,7 @@ def registrar_rutas(app):
     # API USUARIOS
     # -------------------------
 
-    @app.route('/api/registrar_usuario', methods=['POST'])
+    @app.route("/api/registrar_usuario", methods=["POST"])
     def registrar_usuario():
 
         try:
@@ -39,13 +40,13 @@ def registrar_rutas(app):
                 "id_asignado": id_generado
             }), 201
 
-        except db.mysql.connector.errors.IntegrityError:
+        except mysql.connector.errors.IntegrityError:
 
             return jsonify({
                 "error": "Este correo ya está registrado"
             }), 409
 
-        except db.mysql.connector.Error as err:
+        except mysql.connector.Error as err:
 
             return jsonify({
                 "error": f"Error en MySQL: {err.msg}"
@@ -58,7 +59,7 @@ def registrar_rutas(app):
             }), 500
 
 
-    @app.route('/api/login', methods=['POST'])
+    @app.route("/api/login", methods=["POST"])
     def login_usuario():
 
         datos = request.json
@@ -95,7 +96,7 @@ def registrar_rutas(app):
         }), 401
 
 
-    @app.route('/api/logout', methods=['POST'])
+    @app.route("/api/logout", methods=["POST"])
     def logout():
 
         session.clear()
