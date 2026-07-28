@@ -1,5 +1,5 @@
 from unittest import case
-
+from models.SeccionLectura import SeccionLectura
 from flask import app, render_template, request, jsonify, session
 
 import db
@@ -87,7 +87,7 @@ def registrar_rutas(app):
 
             if id_usuario:
 
-                lectura = db.obtener_lectura_en_progreso(
+                lectura = SeccionLectura.obtener(
                     id_usuario,
                     id_libro
                 )
@@ -130,10 +130,27 @@ def registrar_rutas(app):
             return jsonify({"error": "No hay sesión activa"}), 401
 
         try:
-            db.actualizar_progreso_lectura(id_usuario, id_libro, pagina_actual, capitulos_leidos, fecha_inicio)
-            return jsonify({"mensaje": "Progreso actualizado"}), 200
+
+            lectura = SeccionLectura(
+                id_usuario=id_usuario,
+                id_libro=id_libro,
+                pagina_actual=pagina_actual,
+                capitulos_leidos=capitulos_leidos,
+                fecha_inicio=fecha_inicio
+            )
+
+            lectura.actualizar_progreso()
+
+            return jsonify({
+                "mensaje": "Progreso actualizado"
+            }), 200
+
         except Exception as e:
-            return jsonify({"error": str(e)}), 500
+
+            return jsonify({
+                "error": str(e)
+            }), 500
+
         
 
 
@@ -246,7 +263,7 @@ def registrar_rutas(app):
 
         if id_libro and id_usuario:
 
-            lectura = db.obtener_lectura_en_progreso(
+            lectura = SeccionLectura.obtener(
                 id_usuario,
                 id_libro
             )
@@ -276,7 +293,7 @@ def registrar_rutas(app):
 
         try:
 
-            id_lectura = db.guardar_lectura(
+            lectura = SeccionLectura(
                 id_usuario=id_usuario,
                 id_libro=datos.get('id_libro'),
                 tiempo_minutos=datos.get('tiempo_minutos'),
@@ -286,6 +303,9 @@ def registrar_rutas(app):
                 pagina_actual=datos.get('pagina_actual', 0),
                 capitulos_leidos=datos.get('capitulos_leidos', 0)
             )
+
+            id_lectura = lectura.guardar()
+
 
             # Guardar la reflexión únicamente si llegó información
             if (
