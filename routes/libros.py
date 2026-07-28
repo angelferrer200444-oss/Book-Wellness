@@ -4,6 +4,7 @@ import Libros as libros_api
 from GoogleLibros import GoogleBooksAPI
 
 import db
+from models.Libro import Libro
 from routes.utilidades import obtener_json
 
 
@@ -35,10 +36,11 @@ def registrar_rutas(app):
 
         try:
 
-            libros = google_api.buscar_libros(texto)
+            libros = Libro.buscar_google(texto)
 
             if not libros:
-                libros = openlibrary_api.buscar_libros(texto)
+                libros = Libro.buscar_openlibrary(texto)
+
 
             return jsonify(libros)
 
@@ -81,46 +83,35 @@ def registrar_rutas(app):
 
         libro_bd = None
         if id_google:
-            libro_bd = db.obtener_libro_completo(id_google=id_google)
+            libro_bd = Libro.obtener_completo(id_google=id_google)
         elif clave:
-            libro_bd = db.obtener_libro_completo(key_libro=clave)
+            libro_bd = Libro.obtener_completo(key_libro=clave)
 
 
         if id_libro:
-            libro_bd = db.obtener_libro(id_libro)
+            libro_bd = Libro.obtener(id_libro)
             if libro_bd:
-                return jsonify({
-                    "titulo": libro_bd.get("titulo", "Sin título"),
-                    "subtitulo": "",
-                    "descripcion": libro_bd.get("descripcion", "Descripción no disponible"),
-                    "autor": libro_bd.get("autor", "Autor desconocido"),
-                    "anio": libro_bd.get("anio", "Desconocido"),
-                    "paginas": libro_bd.get("paginas_totales", "Desconocido"),
-                    "generos": libro_bd.get("genero", "No disponible"),
-                    "pais": "Desconocido",
-                    "formato": libro_bd.get("formato", "Desconocido"),
-                    "portada": libro_bd.get("portada", "")
-                })
+                return jsonify(
+                    Libro.formatear_respuesta(
+                        libro_bd
+                    )
+                )
+
         
         if libro_bd:
-            return jsonify({
-                "titulo": libro_bd.get("titulo", "Sin título"),
-                "subtitulo": "",
-                "descripcion": libro_bd.get("descripcion", "Descripción no disponible"),
-                "autor": libro_bd.get("autor", "Autor desconocido"),
-                "anio": libro_bd.get("anio", "Desconocido"),
-                "paginas": libro_bd.get("paginas_totales", "Desconocido"),
-                "generos": libro_bd.get("genero", "No disponible"),
-                "pais": "Desconocido",
-                "formato": libro_bd.get("formato", "Desconocido"),
-                "portada": libro_bd.get("portada", "")
-            })
+
+            return jsonify(
+                Libro.formatear_respuesta(
+                    libro_bd
+                )
+            )
+
 
         if id_google:
 
             try:
 
-                libro = google_api.obtener_libro(id_google)
+                libro = Libro.obtener_google(id_google)
 
                 return jsonify(libro)
 
@@ -390,7 +381,7 @@ def registrar_rutas(app):
         id_libro = request.args.get("id_libro")
         libro = None
         if id_libro:
-            libro = db.obtener_libro(id_libro)
+            libro = Libro.obtener(id_libro)
         return render_template("libros.html",
             clave=None,
             portada=libro.get('portada') if libro else None,
