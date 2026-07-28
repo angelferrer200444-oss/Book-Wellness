@@ -1,5 +1,6 @@
 from flask import render_template, request, jsonify, session
 import db
+from models.Libro import Libro
 
 import cloudinary
 import cloudinary.uploader
@@ -9,6 +10,7 @@ cloudinary.config(
     api_key = "",
     api_secret = ""  
 )
+
 # -------------------------
 # ELIMINAR LIBRO
 # -------------------------
@@ -45,21 +47,39 @@ def registrar_rutas(app):
                     print("ERROR CLOUDINARY:", e)
 
         try:
-                    resultado = db.agregar_libro(
-                        id_usuario, titulo, autor, descripcion, portada,
-                        categoria, None, paginas, None, genero, anio, True, formato
-                    )
+            # 1. Crear la instancia con todos los datos
+            libro = Libro(
+                id_usuario=id_usuario,
+                titulo=titulo,
+                autor=autor,
+                descripcion=descripcion,
+                portada=portada,
+                categoria=categoria,
+                key_libro=None,       # manual no tiene key_libro
+                paginas=paginas,
+                id_google=None,       # manual no tiene id_google
+                genero=genero,
+                anio=anio,
+                es_manual=True,       # ← True porque es agregado manual
+                formato=formato
+            )
+            
+            # 2. Guardar (0 argumentos)
+            resultado = libro.guardar()  # Devuelve id_nuevo o False
 
-                    if resultado:
-                        if capitulos:
-                        
-                            db.actualizar_datos_libro(resultado, num_caps=int(capitulos))
-                        db.invalidar_cache_recomendaciones(id_usuario)
-                        return jsonify({"mensaje": "Libro agregado correctamente"}), 201
-                    return jsonify({"error": "Este libro ya está en tu lista"}), 409
+            if resultado:
+                if capitulos:
+                    # .actualizar_datos SÍ es estático, así que está bien
+                    Libro.actualizar_datos(resultado, num_caps=int(capitulos))
+                    
+                db.invalidar_cache_recomendaciones(id_usuario)
+                return jsonify({"mensaje": "Libro agregado correctamente"}), 201
+            
+            return jsonify({"error": "Este libro ya está en tu lista"}), 409
 
         except Exception as e:
             return jsonify({"error": str(e)}), 500
+
     
     
     @app.route('/api/eliminar_libro', methods=['DELETE'])
@@ -79,7 +99,7 @@ def registrar_rutas(app):
             }), 400
 
         try:
-            db.eliminar_libro(
+            Libro.eliminar(
                 int(id_libro),
                 int(id_usuario)
             )
