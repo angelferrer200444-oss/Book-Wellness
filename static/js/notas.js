@@ -23,25 +23,25 @@ document.addEventListener('DOMContentLoaded', () => {
     // CARRUSEL
     // ========================
     function actualizarCarrusel() {
-        if(libros.length === 0) {
-            currentBookTitle.textContent = 'Sin libros';
-            currentBookAuthor.textContent = '';
-            return;
-        }
-
-        const libro = libros[carruselIndex];
-        currentLibroId = libro.id;
-        currentBookTitle.textContent = libro.titulo;
-        currentBookAuthor.textContent = libro.autor;
-
-        if(libro.portada) {
-            bookCoverDisplay.innerHTML = `<img src="${libro.portada}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`;
-        } else {
-            bookCoverDisplay.innerHTML = '<span>Portada<br>Libro</span>';
-        }
-
-        filterNotes(currentSelectedCategory);
+    if(libros.length === 0) {
+        currentBookTitle.textContent = 'Sin libros';
+        currentBookAuthor.textContent = '';
+        return;
     }
+
+    const libro = libros[carruselIndex];
+    currentLibroId = libro.id;
+    currentBookTitle.textContent = libro.titulo;
+    currentBookAuthor.textContent = libro.autor;
+
+    if(libro.portada) {
+        bookCoverDisplay.innerHTML = `<img src="${libro.portada}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`;
+    } else {
+        bookCoverDisplay.innerHTML = '<span>Portada<br>Libro</span>';
+    }
+
+    filterNotes(currentSelectedCategory, currentLibroId);
+}
 
     prevBookBtn.addEventListener('click', () => {
         if(libros.length === 0) return;
@@ -58,18 +58,39 @@ document.addEventListener('DOMContentLoaded', () => {
     // ========================
     // FILTRADO
     // ========================
-function filterNotes(category) {
-    document.querySelectorAll('.note-card').forEach(note => {
-        const cat = note.getAttribute('data-category');
-        const libroId = note.getAttribute('data-libro');
-        const libroMatch = currentLibroId === null || String(libroId) === String(currentLibroId);
-        const catMatch = category === "Todos" || cat === category;
-        if(libroMatch && catMatch) {
-            note.style.setProperty('display', 'flex', 'important');
-        } else {
-            note.style.setProperty('display', 'none', 'important');
-        }
-    });
+async function filterNotes(categoria, idLibro) {
+    const params = new URLSearchParams();
+    if(idLibro) params.append('id_libro', idLibro);
+    if(categoria && categoria !== 'Todos') params.append('categoria', categoria);
+
+    const res = await fetch(`/api/notas?${params.toString()}`);
+    const notas = await res.json();
+
+    const lista = document.getElementById('notes-list-layout');
+    
+    if(notas.length === 0) {
+        lista.innerHTML = '<p style="opacity:0.5; padding:20px;">Sin notas para este filtro.</p>';
+        return;
+    }
+
+    lista.innerHTML = notas.map(nota => `
+        <div class="note-card" data-category="${nota.categoria}" data-id="${nota.id_nota}" data-tipo="manual" data-libro="${nota.id_libro || ''}">
+            <div class="note-header">
+                <div class="note-title-wrapper">
+                    <h3 class="note-title">${nota.titulo}</h3>
+                    <span class="note-category-badge">${nota.categoria}</span>
+                </div>
+                <span class="note-date">${nota.fecha_creacion}</span>
+            </div>
+            <div class="note-body"><p>${nota.contenido}</p></div>
+            <div class="note-footer">
+                <button class="note-action-btn edit-btn">Editar</button>
+                <button class="note-action-btn delete-btn">Borrar</button>
+            </div>
+        </div>
+    `).join('');
+
+    document.querySelectorAll('.note-card').forEach(card => asignarEventos(card));
 }
     dropdownFilterBtn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -78,14 +99,14 @@ function filterNotes(category) {
     });
 
     document.querySelectorAll('.dropdown-item').forEach(item => {
-        item.addEventListener('click', (e) => {
-            currentSelectedCategory = e.target.getAttribute('data-value');
-            dropdownFilterBtn.innerHTML = `${e.target.textContent} <span class="arrow-down"></span>`;
-            dropdownMenuOptions.classList.remove('show-menu');
-            dropdownFilterBtn.classList.remove('active-filter');
-            filterNotes(currentSelectedCategory);
-        });
+    item.addEventListener('click', (e) => {
+        currentSelectedCategory = e.target.getAttribute('data-value');
+        dropdownFilterBtn.innerHTML = `${e.target.textContent} <span class="arrow-down"></span>`;
+        dropdownMenuOptions.classList.remove('show-menu');
+        dropdownFilterBtn.classList.remove('active-filter');
+        filterNotes(currentSelectedCategory, currentLibroId);
     });
+});
 
     document.addEventListener('click', () => {
         dropdownMenuOptions.classList.remove('show-menu');
