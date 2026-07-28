@@ -3,7 +3,7 @@ from flask import request
 from flask import session
 from flask import jsonify
 from models.Libro import Libro
-
+from models.estadistica import Estadistica
 import db
 from models.Preferencias import Preferencias
 
@@ -24,7 +24,7 @@ def registrar_rutas(app):
         if id_usuario:
             libros_leyendo = Libro.obtener_libros_usuario(id_usuario, "leyendo")
             libros_pendientes = Libro.obtener_libros_usuario(id_usuario, "pendiente")
-            perfil = db.obtener_perfil_lectura(id_usuario)
+            perfil = Estadistica.consultar(id_usuario)
             racha_actual = perfil['racha_actual']
 
         return render_template(
@@ -73,11 +73,8 @@ def registrar_rutas(app):
     @app.route("/estadisticas")
     def estadisticas():
         id_usuario = session.get('id_usuario')
-        perfil = db.obtener_perfil_lectura(id_usuario) if id_usuario else None
-        return render_template(
-            "Botones superiores/estadisticas.html",
-            perfil=perfil
-        )
+        perfil = Estadistica.consultar(id_usuario) if id_usuario else None
+        return render_template("Botones superiores/estadisticas.html", perfil=perfil)
 
 
     @app.route("/objetivo")

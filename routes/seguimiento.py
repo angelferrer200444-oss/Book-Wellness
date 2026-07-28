@@ -5,6 +5,8 @@ from models.Libro import Libro
 import cloudinary
 import cloudinary.uploader
 
+from models.seguimiento import Seguimiento
+
 cloudinary.config(
     cloud_name = "jklaybsr",
     api_key = "",
@@ -122,5 +124,5 @@ def registrar_rutas(app):
         fecha = request.args.get('fecha')
         if not id_usuario or not fecha:
             return jsonify([]), 400
-        eventos = db.obtener_eventos_por_fecha(id_usuario, fecha)
+        eventos = Seguimiento.obtener_eventos_por_fecha(id_usuario, fecha)
         return jsonify(eventos)

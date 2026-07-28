@@ -1,8 +1,12 @@
+from unittest import case
+
 from flask import app, render_template, request, jsonify, session
 
 import db
 
+from models.calendario import Calendario
 from models.Libro import Libro
+from models.Notas import Nota
 
 def registrar_rutas(app):
 
@@ -180,7 +184,7 @@ def registrar_rutas(app):
 
         try:
 
-            db.guardar_fecha_limite(
+            Calendario.guardar_fecha_limite(
                 id_usuario,
                 id_libro,
                 fecha_limite
@@ -201,7 +205,7 @@ def registrar_rutas(app):
         id_usuario = session.get('id_usuario')
         if not id_usuario:
             return jsonify({}), 401
-        fechas = db.obtener_fechas_calendario(id_usuario)
+        fechas = Calendario.obtener_fechas_calendario(id_usuario)
         return jsonify(fechas)
 
 
@@ -313,8 +317,8 @@ def registrar_rutas(app):
     @app.route("/notas")
     def notas():
         id_usuario = session.get('id_usuario')
-        notas_manuales, notas_sesion = db.obtener_notas_usuario(id_usuario) if id_usuario else ([], [])
-        libros_leyendo = Libro.obtener_libros_usuario(id_usuario, 'leyendo') if id_usuario else []
+        notas_manuales, notas_sesion = Nota.obtener_todas(id_usuario) if id_usuario else ([], [])
+        libros_leyendo = db.obtener_libros_usuario(id_usuario, 'leyendo') if id_usuario else []
         return render_template(
             "Botones superiores/notas.html",
             notas_manuales=notas_manuales,
@@ -328,29 +332,39 @@ def registrar_rutas(app):
         if not id_usuario:
             return jsonify({"error": "No hay sesión"}), 401
         datos = request.json
-        id_nueva = db.agregar_nota_usuario(
+        nota = Nota.crear(
             id_usuario,
             datos.get('id_libro'),
             datos.get('titulo'),
             datos.get('contenido'),
             datos.get('categoria')
         )
-        return jsonify({"id_nota": id_nueva}), 201
+        return jsonify({"id_nota": nota.id_nota}), 201
 
     @app.route('/api/editar_nota', methods=['POST'])
     def editar_nota():
         datos = request.json
         tipo = datos.get('tipo')
+        nota = Nota(id_nota=datos.get('id_nota'), tipo=tipo)
         if tipo == 'manual':
-            db.editar_nota_usuario(datos.get('id_nota'), datos.get('titulo'), datos.get('contenido'), datos.get('categoria'))
+            nota.editar(datos.get('titulo'), datos.get('contenido'), datos.get('categoria'))
         elif tipo == 'sesion':
-            db.editar_nota_sesion(datos.get('id_nota'), datos.get('campo'), datos.get('valor'))
+            nota.editar_campo_sesion(datos.get('campo'), datos.get('valor'))
         return jsonify({"mensaje": "Nota actualizada"}), 200
 
     @app.route('/api/eliminar_nota', methods=['DELETE'])
     def eliminar_nota():
         datos = request.json
-        tipo = datos.get('tipo')
-        if tipo == 'manual':
-            db.eliminar_nota_usuario(datos.get('id_nota'))
+        nota = Nota(id_nota=datos.get('id_nota'), tipo=datos.get('tipo'))
+        nota.eliminar()
         return jsonify({"mensaje": "Nota eliminada"}), 200
+
+    @app.route('/api/notas')
+    def api_notas():
+        id_usuario = session.get('id_usuario')
+        if not id_usuario:
+            return jsonify([]), 401
+        id_libro = request.args.get('id_libro')
+        categoria = request.args.get('categoria')
+        notas = Nota.filtrar(id_usuario, id_libro, categoria)
+        return jsonify(notas)
