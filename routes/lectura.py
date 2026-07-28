@@ -1,5 +1,8 @@
 from flask import app, render_template, request, jsonify, session
+
 import db
+
+from models.Libro import Libro
 
 def registrar_rutas(app):
 
@@ -30,38 +33,31 @@ def registrar_rutas(app):
             }), 400
 
         try:
-
-            resultado = db.agregar_libro(
-                id_usuario,
-                titulo,
-                autor,
-                descripcion,
-                portada,
-                categoria,
-                key_libro,
-                paginas,
-                id_google,
-                genero,
-                anio
+            nuevo_libro = Libro(
+                id_usuario=id_usuario,
+                titulo=titulo,
+                autor=autor,
+                descripcion=descripcion,
+                portada=portada,
+                categoria=categoria,
+                key_libro=key_libro,
+                paginas=paginas,
+                id_google=id_google,
+                genero=genero,
+                anio=anio
             )
+            
+            resultado = nuevo_libro.guardar()  # ← Este es el método que guarda en BD
 
-            if resultado:
+            if resultado:  # guardar() devuelve el id_nuevo o False
                 db.invalidar_cache_recomendaciones(id_usuario)
-
-                return jsonify({
-                    
-                    "mensaje": "Libro agregado correctamente"
-                }), 201
-
-            return jsonify({
-                "error": "Este libro ya está en tu lista"
-            }), 409
+                return jsonify({"mensaje": "Libro agregado correctamente"}), 201
+            else:
+                return jsonify({"error": "Este libro ya está en tu lista"}), 409
 
         except Exception as e:
+            return jsonify({"error": str(e)}), 500
 
-            return jsonify({
-                "error": str(e)
-            }), 500
 
 
     # -------------------------
@@ -83,7 +79,7 @@ def registrar_rutas(app):
 
         if id_libro:
 
-            libro = db.obtener_libro(id_libro)
+            libro = Libro.obtener(id_libro)
 
             if id_usuario:
 
@@ -150,7 +146,7 @@ def registrar_rutas(app):
 
         try:
 
-            db.actualizar_datos_libro(
+            Libro.actualizar_datos(
                 id_libro,
                 paginas_totales,
                 num_caps,
@@ -228,7 +224,7 @@ def registrar_rutas(app):
         libro = None
 
         if id_libro:
-            libro = db.obtener_libro(id_libro)
+            libro = Libro.obtener(id_libro)
 
         return render_template(
             "seccion-lectura/seccion2-lectura.html",
@@ -318,7 +314,7 @@ def registrar_rutas(app):
     def notas():
         id_usuario = session.get('id_usuario')
         notas_manuales, notas_sesion = db.obtener_notas_usuario(id_usuario) if id_usuario else ([], [])
-        libros_leyendo = db.obtener_libros_usuario(id_usuario, 'leyendo') if id_usuario else []
+        libros_leyendo = Libro.obtener_libros_usuario(id_usuario, 'leyendo') if id_usuario else []
         return render_template(
             "Botones superiores/notas.html",
             notas_manuales=notas_manuales,
