@@ -2,6 +2,7 @@ from flask import render_template
 from flask import request
 from flask import session
 from flask import jsonify
+from models.Libro import Libro
 
 import db
 from models.Preferencias import Preferencias
@@ -21,8 +22,8 @@ def registrar_rutas(app):
         id_usuario = session.get("id_usuario")
 
         if id_usuario:
-            libros_leyendo = db.obtener_libros_usuario(id_usuario, "leyendo")
-            libros_pendientes = db.obtener_libros_usuario(id_usuario, "pendiente")
+            libros_leyendo = Libro.obtener_libros_usuario(id_usuario, "leyendo")
+            libros_pendientes = Libro.obtener_libros_usuario(id_usuario, "pendiente")
             perfil = db.obtener_perfil_lectura(id_usuario)
             racha_actual = perfil['racha_actual']
 
