@@ -232,7 +232,7 @@ def registrar_rutas(app):
         fecha = request.args.get('fecha')
         if not id_usuario or not fecha:
             return jsonify([]), 400
-        libros = db.obtener_libros_por_fecha(id_usuario, fecha)
+        libros = Calendario.obtener_libros_por_fecha(id_usuario, fecha)
         return jsonify(libros)
 
 
