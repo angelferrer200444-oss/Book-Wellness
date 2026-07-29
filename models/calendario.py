@@ -73,3 +73,14 @@ class Calendario:
         cursor.close()
         conexion.close()
         return libros
+    @staticmethod
+    def guardar_fecha_limite(id_usuario, id_libro, fecha_limite):
+        conexion = obtener_conexion()
+        cursor = conexion.cursor()
+        cursor.execute("""
+            UPDATE lecturas SET fecha_limite = %s
+            WHERE id_usuario = %s AND id_libro = %s
+        """, (fecha_limite, id_usuario, id_libro))
+        conexion.commit()
+        cursor.close()
+        conexion.close()

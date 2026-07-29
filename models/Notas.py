@@ -183,3 +183,15 @@ class Nota:
         cursor.close()
         conexion.close()
         return notas
+    @staticmethod
+    def guardar_notas_lectura(id_lectura, como_te_sientes, continuara, notas, tipo_reflexion, respuesta_reflexion):
+        conexion = obtener_conexion()
+        cursor = conexion.cursor()
+        cursor.execute("""
+            INSERT INTO notas_lectura
+            (id_lectura, como_te_sientes, continuara, notas_observaciones, tipo_reflexion, respuesta_reflexion)
+            VALUES (%s, %s, %s, %s, %s, %s)
+        """, (id_lectura, como_te_sientes, continuara, notas, tipo_reflexion, respuesta_reflexion))
+        conexion.commit()
+        cursor.close()
+        conexion.close()
