@@ -315,7 +315,7 @@ def registrar_rutas(app):
                 datos.get("respuesta_reflexion")
             ):
 
-                db.guardar_notas_lectura(
+                Notas.guardar_notas_lectura(
                     id_lectura=id_lectura,
                     como_te_sientes=datos.get("estado_animo"),
                     continuara=datos.get("estado"),
