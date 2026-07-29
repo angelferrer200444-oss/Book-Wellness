@@ -338,7 +338,7 @@ def registrar_rutas(app):
     def notas():
         id_usuario = session.get('id_usuario')
         notas_manuales, notas_sesion = Nota.obtener_todas(id_usuario) if id_usuario else ([], [])
-        libros_leyendo = db.obtener_libros_usuario(id_usuario, 'leyendo') if id_usuario else []
+        libros_leyendo = Libros.obtener_libros_usuario(id_usuario, 'leyendo') if id_usuario else []
         return render_template(
             "Botones superiores/notas.html",
             notas_manuales=notas_manuales,
