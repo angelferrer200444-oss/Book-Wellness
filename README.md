@@ -71,7 +71,6 @@ La plataforma incorpora herramientas para fomentar hábitos saludables y hacer d
 Incluye:
 
 - 😊 Registro del estado de ánimo.
-- 📖 Mood Reading.
 - ❤️ Asociación entre emociones y lecturas.
 - 🌿 Seguimiento del bienestar lector.
 - 🔥 Seguimiento de hábitos.
