@@ -1,0 +1,119 @@
+<div class="info-cards horizontal-scroll-container" id="main-goals-container">
+
+    <div class="card card-container-design">
+        <div class="card-header-brown">Metas Activas</div>
+        
+        <div class="db-diagram-box">
+            <div class="diagram-header">
+                <span class="db-icon">📊</span> Objetivos Global
+            </div>
+            <div class="diagram-body">
+                <div class="diagram-row item-highlight">
+                    <span class="diag-field">Meta actual</span>
+                    <span class="diag-value">Leer 24 libros</span>
+                </div>
+                <div class="diagram-row">
+                    <span class="diag-field">Progreso</span>
+                    <span class="diag-value">12 / 24 libros</span>
+                </div>
+                <!-- Barra de progreso añadida -->
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 50%;"></div>
+                </div>
+                <div class="diagram-row">
+                    <span class="diag-field">Descripción</span>
+                    <span class="diag-value description-text">Hábito de lectura diaria de 20 minutos al despertar.</span>
+                </div>
+                <div class="diagram-row border-top-dash">
+                    <span class="diag-field">Estado</span>
+                    <span class="diag-status status-pending">En progreso (50%)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card card-container-design">
+        <div class="card-header-brown">Logros Obtenidos</div>
+        
+        <div class="db-diagram-box">
+            <div class="diagram-header">
+                <span class="db-icon">🏆</span> Historial Logros
+            </div>
+            <div class="diagram-body">
+                <div class="diagram-row item-highlight">
+                    <span class="diag-field">Meta cumplida</span>
+                    <span class="diag-value">Maratón de Sci-Fi</span>
+                </div>
+                <div class="diagram-row">
+                    <span class="diag-field">Progreso</span>
+                    <span class="diag-value">3 / 3 libros</span>
+                </div>
+                <!-- Barra de progreso añadida (Completada) -->
+                <div class="progress-container">
+                    <div class="progress-bar bar-success" style="width: 100%;"></div>
+                </div>
+                <div class="diagram-row">
+                    <span class="diag-field">Detalle</span>
+                    <span class="diag-value description-text">Leer la trilogía de Fundación completa en un mes.</span>
+                </div>
+                <div class="diagram-row border-top-dash">
+                    <span class="diag-field">Completado</span>
+                    <span class="diag-status status-success">Logrado (100%)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card card-container-design add-target-card" id="add-button-card">
+        <div class="card-header-brown">Nuevo Registro</div>
+        
+        <div class="db-diagram-box add-diagram-box">
+            <button class="add-db-btn" id="open-modal-btn" title="Agregar nuevo objetivo">
+                <div class="plus-circle">
+                    <span class="plus-sign">+</span>
+                </div>
+                <span class="btn-subtext">Insertar Objetivo</span>
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal-overlay" id="goal-modal">
+    <div class="modal-card">
+        <div class="modal-header">Nuevo Objetivo</div>
+        <form id="goal-form" class="modal-body">
+            <div class="form-group">
+                <label for="goal-title">Título del Objetivo</label>
+                <input type="text" id="goal-title" placeholder="Ej: Lector Veloz, Maratón Fantasía" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="goal-desc">Descripción Corta</label>
+                <input type="text" id="goal-desc" placeholder="Ej: Leer antes de acostarse" required>
+            </div>
+
+            <div class="form-row-inputs">
+                <div class="form-group" style="width: 100%;">
+                    <label for="goal-total">Meta Total</label>
+                    <input type="number" id="goal-total" min="1" value="10" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="goal-unit">Unidad de Medida</label>
+                <input type="text" id="goal-unit" placeholder="Ej: páginas, libros, días" value="páginas" required>
+            </div>
+
+            <div class="form-group">
+                <label for="goal-date">Fecha de Finalización</label>
+                <input type="date" id="date-picker-input" required>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="form-btn btn-cancel" id="close-modal-btn">Cancelar</button>
+                <button type="submit" class="form-btn btn-save">Guardar Objetivo</button>
+            </div>
+        </form>
+    </div>
+</div>
