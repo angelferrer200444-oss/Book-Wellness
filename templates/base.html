@@ -42,30 +42,36 @@
     <div class="top-bar">
 
         <!-- IZQUIERDA -->
+        
         <div class="left-section">
 
             <!-- LOGO -->
-            <div class="logo-container">
+            <a href="{{ url_for('home') }}" class="logo-link">
 
-                <div class="books-logo">
-                    <img src="{{ url_for('static', filename='css/logo1.png') }}"
-                         alt="Book Wellness"
-                         class="logo-img">
-                </div>                
-
-                <div class="logo-text">
-
-                    <span class="book-title">
-                        Book
-                    </span>
-
-                    <span class="wellness-title">
-                        Wellness
-                    </span>
-
+                <div class="logo-container">
+            
+                    <div class="books-logo">
+                        <img src="{{ url_for('static', filename='css/logo1.png') }}"
+                             alt="Book Wellness"
+                             class="logo-img">
+                    </div>
+            
+                    <div class="logo-text">
+            
+                        <span class="book-title">
+                            Book
+                        </span>
+            
+                        <span class="wellness-title">
+                            Wellness
+                        </span>
+            
+                    </div>
+            
                 </div>
-
-            </div>
+            
+            </a>
+            
 
             <!-- MENÚ -->
             <div class="menu-container">
