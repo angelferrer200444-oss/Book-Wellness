@@ -241,6 +241,7 @@ Entre las próximas incorporaciones se encuentran:
 ### Logo oficial de Book Wellness
 
 Instagram: @ArteValentia
+Tiktok: @ArteValenttia
 
 *Creadora del logo de la web.*
 
