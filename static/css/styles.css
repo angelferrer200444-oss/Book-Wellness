@@ -1012,3 +1012,16 @@ a{
     }
 
 }
+
+.books-logo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-img{
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    margin-left: 30px;
+}
