@@ -21,9 +21,20 @@ def guardar_recomendaciones(id_usuario, libros):
     # Insertar nuevas
     for libro in libros:
         cursor.execute("""
-            INSERT INTO recomendaciones_cache 
-            (id_usuario, titulo, autor, descripcion, portada, paginas, generos, anio, id_google)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            INSERT INTO recomendaciones_cache
+            (
+                id_usuario,
+                titulo,
+                autor,
+                descripcion,
+                portada,
+                paginas,
+                generos,
+                anio,
+                id_google,
+                `key`
+            )
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """, (
             id_usuario,
             libro.get('titulo'),
@@ -33,8 +44,10 @@ def guardar_recomendaciones(id_usuario, libros):
             libro.get('paginas'),
             libro.get('generos'),
             libro.get('anio'),
-            libro.get('id_google')
+            libro.get('id_google'),
+            libro.get('key')
         ))
+
     
     conexion.commit()
     cursor.close()
@@ -64,4 +77,3 @@ def invalidar_cache_recomendaciones(id_usuario):
     conexion.commit()
     cursor.close()
     conexion.close()
-
