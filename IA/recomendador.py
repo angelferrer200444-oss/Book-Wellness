@@ -11,7 +11,7 @@ from flask import Blueprint
 from flask import jsonify
 from flask import session
 
-API_KEY = ""
+API_KEY = "LA KEY NO SE PUBLICA"
 
 PROMPT_RECOMENDADOR = """
 Eres un experto en literatura.
@@ -250,19 +250,31 @@ class RecomendadorLibros:
                 continue
 
             libro = None
+            mejor_puntaje = -1
 
             for resultado in resultados:
 
-                portada = resultado.get("portada", "")
+                puntaje = 0
 
-                if portada and portada.strip():
+                if resultado.get("key"):
+                    puntaje += 4
 
+                if resultado.get("portada"):
+                    puntaje += 3
+
+                if resultado.get("autor"):
+                    puntaje += 2
+
+                if resultado.get("descripcion"):
+                    puntaje += 2
+
+                if puntaje > mejor_puntaje:
+
+                    mejor_puntaje = puntaje
                     libro = resultado
-                    break
 
             if libro is None:
                 continue
-
 
             libros.append({
 
