@@ -1,10 +1,9 @@
-from flask import Blueprint, request, jsonify
-import urllib.request
-import json
+from flask import Blueprint, request, jsonify, session
+from .orquestador import OrquestadorIA
 
 ia_bp = Blueprint("ia", __name__)
 
-API_KEY = "LA KEY NO SE PUBLICA"
+motor = OrquestadorIA()
 
 PROMPT_SISTEMA = """
 Eres AM, un asistente especializado en lectura.
@@ -23,54 +22,38 @@ def preguntar_ia():
 
     mensaje = datos.get("mensaje", "").strip()
 
+    if "id_usuario" not in session:
+
+        return jsonify({
+            "respuesta": "Debes iniciar sesión."
+        })
+
     if not mensaje:
         return jsonify({
             "respuesta": "Escribe una pregunta."
         })
 
-    url = (
-        "https://generativelanguage.googleapis.com/v1beta/models/"
-        f"gemini-2.5-flash:generateContent?key={API_KEY}"
-    )
-
-    body = {
-        "contents": [
-            {
-                "parts": [
-                    {
-                        "text":
-                            PROMPT_SISTEMA +
-                            "\n\nUsuario: " +
-                            mensaje
-                    }
-                ]
-            }
-        ]
-    }
-
-    req = urllib.request.Request(
-        url,
-        data=json.dumps(body).encode("utf-8"),
-        headers={
-            "Content-Type": "application/json"
-        },
-        method="POST"
-    )
-
     try:
 
-        with urllib.request.urlopen(req) as response:
+        id_usuario = session["id_usuario"]
 
-            resultado = json.loads(
-                response.read().decode("utf-8")
-            )
+        respuesta = motor.generar_texto(
 
-        respuesta = resultado["candidates"][0]["content"]["parts"][0]["text"]
+            id_usuario,
+
+            PROMPT_SISTEMA,
+
+            mensaje
+
+        )
 
     except Exception as e:
 
+
         respuesta = f"Error: {e}"
+
 
     return jsonify({
         "respuesta": respuesta
     })
+
