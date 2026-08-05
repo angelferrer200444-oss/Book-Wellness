@@ -4,8 +4,12 @@ from flask import session
 from flask import jsonify
 from models.Libro import Libro
 from models.estadistica import Estadistica
-import db
 from models.Preferencias import Preferencias
+from models.EstadoAnimo import EstadoAnimo
+from models.EstadoAnimo import EstadoAnimo
+
+import db
+
 
 def registrar_rutas(app):
 
@@ -72,9 +76,22 @@ def registrar_rutas(app):
     # -------------------------
     @app.route("/estadisticas")
     def estadisticas():
-        id_usuario = session.get('id_usuario')
+
+        id_usuario = session.get("id_usuario")
+
         perfil = Estadistica.consultar(id_usuario) if id_usuario else None
-        return render_template("Botones superiores/estadisticas.html", perfil=perfil)
+
+        estado_actual = (
+            EstadoAnimo.obtener_actual(id_usuario)
+            if id_usuario else None
+        )
+
+        return render_template(
+            "Botones superiores/estadisticas.html",
+            perfil=perfil,
+            estado_actual=estado_actual
+        )
+
 
 
     @app.route("/objetivo")
@@ -155,4 +172,32 @@ def registrar_rutas(app):
 
         return jsonify({
             "mensaje": "Encuesta guardada correctamente."
+        }), 200
+
+    @app.route("/api/estado_animo_actual", methods=["POST"])
+    def guardar_estado_animo_actual():
+
+        id_usuario = session.get("id_usuario")
+
+        if not id_usuario:
+            return jsonify({
+                "error": "Usuario no autenticado."
+            }), 401
+
+        datos = request.json
+
+        estado = datos.get("estado")
+
+        if not estado:
+            return jsonify({
+                "error": "No se recibió ningún estado de ánimo."
+            }), 400
+
+        EstadoAnimo.guardar(
+            id_usuario,
+            estado
+        )
+
+        return jsonify({
+            "mensaje": "Estado de ánimo guardado correctamente."
         }), 200
