@@ -1,6 +1,7 @@
 import json
 import requests
 from flask import Blueprint, jsonify, session, request
+from .orquestador import OrquestadorIA
 
 from GoogleLibros import GoogleBooksAPI
 import Libros as libros_api
@@ -10,8 +11,6 @@ import db
 from flask import Blueprint
 from flask import jsonify
 from flask import session
-
-API_KEY = "LA KEY NO SE PUBLICA"
 
 PROMPT_RECOMENDADOR = """
 Eres un experto en literatura.
@@ -31,24 +30,34 @@ Reglas:
 - No recomiendes ningún libro que aparezca en la lista "Libros que ya posee o ha leído el usuario".
 - Si un libro ya fue leído por el usuario, elige otro.
 - Verifica cuidadosamente la lista antes de generar las cinco recomendaciones.
+- El campo "mensaje" debe estar en español.
+- Menciona los cinco libros recomendados.
+- No inventes libros distintos a los que aparecen en "libros".
+- Termina invitando al usuario a preguntar sobre cualquiera de ellos.
 
 Formato EXACTO:
 
-[
-    {
-        "titulo":"...",
-        "autor":"..."
-    }
-]
+{
+    "mensaje":"Escribe un mensaje natural dirigido al usuario. Menciona los cinco libros recomendados como una lista. Finaliza invitándolo a preguntarte sobre cualquiera de ellos si desea saber más.",
+
+    "libros":[
+        {
+            "titulo":"...",
+            "autor":"..."
+        }
+    ]
+}
+
+
 
 """
 
 
 class RecomendadorLibros:
 
-    def __init__(self, api_key):
+    def __init__(self):
 
-        self.api_key = api_key
+        self.ia = OrquestadorIA()
 
         self.google = GoogleBooksAPI()
 
@@ -175,52 +184,6 @@ class RecomendadorLibros:
 
         return texto
 
-    ##########################################################
-    # CONSULTAR GEMINI
-    ##########################################################
-
-    def consultar_gemini(self, prompt):
-
-        body = {
-            "contents": [
-                {
-                    "parts": [
-                        {
-                            "text": prompt
-                        }
-                    ]
-                }
-            ]
-        }
-
-        respuesta = requests.post(
-
-            self.url,
-
-            params={
-                "key": self.api_key
-            },
-
-            json=body,
-
-            timeout=20
-
-        )
-
-        respuesta.raise_for_status()
-
-        datos = respuesta.json()
-
-        texto = (
-            datos["candidates"][0]
-            ["content"]["parts"][0]["text"]
-        )
-
-        texto = texto.replace("```json", "")
-        texto = texto.replace("```", "")
-        texto = texto.strip()
-
-        return json.loads(texto)
 
 ##########################################################
     # BUSCAR LIBROS EN GOOGLE BOOKS
@@ -376,7 +339,17 @@ class RecomendadorLibros:
 
         try:
 
-            recomendaciones = self.consultar_gemini(prompt)
+            recomendaciones = self.ia.generar_json(prompt)
+
+            mensaje = recomendaciones.get(
+                "mensaje",
+                ""
+            )
+
+            recomendaciones = recomendaciones.get(
+                "libros",
+                []
+            )
 
             print("\nRESPUESTA DE GEMINI:")
 
@@ -394,6 +367,15 @@ class RecomendadorLibros:
 
         libros = self.buscar_libros(recomendaciones)
 
+        if mensaje:
+
+            db.guardar_mensaje(
+                id_usuario,
+                "asistente",
+                mensaje
+            )
+
+
         if len(libros) == 0:
 
             return self.recomendaciones_defecto()
@@ -405,7 +387,7 @@ recomendador_bp = Blueprint(
     __name__
 )
 
-motor = RecomendadorLibros(API_KEY)
+motor = RecomendadorLibros()
 
 @recomendador_bp.route(
     "/api/recomendaciones",
