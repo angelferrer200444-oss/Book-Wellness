@@ -1,7 +1,7 @@
 # 📚 Book Wellness
 
 <p align="center">
-  <img src="static/css/LogoHorizontal.png" width="180" alt="Book Wellness Logo">
+  <img src="static/css/LogoHorizontal.png" alt="Book Wellness Logo">
 </p>
 
 <p align="center">
