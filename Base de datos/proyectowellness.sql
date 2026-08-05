@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-08-2026 a las 16:30:08
+-- Tiempo de generación: 06-08-2026 a las 00:44:36
 -- Versión del servidor: 10.1.38-MariaDB
 -- Versión de PHP: 7.3.2
 
@@ -89,6 +89,32 @@ INSERT INTO `conversaciones` (`id`, `id_usuario`, `rol`, `mensaje`, `fecha`) VAL
 (46, 23, 'asistente', '¡Hola! Basado en tus géneros favoritos, te recomiendo los siguientes cinco libros que creo que disfrutarás mucho: \'La chica del tren\' de Paula Hawkins, \'El Código Da Vinci\' de Dan Brown, \'Cien años de soledad\' de Gabriel García Márquez, \'La Peste\' de Albert Camus y \'Dune\' de Frank Herbert. Si deseas saber más sobre cualquiera de ellos, no dudes en preguntar.', '2026-08-05 14:19:04'),
 (47, 23, 'usuario', 'selecciona uno de los titulos que me recomendaste y hablame de el', '2026-08-05 14:19:53'),
 (48, 23, 'asistente', 'Claro, hablemos de \"Dune\" de Frank Herbert.\n\nEs una obra maestra de la ciencia ficción que te sumerge en un mundo desértico y fascinante. Explora política, ecología, religión y evolución humana. Su complejidad y ricos personajes ofrecen una experiencia de lectura épica.', '2026-08-05 14:19:53');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `estado_animo_actual`
+--
+
+CREATE TABLE `estado_animo_actual` (
+  `id_estado` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `estado_animo` varchar(30) NOT NULL,
+  `fecha_hora` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `estado_animo_actual`
+--
+
+INSERT INTO `estado_animo_actual` (`id_estado`, `id_usuario`, `estado_animo`, `fecha_hora`) VALUES
+(1, 23, 'Feliz', '2026-08-05 18:27:22'),
+(2, 23, 'Tranquilo', '2026-08-05 18:27:36'),
+(3, 23, 'Reflexivo', '2026-08-05 18:27:36'),
+(4, 23, 'Ansioso', '2026-08-05 18:27:38'),
+(5, 23, 'Triste', '2026-08-05 18:27:39'),
+(6, 23, 'Sorprendido', '2026-08-05 18:27:40'),
+(7, 23, 'Triste', '2026-08-05 18:32:54');
 
 -- --------------------------------------------------------
 
@@ -694,6 +720,13 @@ ALTER TABLE `conversaciones`
   ADD KEY `id_usuario` (`id_usuario`);
 
 --
+-- Indices de la tabla `estado_animo_actual`
+--
+ALTER TABLE `estado_animo_actual`
+  ADD PRIMARY KEY (`id_estado`),
+  ADD KEY `idx_usuario` (`id_usuario`);
+
+--
 -- Indices de la tabla `lecturas`
 --
 ALTER TABLE `lecturas`
@@ -783,6 +816,12 @@ ALTER TABLE `conversaciones`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
+-- AUTO_INCREMENT de la tabla `estado_animo_actual`
+--
+ALTER TABLE `estado_animo_actual`
+  MODIFY `id_estado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT de la tabla `lecturas`
 --
 ALTER TABLE `lecturas`
@@ -845,6 +884,12 @@ ALTER TABLE `usuarios`
 --
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `estado_animo_actual`
+--
+ALTER TABLE `estado_animo_actual`
+  ADD CONSTRAINT `fk_estado_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`);
 
 --
 -- Filtros para la tabla `lecturas`
