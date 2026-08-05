@@ -75,6 +75,22 @@ Book Wellness - Estadísticas
         <span class="row-value">{{ perfil.animo if perfil else 'Sin datos' }}</span>
     </div>
 
+    <!-- Estado que usare para el panel IA -->
+
+    <div class="dashboard-row">
+
+        <div class="row-left">
+            <span class="row-icon">🤔</span>
+            <span class="row-label">Estado de Ánimo (Actual)</span>
+        </div>
+        <span class="row-value">
+            {{ estado_actual.estado_animo if estado_actual else "Sin datos" }}
+        </span>
+        
+    </div>
+
+
+
     <div class="dashboard-row">
         <div class="row-left">
             <span class="row-icon">🎯</span>
