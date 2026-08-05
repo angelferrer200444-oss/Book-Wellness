@@ -77,3 +77,75 @@ def invalidar_cache_recomendaciones(id_usuario):
     conexion.commit()
     cursor.close()
     conexion.close()
+
+##########################################################
+# GUARDAR MENSAJE DE IA
+##########################################################
+
+def guardar_mensaje(id_usuario, rol, mensaje):
+
+    conexion = obtener_conexion()
+
+    cursor = conexion.cursor()
+
+    cursor.execute(
+        """
+        INSERT INTO conversaciones
+        (
+            id_usuario,
+            rol,
+            mensaje
+        )
+        VALUES
+        (
+            %s,
+            %s,
+            %s
+        )
+        """,
+        (
+            id_usuario,
+            rol,
+            mensaje
+        )
+    )
+
+    conexion.commit()
+
+    cursor.close()
+    conexion.close()
+
+##########################################################
+# OBTENER HISTORIAL IA
+##########################################################
+
+def obtener_historial(id_usuario, limite=20):
+
+    conexion = obtener_conexion()
+
+    cursor = conexion.cursor(dictionary=True)
+
+    cursor.execute(
+        """
+        SELECT
+            rol,
+            mensaje
+        FROM conversaciones
+        WHERE id_usuario = %s
+        ORDER BY fecha DESC
+        LIMIT %s
+        """,
+        (
+            id_usuario,
+            limite
+        )
+    )
+
+    historial = cursor.fetchall()
+
+    cursor.close()
+    conexion.close()
+
+    historial.reverse()
+
+    return historial
