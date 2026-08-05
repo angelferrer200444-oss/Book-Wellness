@@ -341,7 +341,7 @@ Book Wellness
         
         
         
-                <!-- COLUMNA 2 VACÍA -->
+                <!-- COLUMNA 2 EMOCIONES -->
                 <div class="sidebar-column">
 
                     <div class="emociones-wrapper">
@@ -353,7 +353,7 @@ Book Wellness
                             <div class="bw-container">
                 
                                 <!-- FELIZ -->
-                                <div class="bw-card feliz">
+                                <div class="bw-card feliz" data-estado="Feliz">
                             
                                     <div class="bw-face">
                             
@@ -372,7 +372,7 @@ Book Wellness
                                 </div>
                             
                                 <!-- TRANQUILO -->
-                                <div class="bw-card tranquilo">
+                                <div class="bw-card tranquilo" data-estado="Tranquilo">
                             
                                     <div class="bw-face">
                             
@@ -391,7 +391,7 @@ Book Wellness
                                 </div>
                             
                                 <!-- REFLEXIVO -->
-                                <div class="bw-card reflexivo">
+                                <div class="bw-card reflexivo" data-estado="Reflexivo">
                             
                                     <div class="bw-face">
                             
@@ -419,7 +419,7 @@ Book Wellness
                                 </div>
                             
                                 <!-- SORPRENDIDO -->
-                                <div class="bw-card sorprendido">
+                                <div class="bw-card sorprendido" data-estado="Sorprendido">
                             
                                     <div class="bw-face">
                             
@@ -438,7 +438,7 @@ Book Wellness
                                 </div>
                             
                                 <!-- TRISTE -->
-                                <div class="bw-card triste">
+                                <div class="bw-card triste" data-estado="Triste">
                             
                                     <div class="bw-face">
                             
@@ -457,7 +457,7 @@ Book Wellness
                                 </div>
                             
                                 <!-- ANSIOSO -->
-                                <div class="bw-card ansioso">
+                                <div class="bw-card ansioso" data-estado="Ansioso">
                             
                                     <div class="bw-face">
 
@@ -557,5 +557,6 @@ Book Wellness
 <script src="{{ url_for('static', filename='js/PanelIA.js') }}"></script>
 <script src="{{ url_for('static', filename='js/recomendaciones.js') }}"></script>
 <script src="{{ url_for('static', filename='js/sidebar-carousel.js') }}"></script>
+<script src="{{ url_for('static', filename='js/emociones.js') }}"></script>
 
 {% endblock %}
