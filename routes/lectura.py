@@ -283,16 +283,12 @@ def registrar_rutas(app):
     def guardar_lectura_ruta():
 
         datos = request.json
-
         id_usuario = session.get('id_usuario')
 
         if not id_usuario:
-            return jsonify({
-                "error": "No hay sesión activa"
-            }), 401
+            return jsonify({"error": "No hay sesión activa"}), 401
 
         try:
-
             lectura = SeccionLectura(
                 id_usuario=id_usuario,
                 id_libro=datos.get('id_libro'),
@@ -306,16 +302,14 @@ def registrar_rutas(app):
 
             id_lectura = lectura.guardar()
 
-
-            # Guardar la reflexión únicamente si llegó información
+            # Guardar reflexión en notas_lectura
             if (
                 datos.get("estado_animo") or
                 datos.get("notas") or
                 datos.get("tipo_reflexion") or
                 datos.get("respuesta_reflexion")
             ):
-
-                Notas.guardar_notas_lectura(
+                Nota.guardar_notas_lectura(
                     id_lectura=id_lectura,
                     como_te_sientes=datos.get("estado_animo"),
                     continuara=datos.get("estado"),
@@ -324,21 +318,57 @@ def registrar_rutas(app):
                     respuesta_reflexion=datos.get("respuesta_reflexion")
                 )
 
-            return jsonify({
-                "mensaje": "Lectura guardada"
-            }), 201
+            # Guardar nota manual si tiene título y contenido
+            if datos.get('notas') and datos.get('nota_titulo'):
+                Nota.crear(
+                    id_usuario=id_usuario,
+                    id_libro=datos.get('id_libro'),
+                    titulo=datos.get('nota_titulo'),
+                    contenido=datos.get('notas'),
+                    categoria=datos.get('nota_categoria', 'Reflexiones')
+                )
+
+            # Guardar nota de pregunta aleatoria
+            if datos.get('respuesta_reflexion') and datos.get('tipo_reflexion'):
+                mapaCategorias = {
+                    'aprendiste': 'Aprendizaje',
+                    'palabras': 'Vocabulario',
+                    'personaje': 'Personajes',
+                    'escena': 'Escenas',
+                    'sesion': 'Sesión de Lectura',
+                    'vida': 'Mi Vida',
+                    'objetivo': 'Reflexiones',
+                    'encontraste': 'Reflexiones'
+                }
+                titulos = {
+                    'aprendiste': '¿Qué aprendiste hoy?',
+                    'palabras': '¿Palabras nuevas?',
+                    'personaje': 'Personaje destacado',
+                    'escena': 'Escena que más impactó',
+                    'sesion': '¿Qué te pareció esta sesión?',
+                    'vida': '¿Te recordó algo de tu vida?',
+                    'objetivo': '¿Qué buscabas al leer?',
+                    'encontraste': '¿Encontraste lo que buscabas?'
+                }
+                tipo = datos.get('tipo_reflexion')
+                Nota.crear(
+                    id_usuario=id_usuario,
+                    id_libro=datos.get('id_libro'),
+                    titulo=titulos.get(tipo, 'Reflexión'),
+                    contenido=datos.get('respuesta_reflexion'),
+                    categoria=mapaCategorias.get(tipo, 'Reflexiones')
+                )
+
+            return jsonify({"mensaje": "Lectura guardada"}), 201
 
         except Exception as e:
-
-            return jsonify({
-                "error": str(e)
-            }), 500
+            return jsonify({"error": str(e)}), 500
 
     @app.route("/notas")
     def notas():
         id_usuario = session.get('id_usuario')
         notas_manuales, notas_sesion = Nota.obtener_todas(id_usuario) if id_usuario else ([], [])
-        libros_leyendo = Libros.obtener_libros_usuario(id_usuario, 'leyendo') if id_usuario else []
+        libros_leyendo = Libro.obtener_libros_usuario(id_usuario, 'leyendo') if id_usuario else []
         return render_template(
             "Botones superiores/notas.html",
             notas_manuales=notas_manuales,
