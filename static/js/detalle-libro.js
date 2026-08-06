@@ -71,7 +71,8 @@ document.getElementById('btn-pendiente').disabled = true;
                     id_google:datoLibro.id_google,
                     paginas:datoLibro.paginas,
                     genero: datoLibro.genero,
-                    anio: datoLibro.anio
+                    anio: datoLibro.anio,
+                    formato: datoLibro.formato
 
                 })
 
@@ -164,6 +165,11 @@ async function cargarLibro(){
         datoLibro.portada = data.portada || datoLibro.portada;
         datoLibro.genero = data.generos || null;
         datoLibro.anio = data.anio || null;
+        const mapaFormato = {
+    'BOOK': 'Libro Físico',
+    'MAGAZINE': 'Revista'
+    };
+        datoLibro.formato = mapaFormato[data.formato] || data.formato || null;
 
         const imgPortada = document.getElementById('img-portada');
             if(imgPortada && data.portada) {
