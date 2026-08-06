@@ -30,6 +30,7 @@ def registrar_rutas(app):
         id_google = datos.get('id_google')
         genero = datos.get('genero')
         anio = datos.get('anio')
+        formato = datos.get('formato') 
 
         if not id_usuario:
             return jsonify({
@@ -48,7 +49,8 @@ def registrar_rutas(app):
                 paginas=paginas,
                 id_google=id_google,
                 genero=genero,
-                anio=anio
+                anio=anio,
+                formato=formato
             )
             
             resultado = nuevo_libro.guardar()  # ← Este es el método que guarda en BD
