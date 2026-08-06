@@ -2,7 +2,22 @@
    SELECCIONAR PREGUNTA ALEATORIA
 ========================================================== */
 
+// Mapeo de data-id a categoría
+const mapaCategorias = {
+     'aprendiste': 'Aprendizaje',
+     'palabras': 'Vocabulario',
+     'personaje': 'Personajes',
+     'escena': 'Escenas',
+     'sesion': 'Sesión de Lectura',
+     'vida': 'Mi Vida',
+     'objetivo': 'Reflexiones',
+     'encontraste': 'Reflexiones'
+    };
+
 const preguntasAleatorias = document.querySelectorAll(".aleatoria");
+
+
+ 
 
 // Ocultamos todas
 preguntasAleatorias.forEach(pregunta => {
@@ -84,6 +99,10 @@ function actualizarInterfaz() {
 
 async function finalizarReflexion() {
 
+   
+    
+    
+
     const params =
         new URLSearchParams(window.location.search);
 
@@ -124,10 +143,9 @@ async function finalizarReflexion() {
             "estadoAnimo"
         ).value;
 
-    const notas =
-        document.getElementById(
-            "notas"
-        ).value;
+   const notaTitulo = document.getElementById("note-title-input")?.value || '';
+    const notas = document.getElementById("note-content-input")?.value || '';
+    const notaCategoria = document.getElementById("note-category-select")?.value || '';
 
     const respuestaAleatoria =
         preguntaAleatoria.querySelector(
@@ -136,6 +154,8 @@ async function finalizarReflexion() {
 
     const idPreguntaAleatoria =
         preguntaAleatoria.dataset.id;
+    const categoriaAleatoria = mapaCategorias[idPreguntaAleatoria] || 'Reflexiones';
+        
         try {
 
             const resp = await fetch("/api/guardar_lectura", {
@@ -167,15 +187,21 @@ async function finalizarReflexion() {
                     estado_animo: estadoAnimo,
     
                     notas: notas,
+                    nota_titulo: notaTitulo,
+                    nota_categoria: notaCategoria,
     
                     tipo_reflexion: idPreguntaAleatoria,
 
-                    respuesta_reflexion: respuestaAleatoria
+                    respuesta_reflexion: respuestaAleatoria,
+
+                    respuesta_aleatoria_categoria: categoriaAleatoria
 
     
                 })
     
             });
+
+            
     
             const data = await resp.json();
     
