@@ -134,11 +134,18 @@ Book Wellness
 
                     <div class="shelf-header">
 
-                        <h2>
-                            Leyendo
-                        </h2>
-
+                        <h2>Leyendo</h2>
+                    
+                        <p class="shelf-subtitle">
+                            {% if libros_leyendo|length == 1 %}
+                                1 libro en sección lectura
+                            {% else %}
+                                {{ libros_leyendo|length }} libros en sección lectura
+                            {% endif %}
+                        </p>
+                    
                     </div>
+                    
 
                     <div class="books-row">
 
@@ -176,11 +183,17 @@ Book Wellness
 
                     <div class="shelf-header">
 
-                        <h2>
-                            Pendiente a leer
-                        </h2>
-
-                    </div>
+                        <h2>Pendiente a leer</h2>
+                    
+                        <p class="shelf-subtitle">
+                            {% if libros_pendientes|length == 1 %}
+                                1 libro esperando su lectura
+                            {% else %}
+                                {{ libros_pendientes|length }} libros esperando su lectura
+                            {% endif %}
+                        </p>
+                    
+                    </div>                    
 
                     <div class="books-row">
 
