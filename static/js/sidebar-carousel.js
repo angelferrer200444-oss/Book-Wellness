@@ -27,6 +27,33 @@ document.addEventListener("DOMContentLoaded",()=>{
 
         const panels = document.querySelectorAll(".sidebar-column");
 
+        // =========================
+        // MENSAJE DE DESLIZAR
+        // =========================
+
+        const hint = document.createElement("div");
+
+        hint.textContent = "Deslizar con el mouse 🖱️";
+
+        hint.className = "carousel-hint";
+
+        carousel.parentElement.appendChild(hint);
+
+
+        carousel.addEventListener("mouseenter",()=>{
+
+            hint.classList.add("show");
+
+        });
+
+
+        carousel.addEventListener("mouseleave",()=>{
+
+            hint.classList.remove("show");
+
+        });
+
+
 
 
         // =========================
