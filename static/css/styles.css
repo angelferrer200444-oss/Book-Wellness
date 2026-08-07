@@ -1025,3 +1025,53 @@ a{
     object-fit: contain;
     margin-left: 30px;
 }
+
+.carousel-hint{
+
+    position: absolute;
+
+    top: 30px;
+
+    right: 78px;
+
+    font-family: 'Cinzel', serif;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    letter-spacing: 1px;
+
+    color: #7a2618;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transform: translateY(-10px);
+
+    transition:
+        opacity .25s ease,
+        transform .25s ease;
+
+    z-index: 99999;
+}
+
+
+.carousel-hint.show{
+
+    opacity: 1;
+
+    transform: translateY(0);
+
+}
+
+.carousel-hint.scroll-down{
+
+    transform: translateY(-40px);
+
+    transition:
+        transform .3s ease;
+
+}
+
