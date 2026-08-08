@@ -135,6 +135,42 @@ class OrquestadorIA:
         return respuesta
 
     ##########################################################
+    # GENERAR RESPUESTA DEL SISTEMA
+    ##########################################################
+
+    def generar_respuesta(
+        self,
+        id_usuario,
+        prompt
+    ):
+
+        historial = self.construir_historial(
+            id_usuario
+        )
+
+        prompt_final = (
+            historial
+            + "\n"
+            + prompt
+        )
+
+        respuesta = self._consultar(
+            prompt_final
+        ).strip()
+
+        if respuesta.startswith("Asistente:"):
+
+            respuesta = respuesta[len("Asistente:"):].strip()
+
+        db.guardar_mensaje(
+            id_usuario,
+            "asistente",
+            respuesta
+        )
+
+        return respuesta
+
+    ##########################################################
     # GENERAR JSON
     ##########################################################
 
