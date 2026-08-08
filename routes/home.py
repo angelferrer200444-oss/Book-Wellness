@@ -5,8 +5,7 @@ from flask import jsonify
 from models.Libro import Libro
 from models.estadistica import Estadistica
 from models.Preferencias import Preferencias
-from models.EstadoAnimo import EstadoAnimo
-from models.EstadoAnimo import EstadoAnimo
+from IA.EstadoAnimo import EstadoAnimo
 
 import db
 
@@ -188,6 +187,8 @@ def registrar_rutas(app):
 
         estado = datos.get("estado")
 
+        print("Estado recibido:", estado)
+
         if not estado:
             return jsonify({
                 "error": "No se recibió ningún estado de ánimo."
@@ -198,6 +199,81 @@ def registrar_rutas(app):
             estado
         )
 
+        mensaje = ""
+
+        if estado.lower() == "feliz":
+            mensaje = EstadoAnimo.responder_feliz(id_usuario)
+
+        elif estado.lower() == "tranquilo":
+
+            mensaje = EstadoAnimo.responder_tranquilo(
+                id_usuario
+            )
+        
+        elif estado == "Reflexivo":
+
+            print("Entré a Reflexivo")
+
+            resultado = EstadoAnimo.responder_reflexivo(
+                id_usuario
+            )
+
+            print("RESULTADO:", resultado)
+            print("RECOMENDACIONES:", resultado["recomendaciones"])
+            print("CANTIDAD:", len(resultado["recomendaciones"]))
+
+            return jsonify({
+
+                "mensaje": "Estado guardado.",
+
+                "respuesta_ia": resultado["respuesta"],
+
+                "recomendaciones": resultado["recomendaciones"]
+
+            })
+
+        elif estado == "Sorprendido":
+
+            print("Entré a Sorprendido")
+
+            resultado = EstadoAnimo.responder_sorprendido(
+                id_usuario
+            )
+
+            return jsonify({
+
+                "mensaje": "Estado guardado.",
+
+                "respuesta_ia": resultado["respuesta"],
+
+                "recomendaciones": resultado["recomendaciones"]
+
+            })
+        
+        elif estado.lower() == "ansioso":
+
+            resultado = EstadoAnimo.responder_ansioso(
+                id_usuario
+            )
+
+            return jsonify({
+
+                "mensaje": "Estado guardado.",
+
+                "respuesta_ia": resultado["respuesta"],
+
+                "recomendaciones": resultado["recomendaciones"]
+
+            })
+
+
+
+
+
+        print("Respuesta IA:", mensaje)
+        
         return jsonify({
-            "mensaje": "Estado de ánimo guardado correctamente."
+            "mensaje": "Estado de ánimo guardado correctamente.",
+            "respuesta_ia": mensaje
         }), 200
+
