@@ -6,6 +6,7 @@ from models.Libro import Libro
 from models.estadistica import Estadistica
 from models.Preferencias import Preferencias
 from IA.EstadoAnimo import EstadoAnimo
+from models.Ob_Logros.logros import Logros
 
 import db
 
@@ -90,6 +91,28 @@ def registrar_rutas(app):
             perfil=perfil,
             estado_actual=estado_actual
         )
+
+    @app.route("/api/logros")
+    def obtener_logros():
+
+        id_usuario = session.get("id_usuario")
+
+        if not id_usuario:
+            return jsonify({
+                "error": "Usuario no autenticado."
+            }), 401
+
+        datos = Logros.obtener_logros(id_usuario)
+
+        logros = []
+
+        for grupo in datos.values():
+            if isinstance(grupo, list):
+                logros.extend(grupo)
+
+        return jsonify(logros), 200
+
+
 
 
 
@@ -276,4 +299,3 @@ def registrar_rutas(app):
             "mensaje": "Estado de ánimo guardado correctamente.",
             "respuesta_ia": mensaje
         }), 200
-
