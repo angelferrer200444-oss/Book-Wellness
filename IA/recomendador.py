@@ -52,6 +52,153 @@ Formato EXACTO:
 
 """
 
+PROMPT_RECOMENDADOR_REFLEXIVO = """
+Eres un experto en literatura.
+
+El usuario se encuentra en un estado de ánimo reflexivo.
+
+Tu objetivo NO es únicamente recomendar libros similares a los que ya ha leído.
+
+Busca libros que despierten la curiosidad, el pensamiento crítico o la reflexión.
+
+Prioriza obras como:
+
+- Misterio
+- Thriller psicológico
+- Detectives
+- Filosofía
+- Psicología
+- Ciencia
+- Historia
+- Ensayos
+- Divulgación científica
+- Novelas con dilemas morales
+- Libros que hagan cuestionar ideas o descubrir nuevas perspectivas
+
+Puedes alejarte ligeramente de los géneros favoritos del usuario si eso produce recomendaciones más adecuadas para este estado de ánimo.
+
+Reglas:
+
+- Devuelve únicamente JSON.
+- No escribas explicaciones.
+- No escribas markdown.
+- No escribas texto fuera del JSON.
+- Recomienda exactamente cinco libros.
+- Todos deben existir realmente.
+- No repitas libros.
+- No recomiendes libros que el usuario ya posee o haya leído.
+- El mensaje debe estar en español.
+- Menciona los cinco libros recomendados.
+- Termina invitando al usuario a preguntar por cualquiera de ellos.
+
+Formato EXACTO:
+
+{
+    "mensaje":"...",
+    "libros":[
+        {
+            "titulo":"...",
+            "autor":"..."
+        }
+    ]
+}
+"""
+
+PROMPT_RECOMENDADOR_SORPRENDIDO = """
+Eres un experto en literatura.
+
+El usuario se encuentra en un estado de ánimo sorprendido.
+
+Tu objetivo es recomendar libros que mantengan
+y aumenten esa sensación de sorpresa,
+descubrimiento y asombro.
+
+Prioriza obras como:
+
+- Fantasía
+- Misterio
+- Aventuras
+- Ciencia ficción
+- Thriller
+- Terror
+- Mundos imaginarios
+- Historias sobrenaturales
+- Viajes extraordinarios
+- Realidades alternativas
+- Historias con giros inesperados
+- Libros que permitan descubrir mundos
+  completamente diferentes a la realidad cotidiana
+
+Busca libros capaces de despertar curiosidad
+y hacer que el lector quiera descubrir
+qué ocurrirá después.
+
+Puedes alejarte de los géneros favoritos
+del usuario si eso produce recomendaciones
+más adecuadas para su estado de ánimo.
+
+Reglas:
+
+- Devuelve únicamente JSON.
+- No escribas explicaciones.
+- No escribas markdown.
+- No escribas texto fuera del JSON.
+- Recomienda exactamente cinco libros.
+- Todos deben existir realmente.
+- No repitas libros.
+- No recomiendes libros que el usuario ya posee o haya leído.
+- El mensaje debe estar en español.
+- Menciona los cinco libros recomendados.
+- Termina invitando al usuario a preguntar por cualquiera de ellos.
+
+Formato EXACTO:
+
+{
+    "mensaje":"...",
+    "libros":[
+        {
+            "titulo":"...",
+            "autor":"..."
+        }
+    ]
+}
+"""
+
+PROMPT_RECOMENDADOR_ANSIOSO = """
+El usuario se encuentra en un estado de ánimo ansioso.
+
+Tu objetivo es recomendar libros que puedan ayudarle
+a desconectarse momentáneamente de sus preocupaciones
+y sumergirse en una historia agradable.
+
+Prioriza:
+
+- Fantasía
+- Aventuras
+- Comedia
+- Romance
+- Ficción reconfortante
+- Historias entretenidas y fáciles de seguir
+- Mundos imaginativos
+
+Evita priorizar:
+
+- Terror
+- Thriller psicológico
+- Historias excesivamente tristes
+- Distopías especialmente pesadas
+- Historias excesivamente violentas
+- Libros que puedan resultar demasiado densos
+
+La intención no es tratar la ansiedad,
+sino ofrecer una experiencia de lectura
+agradable y envolvente.
+
+Busca libros que permitan al usuario
+escapar un rato de sus preocupaciones
+y concentrarse en una buena historia.
+"""
+
 
 class RecomendadorLibros:
 
@@ -158,9 +305,9 @@ class RecomendadorLibros:
     # CONSTRUIR EL PROMPT
     ##########################################################
 
-    def construir_prompt(self, generos, titulos):
+    def construir_prompt(self, generos, titulos, prompt_base):
 
-        texto = PROMPT_RECOMENDADOR
+        texto = prompt_base
 
         texto += "\n\n"
 
@@ -185,7 +332,7 @@ class RecomendadorLibros:
         return texto
 
 
-##########################################################
+    ##########################################################
     # BUSCAR LIBROS EN GOOGLE BOOKS
     ##########################################################
 
@@ -301,16 +448,118 @@ class RecomendadorLibros:
 
         return self.buscar_libros(recomendaciones)
 
+
+    def recomendaciones_defecto_reflexivo(self):
+
+        recomendaciones = [
+
+            {
+                "titulo": "Crimen y castigo",
+                "autor": "Fiódor Dostoievski"
+            },
+
+            {
+                "titulo": "Sapiens: De animales a dioses",
+                "autor": "Yuval Noah Harari"
+            },
+
+            {
+                "titulo": "El nombre de la rosa",
+                "autor": "Umberto Eco"
+            },
+
+            {
+                "titulo": "Ensayo sobre la ceguera",
+                "autor": "José Saramago"
+            },
+
+            {
+                "titulo": "El mundo de Sofía",
+                "autor": "Jostein Gaarder"
+            }
+
+        ]
+
+        return self.buscar_libros(recomendaciones)
+
+
+    def recomendaciones_defecto_sorprendido(self):
+
+        recomendaciones = [
+
+            {
+                "titulo": "El Hobbit",
+                "autor": "J. R. R. Tolkien"
+            },
+
+            {
+                "titulo": "Alicia en el país de las maravillas",
+                "autor": "Lewis Carroll"
+            },
+
+            {
+                "titulo": "Viaje al centro de la Tierra",
+                "autor": "Julio Verne"
+            },
+
+            {
+                "titulo": "La historia interminable",
+                "autor": "Michael Ende"
+            },
+
+            {
+                "titulo": "Las crónicas de Narnia",
+                "autor": "C. S. Lewis"
+            }
+
+        ]
+
+        return self.buscar_libros(recomendaciones)
+    
+    def recomendaciones_defecto_ansioso(self):
+
+        recomendaciones = [
+
+            {
+                "titulo": "La princesa prometida",
+                "autor": "William Goldman"
+            },
+
+            {
+                "titulo": "Harry Potter y la piedra filosofal",
+                "autor": "J. K. Rowling"
+            },
+
+            {
+                "titulo": "El océano al final del camino",
+                "autor": "Neil Gaiman"
+            },
+
+            {
+                "titulo": "Stardust",
+                "autor": "Neil Gaiman"
+            },
+
+            {
+                "titulo": "La brújula dorada",
+                "autor": "Philip Pullman"
+            }
+
+        ]
+
+        return self.buscar_libros(recomendaciones)
+
+
+
     ##########################################################
     # MÉTODO PRINCIPAL
     ##########################################################
 
-    def recomendar(self, id_usuario):
+    def recomendar(self, id_usuario, devolver_mensaje=False, tipo=None):
 
         print("=" * 60)
         print("INICIANDO RECOMENDADOR")
         print(f"Usuario: {id_usuario}")
-
 
         generos = self.obtener_generos(id_usuario)
 
@@ -328,9 +577,114 @@ class RecomendadorLibros:
 
         if len(generos) == 0:
 
-            return self.recomendaciones_defecto()
+            if tipo == "reflexivo":
 
-        prompt = self.construir_prompt(generos, titulos)
+                libros = self.recomendaciones_defecto_reflexivo()
+
+            elif tipo == "sorprendido":
+
+                libros = self.recomendaciones_defecto_sorprendido()
+
+            elif tipo == "ansioso":
+
+                libros = self.recomendaciones_defecto_ansioso()
+
+            else:
+
+                libros = self.recomendaciones_defecto()
+
+            if devolver_mensaje:
+
+                titulos = [
+                    libro["titulo"]
+                    for libro in libros
+                ]
+
+                if tipo == "reflexivo":
+
+                    mensaje = (
+                        "Aunque todavía no tienes libros en tu biblioteca, "
+                        "puedes comenzar este momento reflexivo con alguna de estas "
+                        "lecturas: "
+                        + ", ".join(titulos[:-1])
+                        + " o "
+                        + titulos[-1]
+                        + ". Son historias e ideas que pueden despertar tu curiosidad, "
+                        "hacerte cuestionar algunas cosas y abrirte nuevas perspectivas. "
+                        "Si alguno te llama especialmente la atención, puedes preguntarme "
+                        "por él y podemos hablar sobre lo que puedes encontrar en esa lectura."
+                    )
+
+                elif tipo == "sorprendido":
+
+                    mensaje = (
+                        "Aunque todavía no tienes libros en tu biblioteca, "
+                        "hay muchos mundos por descubrir. Para mantener viva esa "
+                        "capacidad de sorprenderte, te propongo "
+                        + ", ".join(titulos[:-1])
+                        + " y "
+                        + titulos[-1]
+                        + ". Cada uno puede llevarte a lugares, historias y aventuras "
+                        "muy diferentes. Si alguno despierta tu curiosidad, pregúntame "
+                        "por él y podemos hablar sobre lo que hace especial a esa lectura."
+                    )
+
+                elif tipo == "ansioso":
+
+                    mensaje = (
+                        "Si hoy tienes la mente un poco acelerada, "
+                        "quizá sea un buen momento para desconectarte "
+                        "un rato con una buena historia. Puedes probar con "
+                        + ", ".join(titulos[:-1])
+                        + " o "
+                        + titulos[-1]
+                        + ". Son opciones pensadas para dejarte llevar "
+                        "por otros mundos, aventuras o historias y olvidarte "
+                        "un rato de las preocupaciones. Si alguno te llama "
+                        "la atención, puedes preguntarme por él."
+                    )
+
+                else:
+
+                    mensaje = (
+                        "Como todavía no tienes libros en tu biblioteca, "
+                        "te dejo algunas opciones para comenzar tu próxima lectura: "
+                        + ", ".join(titulos[:-1])
+                        + " o "
+                        + titulos[-1]
+                        + ". Si alguno te interesa, puedes preguntarme por él."
+                    )
+
+                return {
+                    "mensaje": mensaje,
+                    "libros": libros
+                }
+
+
+        if tipo == "reflexivo":
+
+            prompt_base = PROMPT_RECOMENDADOR_REFLEXIVO
+
+        elif tipo == "sorprendido":
+
+            prompt_base = PROMPT_RECOMENDADOR_SORPRENDIDO
+
+        elif tipo == "ansioso":
+
+            prompt_base = PROMPT_RECOMENDADOR_ANSIOSO
+
+        else:
+
+            prompt_base = PROMPT_RECOMENDADOR
+
+
+
+        prompt = self.construir_prompt(
+            generos,
+            titulos,
+            prompt_base
+        )
+
 
         print("\nENVIANDO PROMPT A GEMINI...")
         print("-" * 60)
@@ -377,10 +731,24 @@ class RecomendadorLibros:
 
 
         if len(libros) == 0:
+            libros = self.recomendaciones_defecto()
 
-            return self.recomendaciones_defecto()
+            if devolver_mensaje:
+                return {
+                    "mensaje": mensaje,
+                    "libros": libros
+                }
+
+            return libros
+
+        if devolver_mensaje:
+            return {
+                "mensaje": mensaje,
+                "libros": libros
+            }
 
         return libros
+
 
 recomendador_bp = Blueprint(
     "recomendador",
