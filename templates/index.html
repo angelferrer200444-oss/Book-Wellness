@@ -139,12 +139,15 @@ Book Wellness
                         <h2>Leyendo</h2>
                     
                         <p class="shelf-subtitle">
-                            {% if libros_leyendo|length == 1 %}
+                            {% if libros_leyendo|length == 0 %}
+                                Un espacio para tú próxima lectura
+                            {% elif libros_leyendo|length == 1 %}
                                 Un libro en sección lectura
                             {% else %}
                                 {{ libros_leyendo|length }} libros en sección lectura
                             {% endif %}
                         </p>
+                        
                     
                     </div>
                     
@@ -188,12 +191,14 @@ Book Wellness
                         <h2>Pendiente a leer</h2>
                     
                         <p class="shelf-subtitle">
-                            {% if libros_pendientes|length == 1 %}
-                                1 libro esperando su lectura
+                            {% if libros_pendientes|length == 0 %}
+                                Un espacio para nuevas historias
+                            {% elif libros_pendientes|length == 1 %}
+                                Un libro para tu próxima lectura
                             {% else %}
-                                {{ libros_pendientes|length }} libros esperando su lectura
+                                {{ libros_pendientes|length }} libros para tus próximas lecturas
                             {% endif %}
-                        </p>
+                        </p>                        
                     
                     </div>                    
 
