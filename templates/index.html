@@ -27,10 +27,11 @@ Book Wellness
 <!-- CSS detalle-libro para reutilizar la bolita de carga -->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/detalle-libro.css') }}">
 
+<link rel="stylesheet" href="{{ url_for('static', filename='css/objetivoindex.css') }}">
+
 {% endblock %}
 
 {% block content %}
-
 
     <!-- =========================
          LAYOUT PRINCIPAL
@@ -138,7 +139,7 @@ Book Wellness
                     
                         <p class="shelf-subtitle">
                             {% if libros_leyendo|length == 1 %}
-                                1 libro en sección lectura
+                                Un libro en sección lectura
                             {% else %}
                                 {{ libros_leyendo|length }} libros en sección lectura
                             {% endif %}
@@ -498,12 +499,41 @@ Book Wellness
                     </div>
                 
                 </div>
-                
         
-        
-        
-                <!-- COLUMNA 3 VACÍA -->
+                <!-- COLUMNA OBJETIVO ACTUAL -->
                 <div class="sidebar-column">
+                    <div class="card-container-design">
+                        <div class="card-header-brown">Metas Activas</div>
+                        
+                        <div class="db-diagram-box">
+                            <div class="diagram-header">
+                                <span class="db-icon">📊</span> Objetivos Global
+                            </div>
+                            <div class="diagram-body">
+                                <div class="diagram-row item-highlight">
+                                    <span class="diag-field">Meta actual</span>
+                                    <span class="diag-value">Leer 24 libros</span>
+                                </div>
+                                <div class="diagram-row">
+                                    <span class="diag-field">Progreso</span>
+                                    <span class="diag-value">12 / 24 libros</span>
+                                </div>
+                                <!-- Barra de progreso añadida -->
+                                <div class="progress-container">
+                                    <div class="progress-bar" style="width: 50%;"></div>
+                                </div>
+                                <div class="diagram-row border-top-dash">
+                                    <span class="diag-field">Estado</span>
+                                    <span class="diag-status status-pending">En progreso (50%)</span>
+                                </div>
+                                <a href="{{ url_for('objetivo') }}">
+                                    <button class="btn-objetivos">
+                                        OBJETIVOS
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
         
         
                 </div>
