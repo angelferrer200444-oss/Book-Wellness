@@ -3,7 +3,7 @@
     z-index: 1; 
     max-width: 1240px; 
     margin: -30px auto 40px; 
-    padding: 0 24px 0 90px; /* Separación extra a la izquierda para el botón "Ir atrás" sin pisar contenido */
+    padding: 0 24px 0 90px;
 }
 .welcome-block { margin-bottom: 20px; text-align: center; }
 .welcome-block h1 { font-size: 38px; color: #5a1c11; margin-top: 0; margin-bottom: 6px; } 
@@ -66,7 +66,7 @@
     transform: scale(0.95);
 }
 
-/* --- PORTADA CON NUEVO EFECTO 3D HOVER --- */
+/* --- PORTADA CON EFECTO 3D HOVER --- */
 .book-cover-placeholder {
     width: 210px; height: 270px; background: #fbf6ee; border: 4px solid #4a1f14; border-radius: 8px;
     box-shadow: 0 12px 24px rgba(44, 9, 6, 0.2); display: flex; justify-content: center; align-items: center; position: relative;
@@ -88,8 +88,8 @@
     width: 100%; text-align: center; margin-bottom: 25px; padding: 12px 10px; box-sizing: border-box;
     background: rgba(90, 35, 20, 0.05); border-radius: 8px; border: 1px dashed rgba(90, 35, 20, 0.15);
 }
-.book-meta-title { font-size: 22px; font-weight: 700; color: #5a1c11; margin-bottom: 6px; }
-.book-meta-author { font-size: 16px; font-weight: 600; color: #7a2618; font-style: italic; }
+.book-meta-title { font-size: 22px; font-weight: 700; color: #5a1c11; margin-bottom: 6px; overflow-wrap: break-word; word-break: break-word; }
+.book-meta-author { font-size: 16px; font-weight: 600; color: #7a2618; font-style: italic; overflow-wrap: break-word; }
 .book-meta-date { font-size: 13.5px; font-weight: 700; color: #6b3524; letter-spacing: 1px; text-transform: uppercase; }
 
 .new-note-btn {
@@ -115,7 +115,7 @@
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 .form-input { padding: 10px 14px; font-family: 'Cinzel', serif; font-weight: bold; }
-.form-textarea { resize: vertical; }
+.form-textarea { resize: vertical; white-space: pre-wrap; overflow-wrap: break-word; word-break: break-word; }
 .form-select { cursor: pointer; }
 .form-input:focus, .form-textarea:focus, .form-select:focus { outline: none; border-color: #7a2618; box-shadow: 0 0 5px rgba(122, 38, 24, 0.3); }
 
@@ -132,7 +132,7 @@
 /* ========================================================
    COLUMNA DERECHA Y FILTROS DROPDOWN
    ======================================================== */
-.right-notes-column { display: flex; flex-direction: column; }
+.right-notes-column { display: flex; flex-direction: column; min-width: 0; }
 .notes-header-filter { display: flex; align-items: center; gap: 14px; border-bottom: 2px solid #5a1c11; padding-bottom: 10px; margin-bottom: 20px; }
 
 .dropdown-filter-container { position: relative; display: inline-block; }
@@ -156,29 +156,56 @@
 .dropdown-item[data-value="Todos"] { border-bottom: 1px dashed rgba(138, 109, 85, 0.3); padding-bottom: 12px; margin-bottom: 4px; }
 
 /* --- SECCIÓN SCROLL DE TARJETAS --- */
-.saved-notes-scroll { max-height: 660px; overflow-y: auto; padding-right: 14px; }
+.saved-notes-scroll { max-height: 660px; overflow-y: auto; padding-right: 14px; width: 100%; box-sizing: border-box; }
 .saved-notes-scroll::-webkit-scrollbar { width: 8px; }
 .saved-notes-scroll::-webkit-scrollbar-thumb { background: #7a2618; border-radius: 4px; }
-.notes-list-layout { display: flex; flex-direction: column; gap: 18px; width: 100%; }
+.notes-list-layout { display: flex; flex-direction: column; gap: 18px; width: 100%; min-width: 0; }
 
 /* --- TARJETA DE NOTA INDIVIDUAL --- */
 .note-card {
-    background: #fdfaf4; border-left: 6px solid #7a2618; border-top: 1px solid #eadecc; border-right: 1px solid #eadecc; border-bottom: 3px solid #d5c3aa;
-    border-radius: 4px 10px 10px 4px; padding: 18px 22px; display: flex !important; flex-direction: column !important;
-    box-shadow: 0 4px 12px rgba(90, 35, 20, 0.06); transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+    background: #fdfaf4; 
+    border-left: 6px solid #7a2618; 
+    border-top: 1px solid #eadecc; 
+    border-right: 1px solid #eadecc; 
+    border-bottom: 3px solid #d5c3aa;
+    border-radius: 4px 10px 10px 4px; 
+    padding: 18px 22px; 
+    display: flex !important; 
+    flex-direction: column !important;
+    box-shadow: 0 4px 12px rgba(90, 35, 20, 0.06); 
+    transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+    width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
 }
 .note-card:hover { transform: translateX(4px); box-shadow: 0 8px 20px rgba(90, 35, 20, 0.12); }
 
-.note-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed #d5c3aa; padding-bottom: 10px; margin-bottom: 12px; }
+.note-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    border-bottom: 1px dashed #d5c3aa; 
+    padding-bottom: 10px; 
+    margin-bottom: 12px; 
+    min-width: 0;
+}
 
 .note-title-wrapper {
     display: flex !important;
     align-items: center !important;
     gap: 12px !important;
     flex-wrap: wrap;
+    min-width: 0;
 }
 
-.note-title { margin: 0; font-size: 18px; font-weight: bold; color: #5a1c11; }
+.note-title { 
+    margin: 0; 
+    font-size: 18px; 
+    font-weight: bold; 
+    color: #5a1c11; 
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
 
 .note-category-badge {
     display: inline-block !important;
@@ -192,11 +219,26 @@
     font-weight: bold !important;
     letter-spacing: 0.5px;
     text-transform: uppercase;
+    white-space: nowrap;
 }
 
 .note-date { font-size: 12px; color: #8a6d55; font-family: Arial, sans-serif; white-space: nowrap; }
-.note-body { flex-grow: 1; }
-.note-body p { margin: 0; font-size: 14px; line-height: 1.5; color: #33140c; font-family: Arial, sans-serif; }
+
+.note-body { 
+    flex-grow: 1; 
+    min-width: 0;
+}
+
+.note-body p { 
+    margin: 0; 
+    font-size: 14px; 
+    line-height: 1.5; 
+    color: #33140c; 
+    font-family: Arial, sans-serif; 
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
 
 .note-footer { display: flex; justify-content: flex-end; gap: 12px; margin-top: 16px; padding-top: 8px; border-top: 1px solid rgba(213, 195, 170, 0.4); }
 .note-action-btn { background: transparent; border: none; font-size: 13px; font-family: 'Cinzel', serif; font-weight: bold; cursor: pointer; padding: 4px 8px; border-radius: 4px; }
@@ -219,7 +261,6 @@
    EXCEPCIONES Y AJUSTES ESPECÍFICOS DE SECCIÓN
    ======================================================== */
 
-/* Extensión de la pregunta de notas al ancho completo */
 .pregunta-notas-ampliada {
     grid-column: 1 / -1 !important;
     width: 100%;
@@ -227,7 +268,6 @@
     padding: 20px !important;
 }
 
-/* Formato idéntico y homogéneo para los tres campos de notas */
 #new-note-form .form-input,
 #new-note-form .form-textarea,
 #new-note-form .form-select,
@@ -246,7 +286,6 @@
     font-weight: normal !important;
 }
 
-/* Ampliación de espacio del contenedor y altura del textarea */
 .note-form-container,
 .form-notas-compacto {
     width: 100% !important;
