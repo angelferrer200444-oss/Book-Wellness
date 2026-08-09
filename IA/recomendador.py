@@ -165,39 +165,100 @@ Formato EXACTO:
 """
 
 PROMPT_RECOMENDADOR_ANSIOSO = """
+Eres un experto en literatura.
+
 El usuario se encuentra en un estado de ánimo ansioso.
 
 Tu objetivo es recomendar libros que puedan ayudarle
 a desconectarse momentáneamente de sus preocupaciones
-y sumergirse en una historia agradable.
+y sumergirse en una historia agradable, tranquila
+y fácil de disfrutar.
 
-Prioriza:
+Prioriza especialmente:
 
-- Fantasía
-- Aventuras
+- Fantasía reconfortante
+- Aventuras ligeras
 - Comedia
 - Romance
 - Ficción reconfortante
 - Historias entretenidas y fáciles de seguir
 - Mundos imaginativos
+- Historias cálidas
+- Libros que transmitan sensación de tranquilidad,
+  entretenimiento o escapismo
 
-Evita priorizar:
+Evita recomendar:
 
 - Terror
+- Horror
 - Thriller psicológico
+- Suspenso intenso
 - Historias excesivamente tristes
 - Distopías especialmente pesadas
 - Historias excesivamente violentas
-- Libros que puedan resultar demasiado densos
+- Historias perturbadoras
+- Libros demasiado densos o complejos
+
+IMPORTANTE:
+
+Aunque alguno de los géneros favoritos del usuario
+sea terror, horror, thriller o suspenso, NO debes
+utilizar esos géneros como base para las recomendaciones
+cuando el usuario se encuentre ansioso.
+
+La prioridad es el estado de ánimo actual del usuario,
+no sus géneros favoritos cuando estos puedan resultar
+contrarios a una experiencia de lectura tranquila.
 
 La intención no es tratar la ansiedad,
 sino ofrecer una experiencia de lectura
-agradable y envolvente.
+agradable, envolvente y sin presión.
 
 Busca libros que permitan al usuario
 escapar un rato de sus preocupaciones
 y concentrarse en una buena historia.
+
+Reglas:
+
+- Devuelve únicamente JSON.
+- No escribas explicaciones.
+- No escribas markdown.
+- No escribas texto fuera del JSON.
+- Recomienda exactamente cinco libros.
+- Todos los libros deben existir realmente.
+- No repitas libros.
+- No recomiendes ningún libro que aparezca en
+  la lista "Libros que ya posee o ha leído el usuario".
+- Si un libro ya fue leído o pertenece a su biblioteca,
+  elige otro.
+- El mensaje debe estar en español.
+- El mensaje DEBE mencionar explícitamente los cinco
+  libros recomendados.
+- Debe mencionar cada libro por su título.
+- No puede omitir ninguno de los cinco libros.
+- El mensaje debe presentar los cinco libros de forma
+  natural y agradable, sin utilizar una lista con viñetas.
+- El mensaje debe transmitir tranquilidad,
+  entretenimiento y la posibilidad de desconectarse
+  un rato.
+- Termina invitando al usuario a preguntar
+  por cualquiera de los cinco libros.
+- El mensaje debe ser breve y conciso.
+- Debe tener como máximo 80 palabras.
+
+Formato EXACTO:
+
+{
+    "mensaje":"...",
+    "libros":[
+        {
+            "titulo":"...",
+            "autor":"..."
+        }
+    ]
+}
 """
+
 
 
 class RecomendadorLibros:
