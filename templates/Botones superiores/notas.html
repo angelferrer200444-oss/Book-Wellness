@@ -23,6 +23,10 @@ window.librosCarrusel = [
 ];
 </script>
 
+<script>
+window.idLibroFiltro = {{ id_libro_filtro or 'null' }};
+</script>
+
 {% include "boton-atras.html" %}
 
     <main class="main-content">
@@ -211,6 +215,8 @@ window.librosCarrusel = [
 
         </div>
     </main>
+
+
 
 {% endblock %}
 
