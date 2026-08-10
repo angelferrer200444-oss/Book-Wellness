@@ -5,10 +5,7 @@ Book Wellness - Leídos
 {% endblock %}
 
 {% block css %}
-
-<!-- CSS LEIDOS -->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/Leidos.css') }}">
-
 {% endblock %}
 
 {% block content %}
@@ -17,119 +14,112 @@ Book Wellness - Leídos
 
     <main class="library-container">
         
+        <!-- LEÍDOS -->
         <h2 class="library-title">Mis Libros Leídos</h2>
-
         <div class="shelf-wrapper">
             <div class="books-row">
-                
-                <div class="book-cover-item book-dracula">
-                    <div class="book-cover-inner">
-                        <div class="book-spine-edge"></div>
-                        <div class="book-cover-content">
-                            <span class="cover-author">Bram Stoker</span>
-                            <span class="cover-title">Drácula</span>
-                            <div class="cover-decoration">✦</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="book-cover-item book-alquimista">
-                    <div class="book-cover-inner">
-                        <div class="book-spine-edge"></div>
-                        <div class="book-cover-content">
-                            <span class="cover-author">Paulo Coelho</span>
-                            <span class="cover-title">El Alquimista</span>
-                            <div class="cover-decoration">⚜</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="book-cover-item book-soledad">
-                    <div class="book-cover-inner">
-                        <div class="book-spine-edge"></div>
-                        <div class="book-cover-content">
-                            <span class="cover-author">G. García Márquez</span>
-                            <span class="cover-title">Cien Años de Soledad</span>
-                            <div class="cover-decoration">❦</div>
-                        </div>
-                    </div>
-                </div>
-
+                {% if leidos %}
+                    {% for libro in leidos %}
+<div class="book-cover-item">
+    <div class="book-cover-inner">
+        <div class="book-spine-edge"></div>
+        {% if libro.portada %}
+        <img src="{{ libro.portada }}" alt="{{ libro.titulo }}" style="width:100%;height:100%;object-fit:cover;border-radius:4px;">
+        {% else %}
+        <div class="book-cover-content">
+            <span class="cover-author">{{ libro.autor }}</span>
+            <span class="cover-title">{{ libro.titulo }}</span>
+            <div class="cover-decoration">✦</div>
+        </div>
+        {% endif %}
+    </div>
+    <div class="btn-overlay">
+        <a href="/notas?id_libro={{ libro.id_libro }}">
+            <button class="btn-ver-notas">▶ Ver Notas</button>
+        </a>
+    </div>
+</div>
+{% endfor %}
+                {% else %}
+                    <p style="opacity:0.6; padding:20px;">Aún no has terminado ningún libro.</p>
+                {% endif %}
             </div>
             <div class="shelf-wood"></div>
         </div>
 
+        <!-- INCONCLUSOS -->
         <h2 class="library-title">Lecturas Inconclusas</h2>
-
         <div class="shelf-wrapper">
             <div class="books-row">
-                
-                <div class="book-cover-item book-castigo">
-                    <div class="book-cover-inner">
-                        <div class="book-spine-edge"></div>
-                        <div class="book-cover-content">
-                            <span class="cover-author">Fiódor Dostoyevski</span>
-                            <span class="cover-title">Crimen y Castigo</span>
-                            <div class="cover-decoration">🔖</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="book-cover-item book-metamorfosis">
-                    <div class="book-cover-inner">
-                        <div class="book-spine-edge"></div>
-                        <div class="book-cover-content">
-                            <span class="cover-author">Franz Kafka</span>
-                            <span class="cover-title">La Metamorfosis</span>
-                            <div class="cover-decoration">⏳</div>
-                        </div>
-                    </div>
-                </div>
-
+                {% if inconclusos %}
+                    {% for libro in inconclusos %}
+<div class="book-cover-item">
+    <div class="book-cover-inner">
+        <div class="book-spine-edge"></div>
+        {% if libro.portada %}
+        <img src="{{ libro.portada }}" alt="{{ libro.titulo }}" style="width:100%;height:100%;object-fit:cover;border-radius:4px;">
+        {% else %}
+        <div class="book-cover-content">
+            <span class="cover-author">{{ libro.autor }}</span>
+            <span class="cover-title">{{ libro.titulo }}</span>
+            <div class="cover-decoration">⏳</div>
+        </div>
+        {% endif %}
+    </div>
+    <div class="btn-overlay">
+        <button class="btn-reanudar" onclick="reanudarLibro({{ libro.id_libro }})">↺ Reanudar</button>
+    </div>
+</div>
+{% endfor %}
+                {% else %}
+                    <p style="opacity:0.6; padding:20px;">No tienes lecturas inconclusas.</p>
+                {% endif %}
             </div>
             <div class="shelf-wood"></div>
         </div>
 
+        <!-- AUDIOLIBROS -->
         <h2 class="library-title">Mis Audiolibros</h2>
-
         <div class="shelf-wrapper">
             <div class="books-row">
-                
-                <div class="book-cover-item audio-book-item book-principito">
-                    <div class="book-cover-inner">
-                        <div class="book-spine-edge"></div>
-                        <div class="book-cover-content">
-                            <span class="cover-author">Antoine de Saint-Exupéry</span>
-                            <span class="cover-title">El Principito</span>
-                            <div class="cover-decoration">🎧</div>
+                {% if audiolibros %}
+                    {% for libro in audiolibros %}
+                    <div class="book-cover-item audio-book-item">
+                        <div class="book-cover-inner">
+                            <div class="book-spine-edge"></div>
+                            {% if libro.portada %}
+                            <img src="{{ libro.portada }}" alt="{{ libro.titulo }}" style="width:100%;height:100%;object-fit:cover;border-radius:4px;">
+                            {% else %}
+                            <div class="book-cover-content">
+                                <span class="cover-author">{{ libro.autor }}</span>
+                                <span class="cover-title">{{ libro.titulo }}</span>
+                                <div class="cover-decoration">🎧</div>
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
-                </div>
-
-                <div class="book-cover-item audio-book-item book-quijote">
-                    <div class="book-cover-inner">
-                        <div class="book-spine-edge"></div>
-                        <div class="book-cover-content">
-                            <span class="cover-author">Miguel de Cervantes</span>
-                            <span class="cover-title">Don Quijote</span>
-                            <div class="cover-decoration">🎧</div>
-                        </div>
-                    </div>
-                </div>
-
+                    {% endfor %}
+                {% else %}
+                    <p style="opacity:0.6; padding:20px;">No tienes audiolibros registrados.</p>
+                {% endif %}
             </div>
             <div class="shelf-wood"></div>
         </div>
 
     </main>
 
-</body>
-</html>
-
 {% endblock %}
 
 {% block js %}
-
-
-
+<script>
+async function reanudarLibro(id_libro) {
+    const res = await fetch('/api/reanudar_libro', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id_libro })
+    });
+    if(res.ok) window.location.href = '/';
+    else alert('Error al reanudar el libro.');
+}
+</script>
 {% endblock %}
