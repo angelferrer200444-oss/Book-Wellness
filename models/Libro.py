@@ -126,6 +126,8 @@ class Libro:
     # OBTENER
     # ==========================
 
+
+
     @staticmethod
     def obtener(id_libro):
 
@@ -739,3 +741,30 @@ class Libro:
             return {
                 "error": str(e)
             }
+
+
+    @staticmethod
+    def actualizar_categoria(id_libro, categoria):
+        conexion = obtener_conexion()
+        cursor = conexion.cursor()
+        cursor.execute("""
+            UPDATE libros SET categoria = %s
+            WHERE id_libro = %s
+        """, (categoria, id_libro))
+        conexion.commit()
+        cursor.close()
+        conexion.close()
+
+    @staticmethod
+    def obtener_libros_usuario_formato(id_usuario, formato):
+        conexion = obtener_conexion()
+        cursor = conexion.cursor(dictionary=True)
+        cursor.execute("""
+            SELECT id_libro, titulo, autor, portada, key_libro, id_google, es_agregado_manualmente
+            FROM libros
+            WHERE id_usuario = %s AND formato = %s
+        """, (id_usuario, formato))
+        libros = cursor.fetchall()
+        cursor.close()
+        conexion.close()
+        return libros
