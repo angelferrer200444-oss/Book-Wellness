@@ -41,6 +41,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     filterNotes(currentSelectedCategory, currentLibroId);
+  
+}
+
+if(window.idLibroFiltro) {
+    const idx = libros.findIndex(l => String(l.id) === String(window.idLibroFiltro));
+    if(idx !== -1) {
+        carruselIndex = idx;
+        actualizarCarrusel();
+    }
+    window.idLibroFiltro = null;
 }
 
     prevBookBtn.addEventListener('click', () => {
