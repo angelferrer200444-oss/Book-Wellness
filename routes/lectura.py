@@ -303,6 +303,17 @@ def registrar_rutas(app):
             )
 
             id_lectura = lectura.guardar()
+            print("ESTADO RECIBIDO:", datos.get('estado'))  # ← aquí
+
+            id_lectura = lectura.guardar()
+            print("ESTADO RECIBIDO:", datos.get('estado'))
+
+            # Actualizar categoría del libro
+            continuar = datos.get('estado')
+            if continuar == 'He terminado el libro':
+                Libro.actualizar_categoria(datos.get('id_libro'), 'leido')
+            elif continuar == 'No por ahora':
+                Libro.actualizar_categoria(datos.get('id_libro'), 'inconcluso')
 
             # Guardar reflexión en notas_lectura
             if (
@@ -369,13 +380,18 @@ def registrar_rutas(app):
     @app.route("/notas")
     def notas():
         id_usuario = session.get('id_usuario')
+        id_libro_filtro = request.args.get('id_libro')
         notas_manuales, notas_sesion = Nota.obtener_todas(id_usuario) if id_usuario else ([], [])
         libros_leyendo = Libro.obtener_libros_usuario(id_usuario, 'leyendo') if id_usuario else []
+        libros_leidos = Libro.obtener_libros_usuario(id_usuario, 'leido') if id_usuario else []
+        libros_inconclusos = Libro.obtener_libros_usuario(id_usuario, 'inconcluso') if id_usuario else []
+        todos_libros = libros_leyendo + libros_leidos + libros_inconclusos
         return render_template(
             "Botones superiores/notas.html",
             notas_manuales=notas_manuales,
             notas_sesion=notas_sesion,
-            libros_leyendo=libros_leyendo
+            libros_leyendo=todos_libros,
+            id_libro_filtro=id_libro_filtro
         )
 
     @app.route('/api/agregar_nota', methods=['POST'])

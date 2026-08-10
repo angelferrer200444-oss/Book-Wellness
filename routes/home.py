@@ -125,9 +125,26 @@ def registrar_rutas(app):
 
     @app.route("/leidos")
     def leidos():
+        id_usuario = session.get('id_usuario')
+        leidos = Libro.obtener_libros_usuario(id_usuario, 'leido') if id_usuario else []
+        inconclusos = Libro.obtener_libros_usuario(id_usuario, 'inconcluso') if id_usuario else []
+        audiolibros = Libro.obtener_libros_usuario_formato(id_usuario, 'Audiolibro') if id_usuario else []
         return render_template(
-            "Botones superiores/leidos.html"
+            "Botones superiores/Leidos.html",
+            leidos=leidos,
+            inconclusos=inconclusos,
+            audiolibros=audiolibros
         )
+    @app.route('/api/reanudar_libro', methods=['POST'])
+    def reanudar_libro():
+        from flask import request, jsonify, session
+        from models.Libro import Libro
+        id_usuario = session.get('id_usuario')
+        if not id_usuario:
+            return jsonify({"error": "No hay sesión"}), 401
+        datos = request.json
+        Libro.actualizar_categoria(datos.get('id_libro'), 'leyendo')
+        return jsonify({"mensaje": "Libro reanudado"}), 200
 
 
     @app.route("/seguimiento")
