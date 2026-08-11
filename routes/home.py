@@ -305,14 +305,67 @@ def registrar_rutas(app):
                 "recomendaciones": resultado["recomendaciones"]
 
             })
+        
+        elif estado == "Triste":
 
 
+            resultado = EstadoAnimo.responder_triste(
+                id_usuario
+            )
 
+            return jsonify({
 
+                "mensaje": "Estado guardado.",
 
-        print("Respuesta IA:", mensaje)
+                "respuesta_ia": resultado["respuesta"],
+
+                "recomendaciones": resultado.get(
+                    "recomendaciones",
+                    []
+                )
+
+            }), 200
+
         
         return jsonify({
             "mensaje": "Estado de ánimo guardado correctamente.",
             "respuesta_ia": mensaje
+        }), 200
+
+    @app.route(
+        "/api/triste/analizar",
+        methods=["POST"]
+    )
+    def analizar_triste():
+
+        if "id_usuario" not in session:
+
+            return jsonify({
+                "error": "Usuario no autenticado"
+            }), 401
+
+        datos = request.get_json()
+
+        respuesta_usuario = datos.get(
+            "respuesta",
+            ""
+        ).strip()
+
+        if not respuesta_usuario:
+
+            return jsonify({
+                "error": "La respuesta está vacía."
+            }), 400
+
+        id_usuario = session["id_usuario"]
+
+        resultado = EstadoAnimo.procesar_triste(
+            id_usuario,
+            respuesta_usuario
+        )
+
+        return jsonify({
+            "respuesta_ia": resultado["respuesta"],
+            "recomendaciones": resultado["recomendaciones"],
+            "estado_triste": resultado["estado_triste"]
         }), 200
