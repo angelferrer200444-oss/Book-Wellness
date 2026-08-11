@@ -321,6 +321,8 @@ async function enviarRespuestaTriste() {
         boton.disabled = false;
         campo.disabled = false;
         boton.textContent = "➜";
+
+        restaurarPanelIANormal();
     }
 }
 
