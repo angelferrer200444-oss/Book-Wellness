@@ -24,3 +24,24 @@ RESPUESTAS_FELIZ_SIN_LIBRO = [
 
     "¡Qué bueno escuchar eso! 😊 Cuando tengas un rato libre, podrías empezar uno de los libros que aún esperan por ti."
 ]
+
+RESPUESTAS_TRISTE = [
+
+    "Lamento que hoy te sientas así. Si quieres, puedes contarme qué ocurrió o qué te hizo sentir de esta manera. Estoy aquí para escucharte.",
+
+    "Siento que estés pasando por un momento triste. Si te apetece hablar de ello, puedes contarme qué pasó. Puedes hacerlo a tu propio ritmo.",
+
+    "Lamento que hoy no te encuentres del todo bien. Si quieres compartirlo conmigo, ¿hay algo en particular que haya hecho que te sientas así?",
+
+    "Siento que estés teniendo un día así. No tienes que contarme nada que no quieras, pero si te ayuda hablarlo, ¿quieres contarme qué ocurrió?",
+
+    "Lamento que estés sintiéndote triste. A veces poner en palabras lo que nos pasa puede ayudar a expresarlo. Si quieres, cuéntame qué sucedió."
+]
+
+
+RESPUESTAS_TRISTE_SIN_LIBRO = [
+    
+    "Lamento que hoy te sientas así. Si quieres, puedes contarme qué ocurrió. Estoy aquí para escucharte.",
+
+    "Siento que estés pasando por un momento triste. Si te apetece hablar, puedes contarme qué te hizo sentir de esta manera."
+]
