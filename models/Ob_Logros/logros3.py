@@ -34,7 +34,8 @@ class Logros3:
             Logros3.lector_versatil(usuario_id),
             Logros3.vision_del_futuro(usuario_id),
             Logros3.mitad_de_camino(usuario_id),
-            Logros3.cronicas_reales(usuario_id)
+            Logros3.cronicas_reales(usuario_id),
+            Logros3.lexic_enriquecido(usuario_id)
         ]
 
 
@@ -352,4 +353,61 @@ class Logros3:
             "objetivo": objetivo,
             "porcentaje": porcentaje,
             "completado": libros_historia >= objetivo
+        }
+
+    # ==========================================
+    # 21. LÉXICO ENRIQUECIDO
+    # ==========================================
+
+    @staticmethod
+    def lexic_enriquecido(usuario_id):
+
+        conexion = obtener_conexion()
+        cursor = conexion.cursor(dictionary=True)
+
+        cursor.execute("""
+            SELECT contenido
+            FROM notas_usuario
+            WHERE id_usuario = %s
+            AND categoria = 'Vocabulario'
+            AND contenido IS NOT NULL
+        """, (usuario_id,))
+
+        notas = cursor.fetchall()
+
+        cursor.close()
+        conexion.close()
+
+        palabras = 0
+
+        for nota in notas:
+
+            contenido = str(
+                nota["contenido"]
+            ).strip()
+
+            if contenido:
+                palabras += len(
+                    contenido.split()
+                )
+
+        objetivo = 20
+
+        progreso = min(
+            palabras,
+            objetivo
+        )
+
+        porcentaje = min(
+            int((progreso / objetivo) * 100),
+            100
+        )
+
+        return {
+            "id": 21,
+            "nombre": "Léxico Enriquecido",
+            "progreso": progreso,
+            "objetivo": objetivo,
+            "porcentaje": porcentaje,
+            "completado": palabras >= objetivo
         }
