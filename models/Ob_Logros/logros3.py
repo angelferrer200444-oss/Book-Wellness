@@ -31,8 +31,12 @@ class Logros3:
         return [
             Logros3.mente_sana(usuario_id),
             Logros3.gran_volumen(usuario_id),
-            Logros3.lector_versatil(usuario_id)
+            Logros3.lector_versatil(usuario_id),
+            Logros3.vision_del_futuro(usuario_id),
+            Logros3.mitad_de_camino(usuario_id),
+            Logros3.cronicas_reales(usuario_id)
         ]
+
 
     # ==========================================
     # 15. MENTE SANA
@@ -192,4 +196,160 @@ class Logros3:
             "objetivo": objetivo,
             "porcentaje": porcentaje,
             "completado": libros_iniciados >= objetivo
+        }
+
+    # ==========================================
+    # 18. VISIÓN DEL FUTURO
+    # ==========================================
+
+    @staticmethod
+    def vision_del_futuro(usuario_id):
+
+        conexion = obtener_conexion()
+        cursor = conexion.cursor(dictionary=True)
+
+        cursor.execute("""
+            SELECT
+                COUNT(DISTINCT id_libro) AS libros
+            FROM libros
+            WHERE id_usuario = %s
+            AND categoria = 'leido'
+            AND genero IS NOT NULL
+            AND (
+                INSTR(LOWER(genero), 'ciencia ficción') > 0
+                OR INSTR(LOWER(genero), 'ciencia ficcion') > 0
+                OR INSTR(LOWER(genero), 'science fiction') > 0
+            )
+        """, (usuario_id,))
+
+        resultado = cursor.fetchone()
+
+        cursor.close()
+        conexion.close()
+
+        libros_scifi = resultado["libros"] or 0
+
+        objetivo = 2
+
+        progreso = min(
+            libros_scifi,
+            objetivo
+        )
+
+        porcentaje = min(
+            int((progreso / objetivo) * 100),
+            100
+        )
+
+        return {
+            "id": 18,
+            "nombre": "Visión del Futuro",
+            "progreso": progreso,
+            "objetivo": objetivo,
+            "porcentaje": porcentaje,
+            "completado": libros_scifi >= objetivo
+        }
+
+
+    # ==========================================
+    # 19. MITAD DE CAMINO
+    # ==========================================
+
+    @staticmethod
+    def mitad_de_camino(usuario_id):
+
+        conexion = obtener_conexion()
+        cursor = conexion.cursor(dictionary=True)
+
+        cursor.execute("""
+            SELECT
+                COUNT(DISTINCT id_libro) AS libros
+            FROM libros
+            WHERE id_usuario = %s
+            AND categoria = 'leido'
+        """, (usuario_id,))
+
+        resultado = cursor.fetchone()
+
+        cursor.close()
+        conexion.close()
+
+        libros_leidos = resultado["libros"] or 0
+
+        objetivo = 12
+
+        progreso = min(
+            libros_leidos,
+            objetivo
+        )
+
+        porcentaje = min(
+            int((progreso / objetivo) * 100),
+            100
+        )
+
+        return {
+            "id": 19,
+            "nombre": "Mitad de Camino",
+            "progreso": progreso,
+            "objetivo": objetivo,
+            "porcentaje": porcentaje,
+            "completado": libros_leidos >= objetivo
+        }
+
+
+    # ==========================================
+    # 20. CRÓNICAS REALES
+    # ==========================================
+
+    @staticmethod
+    def cronicas_reales(usuario_id):
+
+        conexion = obtener_conexion()
+        cursor = conexion.cursor(dictionary=True)
+
+        cursor.execute("""
+            SELECT
+                COUNT(DISTINCT id_libro) AS libros
+            FROM libros
+            WHERE id_usuario = %s
+            AND categoria = 'leido'
+            AND genero IS NOT NULL
+            AND (
+                INSTR(LOWER(genero), 'historia') > 0
+                OR INSTR(LOWER(genero), 'history') > 0
+                OR INSTR(LOWER(genero), 'biografía') > 0
+                OR INSTR(LOWER(genero), 'biografia') > 0
+                OR INSTR(LOWER(genero), 'biography') > 0
+                OR INSTR(LOWER(genero), 'biographies') > 0
+                OR INSTR(LOWER(genero), 'biography & autobiography') > 0
+            )
+        """, (usuario_id,))
+
+        resultado = cursor.fetchone()
+
+        cursor.close()
+        conexion.close()
+
+        libros_historia = resultado["libros"] or 0
+
+        objetivo = 1
+
+        progreso = min(
+            libros_historia,
+            objetivo
+        )
+
+        porcentaje = min(
+            int((progreso / objetivo) * 100),
+            100
+        )
+
+        return {
+            "id": 20,
+            "nombre": "Crónicas Reales",
+            "progreso": progreso,
+            "objetivo": objetivo,
+            "porcentaje": porcentaje,
+            "completado": libros_historia >= objetivo
         }
