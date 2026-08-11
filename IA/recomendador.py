@@ -259,6 +259,104 @@ Formato EXACTO:
 }
 """
 
+PROMPT_RECOMENDADOR_TRISTE = """
+El usuario se encuentra en un estado de ánimo triste.
+
+Debes recomendar exactamente cinco libros
+basándote en la situación emocional identificada
+y en los gustos literarios del usuario.
+
+La prioridad NO es simplemente recomendar libros
+del mismo género que el usuario suele leer.
+
+La prioridad principal es respetar la experiencia
+emocional indicada.
+
+Existen cinco posibles enfoques:
+
+ESTADO 1 — ABRAZAR LA TRISTEZA
+
+La lectura debe ser predominantemente triste,
+profunda, humana y emocional.
+
+Debe acompañar al lector en su tristeza
+y permitirle sentirse comprendido.
+
+No es obligatorio que trate sobre el mismo problema
+que experimenta el usuario.
+
+La prioridad es la tristeza y la profundidad emocional.
+
+ESTADO 2 — PÉRDIDA O CAMBIO
+
+La lectura debe combinar tristeza con alegría,
+belleza, cariño, recuerdos o esperanza.
+
+Debe tratar la pérdida o los cambios de la vida
+desde una perspectiva emocionalmente cálida.
+
+La prioridad es:
+
+tristeza + alegría.
+
+ESTADO 3 — INSEGURIDAD O DUDAS SOBRE LA VIDA
+
+La lectura debe provocar reflexión sobre las decisiones,
+los caminos posibles, las oportunidades perdidas,
+las elecciones y la vida.
+
+La prioridad es que haga reflexionar al lector
+sobre su propia vida.
+
+ESTADO 4 — NO ENCUENTRA LO BUENO EN LO MALO
+
+La lectura puede ser triste o dolorosa,
+pero debe contener belleza, esperanza,
+aceptación o un desenlace reconfortante.
+
+La prioridad es:
+
+tristeza + esperanza.
+
+ESTADO 5 — CASO EXTRAORDINARIO
+
+Debes crear una orientación personalizada
+a partir de la situación emocional del usuario.
+
+No fuerces la recomendación dentro de los otros
+cuatro estados.
+
+REGLAS:
+
+- Devuelve únicamente JSON.
+- Recomienda exactamente cinco libros.
+- Todos los libros deben existir realmente.
+- No repitas libros.
+- No recomiendes ningún libro que el usuario
+  ya posea o haya leído.
+- Respeta los gustos literarios del usuario cuando
+  sea posible.
+- La situación emocional tiene prioridad sobre
+  la similitud de género.
+- El mensaje debe estar en español.
+- El mensaje debe ser breve.
+- El mensaje debe mencionar los cinco libros.
+- No hagas el mensaje excesivamente largo.
+- Termina invitando al usuario a preguntar
+  sobre cualquiera de ellos.
+
+FORMATO EXACTO:
+
+{
+    "mensaje": "...",
+    "libros": [
+        {
+            "titulo": "...",
+            "autor": "..."
+        }
+    ]
+}
+"""
 
 
 class RecomendadorLibros:
@@ -609,6 +707,138 @@ class RecomendadorLibros:
         ]
 
         return self.buscar_libros(recomendaciones)
+
+    def recomendar_triste(
+        self,
+        id_usuario,
+        estado,
+        respuesta_usuario,
+        motivo
+    ):
+
+        print("=" * 60)
+        print("RECOMENDADOR TRISTE")
+        print(f"Estado seleccionado: {estado}")
+        print(f"Motivo: {motivo}")
+
+        generos = self.obtener_generos(
+            id_usuario
+        )
+
+        titulos = self.obtener_titulos(
+            id_usuario
+        )
+
+        prompt = PROMPT_RECOMENDADOR_TRISTE
+
+        prompt += "\n\n"
+        prompt += "ESTADO EMOCIONAL SELECCIONADO:\n"
+        prompt += f"{estado}\n"
+
+        prompt += "\n"
+        prompt += "MOTIVO DE LA CLASIFICACIÓN:\n"
+        prompt += motivo
+
+        prompt += "\n\n"
+        prompt += "RESPUESTA ORIGINAL DEL USUARIO:\n"
+        prompt += respuesta_usuario
+
+        prompt += "\n\n"
+        prompt += "LIBROS QUE YA POSEE O HA LEÍDO:\n\n"
+
+        for titulo in titulos:
+            prompt += f"- {titulo}\n"
+
+        prompt += "\n"
+        prompt += "GÉNEROS FAVORITOS DEL USUARIO:\n\n"
+
+        for genero, cantidad in sorted(
+            generos.items(),
+            key=lambda x: x[1],
+            reverse=True
+        ):
+            prompt += (
+                f"- {genero}: "
+                f"{cantidad} libros\n"
+            )
+
+        
+        print(prompt)
+        
+
+        try:
+
+            resultado = self.ia.generar_json(
+                prompt,
+                timeout=45
+            )
+
+
+            mensaje = resultado.get(
+                "mensaje",
+                ""
+            )
+
+            recomendaciones = resultado.get(
+                "libros",
+                []
+            )
+
+            print("\nRESPUESTA DEL RECOMENDADOR:")
+
+            for libro in recomendaciones:
+                print(
+                    f"- {libro['titulo']} | "
+                    f"{libro['autor']}"
+                )
+
+        except Exception as e:
+
+            print("=" * 60)
+            print("ERROR RECOMENDADOR TRISTE")
+            print(e)
+            print("=" * 60)
+
+            return {
+                "mensaje": "",
+                "libros": []
+            }
+
+        libros = self.buscar_libros(
+            recomendaciones
+        )
+
+        if len(libros) == 0:
+
+            print(
+                "No se encontraron libros "
+                "válidos para las recomendaciones."
+            )
+
+            return {
+                "mensaje": mensaje,
+                "libros": []
+            }
+
+        # Guardar recomendaciones en la caché
+        # para que permanezcan después de recargar la página.
+        db.guardar_recomendaciones(
+            id_usuario,
+            libros
+        )
+
+        if mensaje:
+
+            db.guardar_mensaje(
+                id_usuario,
+                "asistente",
+                mensaje
+            )
+
+        return {
+            "mensaje": mensaje,
+            "libros": libros
+        }
 
 
 
