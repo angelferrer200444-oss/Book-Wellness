@@ -312,3 +312,37 @@ async function filterNotes(categoria, idLibro) {
     actualizarCarrusel();
 
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const categoria = document.getElementById("note-category-select");
+    const contenido = document.getElementById("note-content-input");
+
+    if (!categoria || !contenido) {
+        return;
+    }
+
+    function actualizarPlaceholder() {
+
+        if (categoria.value === "Vocabulario") {
+
+            contenido.placeholder =
+                "Escribe las palabras nuevas separadas por comas. " +
+                "Ejemplo: efímero, resiliencia, melancolía. " +
+                "Cada palabra contará para tu logro Léxico Enriquecido" +
+                "y en tus estadisticas generales. ";
+
+        } else {
+
+            contenido.placeholder =
+                "Escribe aquí cualquier pensamiento, cita o idea que quieras recordar...";
+        }
+    }
+
+    categoria.addEventListener(
+        "change",
+        actualizarPlaceholder
+    );
+
+    actualizarPlaceholder();
+});
