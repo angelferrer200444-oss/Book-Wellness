@@ -2,7 +2,7 @@ import random
 import db
 from db import ( obtener_conexion, guardar_mensaje )
 from models.Libro import Libro
-from .respuestafeliz import ( RESPUESTAS_FELIZ, RESPUESTAS_FELIZ_SIN_LIBRO )
+from .respuestafeliztriste import ( RESPUESTAS_FELIZ, RESPUESTAS_FELIZ_SIN_LIBRO, RESPUESTAS_TRISTE, RESPUESTAS_TRISTE_SIN_LIBRO )
 from IA.orquestador import OrquestadorIA
 from IA.recomendador import motor
 
@@ -759,5 +759,203 @@ class EstadoAnimo:
             "recomendaciones": recomendaciones
         }
 
+    @staticmethod
+    def responder_triste(id_usuario):
 
-        
+        print("===== TRISTE =====")
+
+        respuesta = random.choice(RESPUESTAS_TRISTE)
+
+        db.guardar_mensaje(
+            id_usuario,
+            "asistente",
+            respuesta
+        )
+
+        return {
+            "respuesta": respuesta,
+            "recomendaciones": []
+        }
+
+    @staticmethod
+    def analizar_triste(id_usuario, respuesta_usuario):
+
+        print("===== ANALIZANDO TRISTE =====")
+        print("Respuesta del usuario:")
+        print(respuesta_usuario)
+
+        db.guardar_mensaje(
+            id_usuario,
+            "usuario",
+            respuesta_usuario
+        )
+
+
+        prompt = f"""
+    Eres un asistente especializado en recomendaciones
+    literarias según el estado emocional del lector.
+
+    El usuario indicó anteriormente que se siente triste.
+
+    Ahora explicó la razón de su tristeza:
+
+    "{respuesta_usuario}"
+
+    Debes analizar cuidadosamente lo que expresó
+    y determinar cuál de las siguientes situaciones
+    describe mejor su estado.
+
+    ESTADO 1 — ABRAZAR LA TRISTEZA
+
+    El usuario necesita una lectura que acompañe
+    directamente su tristeza y le permita sentirse
+    comprendido.
+
+    La prioridad es una historia triste, profunda,
+    humana o emocional.
+
+    No es obligatorio que trate exactamente sobre
+    el mismo problema que menciona el usuario.
+
+    La prioridad es que la lectura tenga una tristeza
+    significativa y pueda acompañar emocionalmente
+    al lector.
+
+    Ejemplo conceptual:
+    "Tokio Blues" de Haruki Murakami.
+
+    ESTADO 2 — PÉRDIDA O CAMBIO
+
+    El usuario habla de haber perdido a alguien,
+    haber perdido algo importante o estar atravesando
+    un cambio significativo en su vida.
+
+    La prioridad es una historia que combine tristeza
+    con momentos de alegría, belleza, cariño o esperanza.
+
+    La lectura debe permitir recordar que incluso dentro
+    de una pérdida pueden existir momentos hermosos.
+
+    Ejemplo conceptual:
+    "Un verano italiano" de Rebecca Serle.
+
+    ESTADO 3 — INSEGURIDAD O DUDAS SOBRE LA VIDA
+
+    El usuario expresa dudas, indecisión o pensamientos
+    como:
+
+    "¿Y si hubiera elegido otra cosa?"
+    "Quizás debería..."
+    "No sé si hice lo correcto."
+    "¿Qué habría pasado si...?"
+
+    La prioridad es una historia que invite a reflexionar
+    sobre las decisiones, los caminos posibles y la propia
+    vida.
+
+    Ejemplo conceptual:
+    "Quizás en otra vida" de Taylor Jenkins Reid.
+
+    ESTADO 4 — NO ENCUENTRA LO BUENO EN LO MALO
+
+    El usuario reconoce que está atravesando algo doloroso
+    pero no consigue encontrarle ningún sentido positivo,
+    belleza o esperanza.
+
+    La prioridad es una historia triste o difícil que,
+    sin ignorar el dolor, termine transmitiendo belleza,
+    esperanza, aceptación o una sensación reconfortante.
+
+    Ejemplo conceptual:
+    "Life of Pi".
+
+    ESTADO 5 — CASO EXTRAORDINARIO
+
+    La respuesta del usuario no encaja claramente
+    en ninguno de los cuatro estados anteriores.
+
+    En ese caso debes analizar nuevamente su situación
+    y construir una orientación emocional personalizada.
+
+    No fuerces al usuario dentro de uno de los otros
+    estados.
+
+    REGLAS:
+
+    - Devuelve únicamente JSON.
+    - No escribas markdown.
+    - No escribas explicaciones fuera del JSON.
+    - Selecciona exactamente un estado.
+    - El estado debe ser un número entre 1 y 5.
+    - Explica brevemente por qué elegiste ese estado.
+    - No diagnostiques al usuario.
+    - No presentes esto como tratamiento psicológico.
+
+    FORMATO EXACTO:
+
+    {{
+        "estado": 1,
+        "motivo": "Explicación breve de por qué la respuesta corresponde a este estado."
+    }}
+    """
+
+        ia = OrquestadorIA()
+
+        resultado = ia.generar_json(
+            prompt
+        )
+
+        print("CLASIFICACIÓN TRISTE:")
+        print(resultado)
+
+        return resultado
+
+    @staticmethod
+    def procesar_triste(
+        id_usuario,
+        respuesta_usuario
+    ):
+
+        print("=" * 60)
+        print("PROCESANDO TRISTE")
+        print("=" * 60)
+
+        clasificacion = EstadoAnimo.analizar_triste(
+            id_usuario,
+            respuesta_usuario
+        )
+
+        estado = clasificacion.get(
+            "estado",
+            5
+        )
+
+        motivo = clasificacion.get(
+            "motivo",
+            ""
+        )
+
+        try:
+            estado = int(estado)
+        except (TypeError, ValueError):
+            estado = 5
+
+        if estado not in [1, 2, 3, 4, 5]:
+            estado = 5
+
+        print(
+            f"Estado emocional detectado: {estado}"
+        )
+
+        resultado = motor.recomendar_triste(
+            id_usuario,
+            estado,
+            respuesta_usuario,
+            motivo
+        )
+
+        return {
+            "respuesta": resultado["mensaje"],
+            "recomendaciones": resultado["libros"],
+            "estado_triste": estado
+        }        
