@@ -117,3 +117,60 @@
     border-radius:20px;
     box-shadow:0 2px 4px rgba(0,0,0,.1);
 }
+
+/* ========================================================
+   ANIMACIÓN DEL ENLACE: ESTADO DE ÁNIMO
+   ======================================================== */
+
+   .mood-history-link {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    position: relative;
+    transition:
+        transform 0.25s ease,
+        background-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+/* Efecto al pasar el mouse */
+.mood-history-link:hover {
+    transform: translateY(-3px);
+    background: rgba(255, 255, 255, 0.75);
+    box-shadow: 0 5px 12px rgba(90, 35, 20, 0.12);
+}
+
+/* Pequeño movimiento al hacer clic */
+.mood-history-link:active {
+    transform: translateY(-1px) scale(0.99);
+}
+
+/* El icono también tiene una pequeña animación */
+.mood-history-link .row-icon {
+    transition: transform 0.3s ease;
+}
+
+.mood-history-link:hover .row-icon {
+    transform: scale(1.15) rotate(-5deg);
+}
+
+/* El texto cambia suavemente */
+.mood-history-link .row-label {
+    transition: color 0.25s ease;
+}
+
+.mood-history-link:hover .row-label {
+    color: #7a2618;
+}
+
+/* El valor también reacciona */
+.mood-history-link .row-value {
+    transition:
+        transform 0.25s ease,
+        color 0.25s ease;
+}
+
+.mood-history-link:hover .row-value {
+    transform: translateX(-3px);
+    color: #7a2618;
+}
