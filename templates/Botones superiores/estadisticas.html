@@ -37,10 +37,35 @@ Book Wellness - Estadísticas
 
     <div class="dashboard-row">
         <div class="row-left">
+            <span class="row-icon">📝</span>
+            <span class="row-label">Palabras Nuevas Registradas</span>
+        </div>
+        <span class="row-value">
+            {{ perfil.palabras_nuevas if perfil else 0 }}
+        </span>
+    </div>
+    
+    <div class="dashboard-row">
+        <div class="row-left">
+            <span class="row-icon">⏳</span>
+            <span class="row-label">Tiempo Promedio de Lectura</span>
+        </div>
+        <span class="row-value">
+            {{ perfil.tiempo_promedio if perfil else "0 minutos" }}
+        </span>
+        
+    </div>
+    
+
+    <div class="dashboard-row">
+        <div class="row-left">
             <span class="row-icon">⏱️</span>
             <span class="row-label">Tiempo Total</span>
         </div>
-        <span class="row-value">{{ (perfil.total_minutos // 60) if perfil else 0 }} hrs</span>
+        <span class="row-value">
+            {{ perfil.tiempo_total_formateado if perfil else "0 minutos" }}
+        </span>
+        
     </div>
 
     <div class="dashboard-row">
@@ -77,17 +102,19 @@ Book Wellness - Estadísticas
 
     <!-- Estado que usare para el panel IA -->
 
-    <div class="dashboard-row">
+    <a href="{{ url_for('historial_animo') }}" class="dashboard-row mood-history-link">
 
         <div class="row-left">
             <span class="row-icon">🤔</span>
             <span class="row-label">Estado de Ánimo (Actual)</span>
         </div>
+    
         <span class="row-value">
             {{ estado_actual.estado_animo if estado_actual else "Sin datos" }}
         </span>
-        
-    </div>
+    
+    </a>
+    
 
 
 
