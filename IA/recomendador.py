@@ -262,17 +262,26 @@ Formato EXACTO:
 PROMPT_RECOMENDADOR_TRISTE = """
 El usuario se encuentra en un estado de ánimo triste.
 
-Debes recomendar exactamente cinco libros
-basándote en la situación emocional identificada
-y en los gustos literarios del usuario.
+A continuación se proporcionará la explicación que
+el usuario dio sobre su tristeza.
+
+Debes realizar DOS tareas dentro de una MISMA respuesta:
+
+1. Analizar la explicación del usuario y determinar
+   cuál de los cinco estados emocionales corresponde
+   mejor a su situación.
+
+2. Utilizando ese estado emocional como guía,
+   recomendar exactamente cinco libros.
+
+La clasificación y las recomendaciones deben realizarse
+en esta misma llamada.
 
 La prioridad NO es simplemente recomendar libros
 del mismo género que el usuario suele leer.
 
 La prioridad principal es respetar la experiencia
 emocional indicada.
-
-Existen cinco posibles enfoques:
 
 ESTADO 1 — ABRAZAR LA TRISTEZA
 
@@ -320,15 +329,24 @@ tristeza + esperanza.
 
 ESTADO 5 — CASO EXTRAORDINARIO
 
-Debes crear una orientación personalizada
+La respuesta del usuario no encaja claramente
+en ninguno de los cuatro estados anteriores.
+
+En ese caso debes crear una orientación personalizada
 a partir de la situación emocional del usuario.
 
-No fuerces la recomendación dentro de los otros
-cuatro estados.
+No fuerces al usuario dentro de los otros estados.
 
-REGLAS:
+REGLAS DE CLASIFICACIÓN:
 
-- Devuelve únicamente JSON.
+- Selecciona exactamente un estado.
+- El estado debe ser un número entre 1 y 5.
+- Explica brevemente por qué elegiste ese estado.
+- No diagnostiques al usuario.
+- No presentes esto como tratamiento psicológico.
+
+REGLAS DE RECOMENDACIÓN:
+
 - Recomienda exactamente cinco libros.
 - Todos los libros deben existir realmente.
 - No repitas libros.
@@ -338,6 +356,11 @@ REGLAS:
   sea posible.
 - La situación emocional tiene prioridad sobre
   la similitud de género.
+
+REGLAS DE RESPUESTA:
+
+- Devuelve únicamente JSON.
+- No escribas markdown.
 - El mensaje debe estar en español.
 - El mensaje debe ser breve.
 - El mensaje debe mencionar los cinco libros.
@@ -348,6 +371,8 @@ REGLAS:
 FORMATO EXACTO:
 
 {
+    "estado": 1,
+    "motivo": "...",
     "mensaje": "...",
     "libros": [
         {
@@ -357,6 +382,7 @@ FORMATO EXACTO:
     ]
 }
 """
+
 
 
 class RecomendadorLibros:
@@ -711,15 +737,12 @@ class RecomendadorLibros:
     def recomendar_triste(
         self,
         id_usuario,
-        estado,
-        respuesta_usuario,
-        motivo
+        respuesta_usuario
     ):
 
         print("=" * 60)
         print("RECOMENDADOR TRISTE")
-        print(f"Estado seleccionado: {estado}")
-        print(f"Motivo: {motivo}")
+        print("=" * 60)
 
         generos = self.obtener_generos(
             id_usuario
@@ -730,14 +753,6 @@ class RecomendadorLibros:
         )
 
         prompt = PROMPT_RECOMENDADOR_TRISTE
-
-        prompt += "\n\n"
-        prompt += "ESTADO EMOCIONAL SELECCIONADO:\n"
-        prompt += f"{estado}\n"
-
-        prompt += "\n"
-        prompt += "MOTIVO DE LA CLASIFICACIÓN:\n"
-        prompt += motivo
 
         prompt += "\n\n"
         prompt += "RESPUESTA ORIGINAL DEL USUARIO:\n"
@@ -762,9 +777,7 @@ class RecomendadorLibros:
                 f"{cantidad} libros\n"
             )
 
-        
         print(prompt)
-        
 
         try:
 
@@ -773,6 +786,15 @@ class RecomendadorLibros:
                 timeout=45
             )
 
+            estado = resultado.get(
+                "estado",
+                5
+            )
+
+            motivo = resultado.get(
+                "motivo",
+                ""
+            )
 
             mensaje = resultado.get(
                 "mensaje",
@@ -783,6 +805,12 @@ class RecomendadorLibros:
                 "libros",
                 []
             )
+
+            print("\nESTADO EMOCIONAL:")
+            print(estado)
+
+            print("\nMOTIVO:")
+            print(motivo)
 
             print("\nRESPUESTA DEL RECOMENDADOR:")
 
@@ -800,6 +828,8 @@ class RecomendadorLibros:
             print("=" * 60)
 
             return {
+                "estado": 5,
+                "motivo": "",
                 "mensaje": "",
                 "libros": []
             }
@@ -816,12 +846,12 @@ class RecomendadorLibros:
             )
 
             return {
+                "estado": estado,
+                "motivo": motivo,
                 "mensaje": mensaje,
                 "libros": []
             }
 
-        # Guardar recomendaciones en la caché
-        # para que permanezcan después de recargar la página.
         db.guardar_recomendaciones(
             id_usuario,
             libros
@@ -836,6 +866,8 @@ class RecomendadorLibros:
             )
 
         return {
+            "estado": estado,
+            "motivo": motivo,
             "mensaje": mensaje,
             "libros": libros
         }
