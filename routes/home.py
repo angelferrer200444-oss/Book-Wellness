@@ -369,3 +369,34 @@ def registrar_rutas(app):
             "recomendaciones": resultado["recomendaciones"],
             "estado_triste": resultado["estado_triste"]
         }), 200
+
+    @app.route("/historial-animo")
+    def historial_animo():
+
+        id_usuario = session.get("id_usuario")
+
+        estados_animo = []
+
+        if id_usuario:
+
+            conexion = db.obtener_conexion()
+            cursor = conexion.cursor(dictionary=True)
+
+            cursor.execute("""
+                SELECT
+                    estado_animo,
+                    fecha_hora
+                FROM estado_animo_actual
+                WHERE id_usuario = %s
+                ORDER BY fecha_hora DESC
+            """, (id_usuario,))
+
+            estados_animo = cursor.fetchall()
+
+            cursor.close()
+            conexion.close()
+
+        return render_template(
+            "Botones superiores/historial_animo.html",
+            estados_animo=estados_animo
+        )
