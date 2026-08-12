@@ -1,0 +1,99 @@
+/* ========================================================
+   HISTORIAL DE ESTADO DE ÁNIMO
+   ======================================================== */
+
+   .mood-history-header {
+    display: grid;
+    grid-template-columns: 1fr 130px 100px;
+    gap: 16px;
+    padding: 10px 16px;
+    margin-bottom: 2px;
+}
+
+.mood-history-header span {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    color: #5a1c11;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.mood-history-row {
+    display: grid;
+    grid-template-columns: 1fr 130px 100px;
+    gap: 16px;
+    align-items: center;
+}
+
+.mood-history-row .mood-name {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.mood-history-row .mood-icon {
+    font-size: 22px;
+    width: 28px;
+    text-align: center;
+}
+
+.mood-history-row .mood-date,
+.mood-history-row .mood-time {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2c0906;
+}
+
+/* Separación visual entre fecha y hora */
+
+.mood-history-row .mood-time {
+    border-left: 1px solid rgba(90, 35, 20, 0.20);
+    padding-left: 16px;
+}
+
+/* Estado sin registros */
+
+.mood-history-empty {
+    text-align: center;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #5a1c11;
+    opacity: 0.7;
+}
+
+/* Adaptación para móvil */
+
+@media (max-width: 600px) {
+
+    .mood-history-header,
+    .mood-history-row {
+        grid-template-columns: 1fr 90px 70px;
+        gap: 8px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .mood-history-header span {
+        font-size: 10px;
+    }
+
+    .mood-history-row .mood-date,
+    .mood-history-row .mood-time {
+        font-size: 12px;
+    }
+
+    .mood-history-row .mood-time {
+        padding-left: 8px;
+    }
+
+    .mood-history-row .mood-name {
+        gap: 6px;
+    }
+
+    .mood-history-row .mood-icon {
+        font-size: 19px;
+        width: 23px;
+    }
+}
