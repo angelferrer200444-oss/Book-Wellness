@@ -825,3 +825,4 @@ class EstadoAnimo:
             "recomendaciones": resultado["libros"],
             "estado_triste": estado
         }
+
