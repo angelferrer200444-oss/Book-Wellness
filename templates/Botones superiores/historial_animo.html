@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}
+Book Wellness - Historial de Estado de Ánimo
+{% endblock %}
+
+{% block css %}
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles estadisticas.css') }}">
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/historial_animo.css') }}">
+
+{% endblock %}
+
+{% block content %}
+
+{% include "boton-atras.html" %}
+
+<main class="main-content">
+
+    <div class="main-dashboard-card">
+
+        <div class="dashboard-header">
+            HISTORIAL DE ESTADO DE ÁNIMO
+        </div>
+
+        <div class="dashboard-body">
+
+            {% if estados_animo %}
+
+                <!-- CABECERA DE LA TABLA -->
+
+                <div class="mood-history-header">
+
+                    <span>
+                        Estado de ánimo
+                    </span>
+
+                    <span>
+                        Fecha
+                    </span>
+
+                    <span>
+                        Hora
+                    </span>
+
+                </div>
+
+
+                <!-- REGISTROS -->
+
+                {% for estado in estados_animo %}
+
+                    <div class="dashboard-row mood-history-row">
+
+                        <div class="mood-name">
+
+                            <span class="mood-icon">
+
+                                {% if estado.estado_animo == "Feliz" %}
+                                    😊
+
+                                {% elif estado.estado_animo == "Tranquilo" %}
+                                    😌
+
+                                {% elif estado.estado_animo == "Reflexivo" %}
+                                    🤔
+
+                                {% elif estado.estado_animo == "Ansioso" %}
+                                    😰
+
+                                {% elif estado.estado_animo == "Sorprendido" %}
+                                    😮
+
+                                {% elif estado.estado_animo == "Triste" %}
+                                    😔
+
+                                {% else %}
+                                    🙂 
+                                {% endif %}
+
+                            </span>
+
+                            <span class="row-label">
+                                {{ estado.estado_animo }}
+                            </span>
+
+                        </div>
+
+
+                        <span class="mood-date">
+                            {{ estado.fecha_hora.strftime('%d/%m/%Y') }}
+                        </span>
+
+
+                        <span class="mood-time">
+                            {{ estado.fecha_hora.strftime('%H:%M') }}
+                        </span>
+
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div class="mood-history-empty">
+                    Todavía no tienes estados de ánimo registrados.
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</main>
+
+{% endblock %}
+
+
+{% block js %}
+{% endblock %}
+
