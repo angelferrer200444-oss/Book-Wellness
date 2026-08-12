@@ -1116,3 +1116,4 @@ def recomendaciones():
         print("=" * 60)
 
         return jsonify([])
+
