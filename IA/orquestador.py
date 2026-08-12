@@ -11,7 +11,7 @@ class OrquestadorIA:
         self,
         api_key=None,
         modelo="gemini-2.5-flash",
-        timeout=20
+        timeout=45
     ):
 
         self.api_key = api_key or API_KEY
@@ -174,12 +174,24 @@ class OrquestadorIA:
     # GENERAR JSON
     ##########################################################
 
-    def generar_json(self, prompt):
+    def generar_json(self, prompt, timeout=None):
 
-        texto = self._consultar(prompt)
+        timeout_original = self.timeout
 
-        texto = texto.replace("```json", "")
-        texto = texto.replace("```", "")
-        texto = texto.strip()
+        if timeout is not None:
+            self.timeout = timeout
 
-        return json.loads(texto)
+        try:
+
+            texto = self._consultar(prompt)
+
+            texto = texto.replace("`json", "")
+            texto = texto.replace("`", "")
+            texto = texto.strip()
+
+            return json.loads(texto)
+
+        finally:
+
+            self.timeout = timeout_original
+
