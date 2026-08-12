@@ -618,3 +618,4 @@ function restaurarPanelIANormal() {
         }
     );
 }
+
