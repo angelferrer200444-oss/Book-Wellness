@@ -9,24 +9,14 @@ document.addEventListener("DOMContentLoaded", () => {
             const estado = tarjeta.dataset.estado;
 
             console.log("Estado:", estado);
-            
+
             const respuesta = document.getElementById("bwAiResponse");
 
-            respuesta.value = "Pensando...";
+            if (respuesta) {
 
-            respuesta.style.height = "auto";
+                respuesta.value = "Pensando...";
 
-            const maxHeight = 180;
-
-            if(respuesta.scrollHeight > maxHeight){
-
-                respuesta.style.height = maxHeight + "px";
-                respuesta.style.overflowY = "auto";
-
-            }else{
-
-                respuesta.style.height = respuesta.scrollHeight + "px";
-                respuesta.style.overflowY = "hidden";
+                ajustarAltura(respuesta);
 
             }
 
@@ -47,86 +37,103 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(async respuestaServidor => {
 
                 const datos = await respuestaServidor.json();
-            
+
+                console.log("Respuesta del servidor:", datos);
+
                 if (!respuestaServidor.ok) {
-            
-                    throw new Error(
+
+                    const error = new Error(
                         datos.error ||
                         "No fue posible generar la respuesta."
                     );
-            
+
+                    error.bloqueado = datos.bloqueado;
+                    error.horas_restantes = datos.horas_restantes;
+
+                    throw error;
                 }
-            
+
                 return datos;
-            
+
             })
-            
+
             .then(async datos => {
-            
 
-                console.log(datos);
-                console.log("Tipo:", typeof datos.recomendaciones);
-                console.log("Valor:", datos.recomendaciones);
-                console.log("Longitud:", datos.recomendaciones?.length);
+                console.log("Datos recibidos:", datos);
 
-                console.log(datos.respuesta_ia);
+                console.log(
+                    "Tipo recomendaciones:",
+                    typeof datos.recomendaciones
+                );
 
-                const respuesta = document.getElementById("bwAiResponse");
+                console.log(
+                    "Recomendaciones:",
+                    datos.recomendaciones
+                );
 
-                console.log("Textarea:", respuesta);
+                console.log(
+                    "Cantidad:",
+                    datos.recomendaciones?.length
+                );
 
-                if(respuesta && datos.respuesta_ia){
+                console.log(
+                    "Respuesta IA:",
+                    datos.respuesta_ia
+                );
+
+
+                // ==========================================
+                // MOSTRAR RESPUESTA DE LA IA
+                // ==========================================
+
+                const respuesta =
+                    document.getElementById("bwAiResponse");
+
+                if (respuesta && datos.respuesta_ia) {
 
                     respuesta.value = datos.respuesta_ia;
 
-                    respuesta.style.height = "auto";
-
-                    const maxHeight = 180;
-
-                    if(respuesta.scrollHeight > maxHeight){
-
-                        respuesta.style.height = maxHeight + "px";
-                        respuesta.style.overflowY = "auto";
-
-                    }else{
-
-                        respuesta.style.height = respuesta.scrollHeight + "px";
-                        respuesta.style.overflowY = "hidden";
-
-                    }
+                    ajustarAltura(respuesta);
 
                 }
-                
+
+
+                // ==========================================
+                // ACTUALIZAR RECOMENDACIONES
+                // ==========================================
+
                 if (
-                    (estado === "Reflexivo" || estado === "Sorprendido"|| estado === "Ansioso" ) &&
                     datos.recomendaciones &&
                     datos.recomendaciones.length > 0
                 ) {
-                
-                
+
                     console.log(
                         "Recomendaciones nuevas recibidas:",
                         datos.recomendaciones
                     );
-                
+
                     console.log(
                         "Actualizando recomendaciones..."
                     );
-                
+
                     cargarRecomendaciones(
                         datos.recomendaciones
                     );
-                
+
                 }
 
-                restaurarPanelIANormal();
+
+                // ==========================================
+                // TRISTE
+                // ==========================================
 
                 if (estado === "Triste") {
 
-                    const panel = document.querySelector(".bw-ai-panel");
-                
+                    const panel =
+                        document.querySelector(".bw-ai-panel");
+
                     if (panel) {
-                
+
                         panel.innerHTML = `
                             <button
                                 id="cuentame-triste"
@@ -137,136 +144,257 @@ document.addEventListener("DOMContentLoaded", () => {
                             </button>
                         `;
 
-                
-                        document
-                            .getElementById("cuentame-triste")
-                            .addEventListener(
+                        const botonTriste =
+                            document.getElementById(
+                                "cuentame-triste"
+                            );
+
+                        if (botonTriste) {
+
+                            botonTriste.addEventListener(
                                 "click",
                                 mostrarCampoTriste
                             );
+
+                        }
+
                     }
-                
+
                     return;
                 }
-                
-                
-                
-                
-                
-                
+
+
+                // ==========================================
+                // RESTAURAR PANEL NORMAL
+                // ==========================================
+
+                restaurarPanelIANormal();
+
             })
 
             .catch(error => {
-                console.error("========== ERROR COMPLETO ==========");
+
+                console.error(
+                    "========== ERROR COMPLETO =========="
+                );
+
                 console.error(error);
-                console.error("Mensaje:", error.message);
-                console.error("Stack:", error.stack);
-                console.error("====================================");
-            
-            
+
+                console.error(
+                    "Mensaje:",
+                    error.message
+                );
+
+                console.error(
+                    "Bloqueado:",
+                    error.bloqueado
+                );
+
+                console.error(
+                    "Horas restantes:",
+                    error.horas_restantes
+                );
+
+                console.error(
+                    "===================================="
+                );
+
+
                 const respuesta =
                     document.getElementById("bwAiResponse");
-            
-                if (respuesta) {
-            
+
+                if (!respuesta) {
+                    return;
+                }
+
+
+                // ==========================================
+                // ERROR POR BLOQUEO DE 24 HORAS
+                // ==========================================
+
+                if (error.bloqueado) {
+
+                    respuesta.value =
+                        "Ya registraste un estado de ánimo recientemente. " +
+                        "Podrás registrar uno nuevo cuando hayan pasado las 24 horas.";
+
+                    if (
+                        error.horas_restantes !== undefined
+                    ) {
+
+                        respuesta.value +=
+                            " Te quedan aproximadamente " +
+                            error.horas_restantes +
+                            " horas.";
+
+                    }
+
+                }
+
+                // ==========================================
+                // OTRO ERROR
+                // ==========================================
+
+                else {
+
                     respuesta.value =
                         "No pude generar una respuesta en este momento. " +
                         "Pero tu estado de ánimo sigue guardado. " +
                         "Puedes intentarlo nuevamente en unos segundos.";
-            
-                    respuesta.style.height = "auto";
-            
-                    const maxHeight = 180;
-            
-                    if (respuesta.scrollHeight > maxHeight) {
-            
-                        respuesta.style.height = maxHeight + "px";
-                        respuesta.style.overflowY = "auto";
-            
-                    } else {
-            
-                        respuesta.style.height =
-                            respuesta.scrollHeight + "px";
-            
-                        respuesta.style.overflowY = "hidden";
-            
-                    }
-            
+
                 }
-            
+
+
+                ajustarAltura(respuesta);
+
             });
-            
 
         });
-        
+
     });
 
 });
 
+
+// ==========================================================
+// AJUSTAR ALTURA DEL TEXTAREA
+// ==========================================================
+
+function ajustarAltura(textarea) {
+
+    if (!textarea) {
+        return;
+    }
+
+    textarea.style.height = "auto";
+
+    const maxHeight = 180;
+
+    if (textarea.scrollHeight > maxHeight) {
+
+        textarea.style.height =
+            maxHeight + "px";
+
+        textarea.style.overflowY = "auto";
+
+    } else {
+
+        textarea.style.height =
+            textarea.scrollHeight + "px";
+
+        textarea.style.overflowY = "hidden";
+
+    }
+
+}
+
+
+// ==========================================================
+// ENVIAR RESPUESTA DE TRISTE
+// ==========================================================
+
 async function enviarRespuestaTriste() {
 
-    const campo = document.getElementById(
-        "respuesta-triste"
-    );
+    const campo =
+        document.getElementById(
+            "respuesta-triste"
+        );
 
-    const boton = document.getElementById(
-        "enviar-respuesta-triste"
-    );
+    const boton =
+        document.getElementById(
+            "enviar-respuesta-triste"
+        );
+
 
     if (!campo || !boton) {
         return;
     }
 
+
     const respuestaUsuario =
         campo.value.trim();
+
 
     if (!respuestaUsuario) {
         return;
     }
 
+
     boton.disabled = true;
+
     campo.disabled = true;
 
     boton.textContent = "…";
+
 
     const respuestaIA =
         document.getElementById(
             "bwAiResponse"
         );
 
+
     if (respuestaIA) {
 
-        respuestaIA.value = "Pensando...";
+        respuestaIA.value =
+            "Pensando...";
 
         ajustarAltura(respuestaIA);
+
     }
+
 
     try {
 
-        const response = await fetch(
-            "/api/triste/analizar",
-            {
-                method: "POST",
+        const response =
+            await fetch(
+                "/api/triste/analizar",
+                {
+                    method: "POST",
 
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
 
-                body: JSON.stringify({
-                    respuesta: respuestaUsuario
-                })
-            }
+                    body: JSON.stringify({
+                        respuesta:
+                            respuestaUsuario
+                    })
+                }
+            );
+
+
+        const datos =
+            await response.json();
+
+
+        console.log(
+            "Respuesta servidor Triste:",
+            datos
         );
 
-        const datos = await response.json();
+
+        // ==================================================
+        // AQUÍ ESTABA EL ERROR
+        // ==================================================
 
         if (!response.ok) {
 
-            throw new Error(
-                datos.error ||
-                "No fue posible analizar la respuesta."
-            );
+            const error =
+                new Error(
+                    datos.error ||
+                    "No fue posible generar la respuesta."
+                );
+
+            error.bloqueado =
+                datos.bloqueado;
+
+            error.horas_restantes =
+                datos.horas_restantes;
+
+            throw error;
         }
+
 
         console.log(
             "Estado triste:",
@@ -278,13 +406,29 @@ async function enviarRespuestaTriste() {
             datos.respuesta_ia
         );
 
-        if (respuestaIA) {
+
+        // ==================================================
+        // MOSTRAR RESPUESTA IA
+        // ==================================================
+
+        if (
+            respuestaIA &&
+            datos.respuesta_ia
+        ) {
 
             respuestaIA.value =
                 datos.respuesta_ia;
 
-            ajustarAltura(respuestaIA);
+            ajustarAltura(
+                respuestaIA
+            );
+
         }
+
+
+        // ==================================================
+        // ACTUALIZAR RECOMENDACIONES
+        // ==================================================
 
         if (
             datos.recomendaciones &&
@@ -292,50 +436,117 @@ async function enviarRespuestaTriste() {
         ) {
 
             console.log(
-                "Recomendaciones:",
+                "Recomendaciones Triste:",
                 datos.recomendaciones
+            );
+
+            console.log(
+                "Actualizando recomendaciones..."
             );
 
             cargarRecomendaciones(
                 datos.recomendaciones
             );
+
         }
 
-    } catch (error) {
+    }
+
+    catch (error) {
 
         console.error(
             "Error enviando respuesta triste:",
             error
         );
 
-        if (respuestaIA) {
+
+        if (!respuestaIA) {
+            return;
+        }
+
+
+        // ==================================================
+        // ERROR POR 24 HORAS
+        // ==================================================
+
+        if (error.bloqueado) {
+
+            respuestaIA.value =
+                "Ya registraste un estado de ánimo recientemente. " +
+                "Podrás registrar uno nuevo cuando hayan pasado las 24 horas.";
+
+            if (
+                error.horas_restantes !== undefined
+            ) {
+
+                respuestaIA.value +=
+                    " Te quedan aproximadamente " +
+                    error.horas_restantes +
+                    " horas.";
+
+            }
+
+        }
+
+        // ==================================================
+        // OTRO ERROR
+        // ==================================================
+
+        else {
 
             respuestaIA.value =
                 "No pude analizar tu respuesta en este momento.";
 
-            ajustarAltura(respuestaIA);
         }
 
-    } finally {
+
+        ajustarAltura(
+            respuestaIA
+        );
+
+    }
+
+    finally {
 
         boton.disabled = false;
+
         campo.disabled = false;
+
         boton.textContent = "➜";
 
-        restaurarPanelIANormal();
+        /*
+         * IMPORTANTE:
+         * No restauramos aquí el panel.
+         *
+         * Si lo hacemos, podemos borrar inmediatamente
+         * el estado visual de Triste después de recibir
+         * correctamente la respuesta.
+         */
+
     }
+
 }
 
 
+// ==========================================================
+// MOSTRAR CAMPO PARA TRISTE
+// ==========================================================
+
 function mostrarCampoTriste() {
 
-    const panel = document.querySelector(".bw-ai-panel");
+    const panel =
+        document.querySelector(
+            ".bw-ai-panel"
+        );
+
 
     if (!panel) {
         return;
     }
 
+
     panel.innerHTML = `
+
         <input
             type="text"
             id="respuesta-triste"
@@ -350,30 +561,42 @@ function mostrarCampoTriste() {
         >
             ➜
         </button>
+
     `;
 
-    const campo = document.getElementById(
-        "respuesta-triste"
-    );
 
-    const boton = document.getElementById(
-        "enviar-respuesta-triste"
-    );
+    const campo =
+        document.getElementById(
+            "respuesta-triste"
+        );
+
+    const boton =
+        document.getElementById(
+            "enviar-respuesta-triste"
+        );
+
 
     if (campo) {
+
         campo.focus();
 
-        campo.addEventListener("keydown", function(e) {
+        campo.addEventListener(
+            "keydown",
+            function(e) {
 
-            if (e.key === "Enter") {
+                if (e.key === "Enter") {
 
-                e.preventDefault();
+                    e.preventDefault();
 
-                enviarRespuestaTriste();
+                    enviarRespuestaTriste();
+
+                }
+
             }
+        );
 
-        });
     }
+
 
     if (boton) {
 
@@ -381,16 +604,31 @@ function mostrarCampoTriste() {
             "click",
             enviarRespuestaTriste
         );
+
     }
+
 }
 
 
+// ==========================================================
+// MOSTRAR RESULTADO TRISTE
+// ==========================================================
 
 function mostrarResultadoTriste(datos) {
 
-    const panelIA = document.getElementById("respuesta-ia");
+    const panelIA =
+        document.getElementById(
+            "respuesta-ia"
+        );
+
+
+    if (!panelIA) {
+        return;
+    }
+
 
     panelIA.innerHTML = `
+
         <div class="bw-ai-card">
 
             <div class="bw-ai-header">
@@ -415,97 +653,117 @@ function mostrarResultadoTriste(datos) {
 
                 <button
                     id="bwAiSend"
-                    class="bw-ai-button">
+                    class="bw-ai-button"
+                >
                     ➜
                 </button>
 
             </div>
 
         </div>
+
     `;
 
-    // Reutilizamos exactamente el comportamiento
-    // del panel IA normal.
 
-    const input = document.getElementById("bwAiInput");
-    const boton = document.getElementById("bwAiSend");
-    const respuesta = document.getElementById("bwAiResponse");
+    const input =
+        document.getElementById(
+            "bwAiInput"
+        );
 
-    function ajustarAltura(textarea) {
+    const boton =
+        document.getElementById(
+            "bwAiSend"
+        );
 
-        textarea.style.height = "auto";
+    const respuesta =
+        document.getElementById(
+            "bwAiResponse"
+        );
 
-        const maxHeight = 180;
 
-        if (textarea.scrollHeight > maxHeight) {
+    ajustarAltura(
+        respuesta
+    );
 
-            textarea.style.height = maxHeight + "px";
-            textarea.style.overflowY = "auto";
-
-        } else {
-
-            textarea.style.height =
-                textarea.scrollHeight + "px";
-
-            textarea.style.overflowY = "hidden";
-        }
-    }
-
-    // Ajustar el tamaño del mensaje recibido
-    ajustarAltura(respuesta);
 
     async function enviarPregunta() {
 
-        const mensaje = input.value.trim();
+        const mensaje =
+            input.value.trim();
+
 
         if (mensaje === "") {
             return;
         }
 
-        respuesta.value = "Pensando...";
-        ajustarAltura(respuesta);
+
+        respuesta.value =
+            "Pensando...";
+
+        ajustarAltura(
+            respuesta
+        );
 
         input.value = "";
 
+
         try {
 
-            const peticion = await fetch("/api/ia", {
+            const peticion =
+                await fetch(
+                    "/api/ia",
+                    {
+                        method: "POST",
 
-                method: "POST",
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
 
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                        body: JSON.stringify({
+                            mensaje:
+                                mensaje
+                        })
+                    }
+                );
 
-                body: JSON.stringify({
-                    mensaje: mensaje
-                })
 
-            });
+            const datosIA =
+                await peticion.json();
 
-            const datosIA = await peticion.json();
 
             respuesta.value =
                 datosIA.respuesta ||
                 "No pude generar una respuesta.";
 
-            ajustarAltura(respuesta);
 
-        } catch (error) {
+            ajustarAltura(
+                respuesta
+            );
+
+        }
+
+        catch (error) {
 
             console.error(error);
 
             respuesta.value =
                 "No pude comunicarme con el asistente.";
 
-            ajustarAltura(respuesta);
+            ajustarAltura(
+                respuesta
+            );
+
         }
+
     }
+
 
     boton.addEventListener(
         "click",
         enviarPregunta
     );
+
 
     input.addEventListener(
         "keydown",
@@ -516,20 +774,34 @@ function mostrarResultadoTriste(datos) {
                 e.preventDefault();
 
                 enviarPregunta();
+
             }
+
         }
     );
+
 }
+
+
+// ==========================================================
+// RESTAURAR PANEL IA NORMAL
+// ==========================================================
 
 function restaurarPanelIANormal() {
 
-    const panel = document.querySelector(".bw-ai-panel");
+    const panel =
+        document.querySelector(
+            ".bw-ai-panel"
+        );
+
 
     if (!panel) {
         return;
     }
 
+
     panel.innerHTML = `
+
         <input
             type="text"
             id="bwAiInput"
@@ -544,66 +816,113 @@ function restaurarPanelIANormal() {
         >
             ➜
         </button>
+
     `;
 
-    const input = document.getElementById("bwAiInput");
-    const boton = document.getElementById("bwAiSend");
-    const respuesta = document.getElementById("bwAiResponse");
 
-    if (!input || !boton || !respuesta) {
+    const input =
+        document.getElementById(
+            "bwAiInput"
+        );
+
+    const boton =
+        document.getElementById(
+            "bwAiSend"
+        );
+
+    const respuesta =
+        document.getElementById(
+            "bwAiResponse"
+        );
+
+
+    if (
+        !input ||
+        !boton ||
+        !respuesta
+    ) {
         return;
     }
 
+
     async function enviarPregunta() {
 
-        const mensaje = input.value.trim();
+        const mensaje =
+            input.value.trim();
+
 
         if (mensaje === "") {
             return;
         }
 
-        respuesta.value = "Pensando...";
-        ajustarAltura(respuesta);
+
+        respuesta.value =
+            "Pensando...";
+
+        ajustarAltura(
+            respuesta
+        );
 
         input.value = "";
 
+
         try {
 
-            const peticion = await fetch("/api/ia", {
-                method: "POST",
+            const peticion =
+                await fetch(
+                    "/api/ia",
+                    {
+                        method: "POST",
 
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
 
-                body: JSON.stringify({
-                    mensaje: mensaje
-                })
-            });
+                        body: JSON.stringify({
+                            mensaje:
+                                mensaje
+                        })
+                    }
+                );
 
-            const datos = await peticion.json();
+
+            const datosIA =
+                await peticion.json();
+
 
             respuesta.value =
-                datos.respuesta ||
+                datosIA.respuesta ||
                 "No pude generar una respuesta.";
 
-            ajustarAltura(respuesta);
 
-        } catch (error) {
+            ajustarAltura(
+                respuesta
+            );
+
+        }
+
+        catch (error) {
 
             console.error(error);
 
             respuesta.value =
                 "No pude comunicarme con el asistente.";
 
-            ajustarAltura(respuesta);
+            ajustarAltura(
+                respuesta
+            );
+
         }
+
     }
+
 
     boton.addEventListener(
         "click",
         enviarPregunta
     );
+
 
     input.addEventListener(
         "keydown",
@@ -614,8 +933,10 @@ function restaurarPanelIANormal() {
                 e.preventDefault();
 
                 enviarPregunta();
+
             }
+
         }
     );
-}
 
+}
