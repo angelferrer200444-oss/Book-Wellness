@@ -224,7 +224,6 @@ def registrar_rutas(app):
             }), 401
 
         datos = request.json
-
         estado = datos.get("estado")
 
         print("Estado recibido:", estado)
@@ -234,6 +233,51 @@ def registrar_rutas(app):
                 "error": "No se recibió ningún estado de ánimo."
             }), 400
 
+        # ==========================================
+        # COMPROBAR LAS 24 HORAS
+        # ==========================================
+
+        conexion = db.obtener_conexion()
+        cursor = conexion.cursor(dictionary=True)
+
+        cursor.execute("""
+            SELECT fecha_hora
+            FROM estado_animo_actual
+            WHERE id_usuario = %s
+            ORDER BY fecha_hora DESC
+            LIMIT 1
+        """, (id_usuario,))
+
+        ultimo_estado = cursor.fetchone()
+
+        cursor.close()
+        conexion.close()
+
+        if ultimo_estado:
+
+            from datetime import datetime, timedelta
+
+            fecha_ultimo = ultimo_estado["fecha_hora"]
+            ahora = datetime.now()
+
+            diferencia = ahora - fecha_ultimo
+
+            if diferencia < timedelta(hours=24):
+
+                horas_restantes = 24 - (
+                    diferencia.total_seconds() / 3600
+                )
+
+                return jsonify({
+                    "error": "Ya registraste un estado de ánimo recientemente.",
+                    "bloqueado": True,
+                    "horas_restantes": round(horas_restantes, 1)
+                }), 429
+
+        # ==========================================
+        # GUARDAR ESTADO
+        # ==========================================
+
         EstadoAnimo.guardar(
             id_usuario,
             estado
@@ -242,14 +286,17 @@ def registrar_rutas(app):
         mensaje = ""
 
         if estado.lower() == "feliz":
-            mensaje = EstadoAnimo.responder_feliz(id_usuario)
+
+            mensaje = EstadoAnimo.responder_feliz(
+                id_usuario
+            )
 
         elif estado.lower() == "tranquilo":
 
             mensaje = EstadoAnimo.responder_tranquilo(
                 id_usuario
             )
-        
+
         elif estado == "Reflexivo":
 
             print("Entré a Reflexivo")
@@ -259,17 +306,19 @@ def registrar_rutas(app):
             )
 
             print("RESULTADO:", resultado)
-            print("RECOMENDACIONES:", resultado["recomendaciones"])
-            print("CANTIDAD:", len(resultado["recomendaciones"]))
+            print(
+                "RECOMENDACIONES:",
+                resultado["recomendaciones"]
+            )
+            print(
+                "CANTIDAD:",
+                len(resultado["recomendaciones"])
+            )
 
             return jsonify({
-
                 "mensaje": "Estado guardado.",
-
                 "respuesta_ia": resultado["respuesta"],
-
                 "recomendaciones": resultado["recomendaciones"]
-
             })
 
         elif estado == "Sorprendido":
@@ -281,15 +330,11 @@ def registrar_rutas(app):
             )
 
             return jsonify({
-
                 "mensaje": "Estado guardado.",
-
                 "respuesta_ia": resultado["respuesta"],
-
                 "recomendaciones": resultado["recomendaciones"]
-
             })
-        
+
         elif estado.lower() == "ansioso":
 
             resultado = EstadoAnimo.responder_ansioso(
@@ -297,39 +342,76 @@ def registrar_rutas(app):
             )
 
             return jsonify({
-
                 "mensaje": "Estado guardado.",
-
                 "respuesta_ia": resultado["respuesta"],
-
                 "recomendaciones": resultado["recomendaciones"]
-
             })
-        
-        elif estado == "Triste":
 
+        elif estado == "Triste":
 
             resultado = EstadoAnimo.responder_triste(
                 id_usuario
             )
 
             return jsonify({
-
                 "mensaje": "Estado guardado.",
-
                 "respuesta_ia": resultado["respuesta"],
-
                 "recomendaciones": resultado.get(
                     "recomendaciones",
                     []
                 )
-
             }), 200
 
-        
         return jsonify({
             "mensaje": "Estado de ánimo guardado correctamente.",
             "respuesta_ia": mensaje
+        }), 200
+
+    @app.route("/api/estado_animo_actual", methods=["GET"])
+    def obtener_estado_animo_actual():
+
+        id_usuario = session.get("id_usuario")
+
+        if not id_usuario:
+            return jsonify({
+                "estado": None
+            }), 401
+
+        conexion = db.obtener_conexion()
+        cursor = conexion.cursor(dictionary=True)
+
+        cursor.execute("""
+            SELECT estado_animo, fecha_hora
+            FROM estado_animo_actual
+            WHERE id_usuario = %s
+            ORDER BY fecha_hora DESC
+            LIMIT 1
+        """, (id_usuario,))
+
+        ultimo_estado = cursor.fetchone()
+
+        cursor.close()
+        conexion.close()
+
+        if not ultimo_estado:
+            return jsonify({
+                "estado": None
+            }), 200
+
+        from datetime import datetime, timedelta
+
+        fecha_ultimo = ultimo_estado["fecha_hora"]
+        ahora = datetime.now()
+
+        diferencia = ahora - fecha_ultimo
+
+        if diferencia >= timedelta(hours=24):
+            return jsonify({
+                "estado": None
+            }), 200
+
+        return jsonify({
+            "estado": ultimo_estado["estado_animo"]
         }), 200
 
     @app.route(
@@ -400,3 +482,5 @@ def registrar_rutas(app):
             "Botones superiores/historial_animo.html",
             estados_animo=estados_animo
         )
+
+    
