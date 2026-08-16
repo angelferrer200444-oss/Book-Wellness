@@ -133,19 +133,16 @@
         box-shadow 0.25s ease;
 }
 
-/* Efecto al pasar el mouse */
 .mood-history-link:hover {
     transform: translateY(-3px);
     background: rgba(255, 255, 255, 0.75);
     box-shadow: 0 5px 12px rgba(90, 35, 20, 0.12);
 }
 
-/* Pequeño movimiento al hacer clic */
 .mood-history-link:active {
     transform: translateY(-1px) scale(0.99);
 }
 
-/* El icono también tiene una pequeña animación */
 .mood-history-link .row-icon {
     transition: transform 0.3s ease;
 }
@@ -154,7 +151,6 @@
     transform: scale(1.15) rotate(-5deg);
 }
 
-/* El texto cambia suavemente */
 .mood-history-link .row-label {
     transition: color 0.25s ease;
 }
@@ -163,7 +159,6 @@
     color: #7a2618;
 }
 
-/* El valor también reacciona */
 .mood-history-link .row-value {
     transition:
         transform 0.25s ease,
@@ -174,3 +169,5 @@
     transform: translateX(-3px);
     color: #7a2618;
 }
+
+
