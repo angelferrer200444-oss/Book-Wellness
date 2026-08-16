@@ -54,7 +54,7 @@
 /* Tarjetas */
 
 .card-container-design {
-    width: 100%;
+    
     min-width: 320px;
     max-width: 360px;
     background: rgba(255,255,255,.65);
@@ -202,6 +202,8 @@
     min-height:160px;
     justify-content:center;
     align-items:center;
+
+    transform: translateY(-20px)
 }
 .add-db-btn{
     width:100%;
@@ -430,4 +432,1031 @@
 
 .btn-save:hover{
     filter:brightness(1.1);
+}
+
+/* =====================================================
+   OBJETIVOS - ESTILOS COMPLEMENTARIOS
+   Se reutilizan los estilos existentes de BookWellness
+===================================================== */
+
+
+/* =====================================================
+   LISTAS DE OBJETIVOS
+===================================================== */
+
+.goals-list {
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* =====================================================
+   ESTADO VACÍO
+===================================================== */
+
+.empty-goals {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 30px 20px;
+    box-sizing: border-box;
+}
+
+.empty-goals-icon {
+    font-size: 42px;
+    margin-bottom: 12px;
+}
+
+.empty-goals-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.empty-goals-description {
+    max-width: 360px;
+
+    font-size: 13px;
+    line-height: 1.5;
+
+    opacity: 0.7;
+
+    margin-bottom: 20px;
+}
+
+
+/* =====================================================
+   OBJETIVOS COMPLETADOS VACÍOS
+===================================================== */
+
+.empty-completed {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    gap: 10px;
+
+    padding: 25px 20px;
+
+    font-size: 13px;
+
+    opacity: 0.65;
+}
+
+.empty-completed-icon {
+    font-size: 32px;
+}
+
+
+/* =====================================================
+   TIPOS DE OBJETIVO
+===================================================== */
+
+.goal-type-options {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 12px;
+
+    margin-top: 10px;
+}
+
+.goal-type-card {
+    display: flex;
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    text-align: left;
+
+    width: 100%;
+
+    padding: 16px;
+
+    border: 2px solid transparent;
+
+    border-radius: 10px;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    font-family: inherit;
+
+    transition:
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+.goal-type-card:hover {
+    transform: translateY(-2px);
+}
+
+.goal-type-card.selected {
+    border-color: currentColor;
+}
+
+.goal-type-icon {
+    font-size: 27px;
+
+    margin-bottom: 8px;
+}
+
+.goal-type-name {
+    font-size: 14px;
+
+    font-weight: 600;
+
+    margin-bottom: 5px;
+}
+
+.goal-type-description {
+    font-size: 11px;
+
+    line-height: 1.4;
+
+    opacity: 0.65;
+}
+
+
+/* =====================================================
+   CONFIGURACIÓN DEL OBJETIVO
+===================================================== */
+
+.goal-configuration {
+    margin-top: 5px;
+}
+
+.goal-configuration.hidden {
+    display: none;
+}
+
+
+/* =====================================================
+   UNIDAD DE MEDIDA
+===================================================== */
+
+.goal-unit-display {
+    width: 100%;
+
+    min-height: 40px;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 0 12px;
+
+    box-sizing: border-box;
+
+    border-radius: 6px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    opacity: 0.8;
+}
+
+
+/* =====================================================
+   PREVISUALIZACIÓN
+===================================================== */
+
+.goal-preview {
+    margin-top: 20px;
+
+    padding: 15px;
+
+    border-radius: 8px;
+}
+
+.goal-preview-title {
+    font-size: 11px;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+
+    opacity: 0.6;
+
+    margin-bottom: 7px;
+}
+
+.goal-preview-text {
+    font-size: 13px;
+
+    line-height: 1.5;
+
+    font-weight: 600;
+}
+
+
+/* =====================================================
+   CABECERA DEL MODAL
+===================================================== */
+
+.modal-header {
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+}
+
+.modal-title {
+    font-size: 20px;
+
+    font-weight: 700;
+}
+
+.modal-subtitle {
+    margin-top: 5px;
+
+    font-size: 12px;
+
+    opacity: 0.65;
+}
+
+
+/* =====================================================
+   BOTÓN CERRAR
+===================================================== */
+
+.modal-close-btn {
+    position: absolute;
+
+    right: 0;
+    top: 0;
+
+    border: none;
+
+    background: transparent;
+
+    font-size: 24px;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    padding: 2px 6px;
+
+    opacity: 0.65;
+
+    transition: opacity 0.2s ease;
+}
+
+.modal-close-btn:hover {
+    opacity: 1;
+}
+
+
+/* =====================================================
+   CAMPOS OCULTOS
+===================================================== */
+
+.hidden {
+    display: none !important;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 700px) {
+
+    .goal-type-options {
+        grid-template-columns: 1fr;
+    }
+
+    .form-row-inputs {
+        flex-direction: column;
+    }
+
+    .modal-card {
+        width: calc(100% - 30px);
+
+        max-height: 92vh;
+
+        overflow-y: auto;
+    }
+
+    .modal-actions {
+        flex-direction: column-reverse;
+
+        gap: 8px;
+    }
+
+    .form-btn {
+        width: 100%;
+    }
+}
+
+
+/* =====================================================
+   OBJETIVOS — CONTENEDOR PRINCIPAL
+===================================================== */
+
+#main-goals-container {
+    display: flex;
+
+    flex-direction: row;
+
+    flex-wrap: nowrap;
+
+    align-items: flex-start;
+
+    gap: 18px;
+
+    overflow-x: auto;
+
+    overflow-y: visible;
+
+    box-sizing: border-box;
+}
+
+
+/* =====================================================
+   TARJETAS DE OBJETIVOS - TAMAÑO CONSISTENTE
+===================================================== */
+
+/*
+   Altura fija para todas las tarjetas
+   para mantener consistencia visual
+*/
+
+#main-goals-container > .card-container-design {
+    min-height: 380px;          /* Altura mínima consistente */
+    height: 380px;              /* Altura fija */
+    max-height: 380px;          /* Evita que crezcan más */
+    flex: 0 0 320px;           /* Ancho fijo */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;           /* Oculta el desbordamiento */
+}
+
+/* =====================================================
+   TARJETA INDIVIDUAL
+===================================================== */
+
+.goal-item {
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+/*
+   Cada tarjeta es independiente.
+*/
+
+#main-goals-container .goals-main-card {
+    flex-shrink: 0;
+    box-sizing: border-box;
+    overflow: visible;
+}
+
+/* =====================================================
+   CUERPO DE LA TARJETA
+===================================================== */
+
+#main-goals-container .goals-main-card .diagram-body {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: visible;
+}
+
+/* =====================================================
+   INFORMACIÓN DEL OBJETIVO
+===================================================== */
+
+#main-goals-container .goals-main-card .diagram-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    gap: 4px;
+}
+
+/* =====================================================
+   NOMBRE DEL CAMPO
+===================================================== */
+
+#main-goals-container .goals-main-card .diag-field {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    flex-shrink: 0;
+}
+
+/* =====================================================
+   VALOR DEL CAMPO
+===================================================== */
+
+#main-goals-container .goals-main-card .diag-value {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+/* =====================================================
+   DESCRIPCIÓN
+===================================================== */
+
+#main-goals-container .goals-main-card .description-text {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    line-height: 1.4;
+}
+
+/* =====================================================
+   BARRA DE PROGRESO
+===================================================== */
+
+#main-goals-container .goals-main-card .progress-container {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+/* =====================================================
+   LISTA DE OBJETIVOS
+===================================================== */
+
+.goals-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: visible;
+}
+
+/* =====================================================
+   ACCIONES
+===================================================== */
+
+.goal-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px dashed currentColor;
+    opacity: 0.8;
+}
+
+.goal-edit-btn {
+    border: none;
+    background: transparent;
+    color: inherit;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 5px 8px;
+    border-radius: 5px;
+    transition: background 0.2s ease, opacity 0.2s ease;
+}
+
+.goal-edit-btn:hover {
+    background: rgba(120, 90, 60, 0.08);
+    opacity: 1;
+}
+
+/* =====================================================
+   CONSTRUCTOR DE OBJETIVOS
+===================================================== */
+
+.goal-creator-layout {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 20px;
+    min-height: 0;
+}
+
+/* =====================================================
+   COLUMNA IZQUIERDA
+===================================================== */
+
+.goal-types-panel {
+    min-width: 0;
+}
+
+/* =====================================================
+   COLUMNA DERECHA
+===================================================== */
+
+.goal-survey-panel {
+    min-width: 0;
+    max-height: 430px;
+    overflow-y: auto;
+    padding-right: 8px;
+    box-sizing: border-box;
+}
+
+/* =====================================================
+   SCROLL
+===================================================== */
+
+.goal-survey-panel::-webkit-scrollbar {
+    width: 6px;
+}
+
+.goal-survey-panel::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+}
+
+/* =====================================================
+   MENSAJE INICIAL
+===================================================== */
+
+.goal-survey-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+    padding: 30px 15px;
+    box-sizing: border-box;
+    opacity: 0.65;
+}
+
+.goal-survey-empty-icon {
+    font-size: 30px;
+    margin-bottom: 8px;
+}
+
+.goal-survey-empty-title {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.goal-survey-empty-text {
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+/* =====================================================
+   RESPONSIVE DEL CONSTRUCTOR
+===================================================== */
+
+@media (max-width: 700px) {
+    .goal-creator-layout {
+        grid-template-columns: 1fr;
+    }
+    
+    .goal-survey-panel {
+        max-height: 300px;
+    }
+}
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+.modal-card {
+    max-width: 1000px;
+}
+
+/* =====================================================
+   MODAL DE OBJETIVOS — CAPA ABSOLUTA
+===================================================== */
+
+#goal-modal {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 2147483647 !important;
+}
+
+#goal-modal .modal-card {
+    position: relative !important;
+    z-index: 2147483647 !important;
+}
+
+/* =====================================================
+   PREGUNTAS MULTIOPCIÓN
+===================================================== */
+
+.goal-survey-panel select {
+    width: 100%;
+    min-height: 42px;
+    padding: 9px 38px 9px 12px;
+    border: 1px solid rgba(120, 90, 60, 0.25);
+    border-radius: 8px;
+    background: transparent;
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    outline: none;
+    appearance: auto;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* =====================================================
+   CUANDO SE SELECCIONA
+===================================================== */
+
+.goal-survey-panel select:focus {
+    border-color: currentColor;
+    box-shadow: 0 0 0 2px rgba(120, 90, 60, 0.08);
+}
+
+/* =====================================================
+   OPCIONES DEL MENÚ
+===================================================== */
+
+.goal-survey-panel select option {
+    font-family: inherit;
+    font-size: 13px;
+    padding: 8px;
+}
+
+/* =====================================================
+   SEPARACIÓN DE PREGUNTAS
+===================================================== */
+
+.goal-survey-panel .form-group {
+    margin-bottom: 18px;
+}
+
+.goal-survey-panel .form-group label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 12px;
+    font-weight: 600;
+    opacity: 0.8;
+}
+
+/* FUERZA EL SCROLL EN TODAS LAS TARJETAS */
+#main-goals-container .card-container-design .diagram-body {
+    overflow-y: scroll !important;
+    max-height: 250px !important;
+}
+
+#empty-goals-card .diagram-body {
+    overflow-y: scroll !important;
+    max-height: 250px !important;
+}
+
+#completed-goals-container {
+    overflow-y: scroll !important;
+    max-height: 250px !important;
+}
+
+/* =====================================================
+   ALINEACIÓN CORRECTA DE CAMPOS Y VALORES
+===================================================== */
+
+/* Cada fila - distribución horizontal con espacio */
+.diagram-row {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;      /* Centra verticalmente */
+    justify-content: space-between !important;
+    width: 100% !important;
+    gap: 12px !important;
+    padding: 4px 0 !important;
+    flex-wrap: nowrap !important;        /* ← EVITA que se envuelva a otra línea */
+}
+
+/* CAMPO (etiqueta) - izquierda, no se encoge */
+.diag-field {
+    flex: 0 0 auto !important;           /* No se estira ni encoge */
+    min-width: 80px !important;          /* Ancho mínimo fijo */
+    max-width: 45% !important;
+    font-weight: 600 !important;
+    color: #7d6b67 !important;
+    font-size: 13px !important;
+    text-align: left !important;
+    white-space: nowrap !important;      /* ← EVITA que el texto se divida */
+}
+
+/* VALOR - derecha, ocupa el espacio restante */
+.diag-value {
+    flex: 1 1 auto !important;           /* Ocupa el espacio disponible */
+    text-align: right !important;
+    font-weight: 500 !important;
+    color: #2b110b !important;
+    font-size: 13px !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    max-width: 60% !important;           /* ← Límite para no empujar */
+}
+
+/* DESCRIPCIÓN - alineada a la derecha */
+.description-text {
+    text-align: right !important;
+    flex: 1 1 auto !important;
+    font-size: 12.5px !important;
+    color: #555 !important;
+    word-break: break-word !important;
+    max-width: 60% !important;
+}
+
+/* Para filas con borde superior */
+.border-top-dash {
+    border-top: 1px dashed #eadecc !important;
+    padding-top: 10px !important;
+    margin-top: 4px !important;
+}
+
+/* =====================================================
+   AJUSTE PARA TEXTO LARGO
+===================================================== */
+
+/* Si el valor es muy largo, se ajusta con puntos suspensivos */
+.diag-value.long-text {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* O si prefieres que se vea completo pero en varias líneas */
+.diag-value.wrap-text {
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    line-height: 1.3 !important;
+}
+
+/* =====================================================
+   CORREGIR ANCHO Y DISTRIBUCIÓN DE TARJETAS
+===================================================== */
+
+/* 
+   CONTENEDOR PRINCIPAL - Distribución correcta
+*/
+#main-goals-container {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: stretch !important;
+    gap: 24px !important;              /* Espacio entre tarjetas */
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    padding: 15px 10px 25px !important;
+}
+
+/* 
+   TODAS LAS TARJETAS - Ancho adecuado
+*/
+#main-goals-container > .card-container-design {
+    flex: 0 0 340px !important;        /* ← AUMENTADO: 340px en lugar de 320px */
+    min-width: 320px !important;       /* Ancho mínimo */
+    max-width: 360px !important;       /* Ancho máximo */
+    height: 380px !important;
+    min-height: 380px !important;
+    max-height: 380px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+    flex-shrink: 0 !important;         /* No se encogen */
+    flex-grow: 0 !important;           /* No se estiran */
+}
+
+/* 
+   TARJETA ESPECÍFICA - Metas Activas
+*/
+#empty-goals-card {
+    flex: 0 0 340px !important;
+    min-width: 320px !important;
+    max-width: 360px !important;
+    height: 380px !important;
+    min-height: 380px !important;
+    max-height: 380px !important;
+}
+
+/* 
+   TARJETA ESPECÍFICA - Logros Obtenidos
+*/
+#main-goals-container .card-container-design {
+    flex: 0 0 340px !important;
+    min-width: 320px !important;
+    max-width: 360px !important;
+}
+
+/* 
+   TARJETA ESPECÍFICA - Nuevo Registro
+*/
+#add-button-card {
+    flex: 0 0 340px !important;
+    min-width: 320px !important;
+    max-width: 360px !important;
+    height: 380px !important;
+    min-height: 380px !important;
+    max-height: 380px !important;
+}
+
+/* 
+   CONTENIDO INTERNO - Ocupa todo el ancho
+*/
+#main-goals-container .db-diagram-box {
+    width: 90% !important;              /* Aumentado de 88% a 90% */
+    max-width: 90% !important;
+    margin: 0 auto !important;
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    min-height: 0 !important;
+}
+
+/* 
+   DIAGRAMA BODY - Aprovecha todo el espacio
+*/
+#main-goals-container .diagram-body {
+    flex: 1 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    padding: 16px !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Para tarjetas más anchas */
+#main-goals-container > .card-container-design {
+    flex: 0 0 380px !important;        /* Más ancho */
+    min-width: 340px !important;
+    max-width: 400px !important;
+}
+
+/* O si quieres que ocupen todo el espacio disponible */
+#main-goals-container > .card-container-design {
+    flex: 1 1 300px !important;        /* Se estiran para llenar */
+    min-width: 280px !important;
+    max-width: 400px !important;
+}
+
+#main-goals-container .card-container-design {
+    flex: 0 0 340px !important;
+    min-width: 340px !important;
+    max-width: 340px !important;
+    width: 340px !important;
+    flex-shrink: 0 !important;
+}
+
+/* =====================================================
+   CHAT IA - OBJETIVOS
+===================================================== */
+
+.goal-ai-chat {
+
+    display: flex;
+    flex-direction: column;
+
+    height: 100%;
+
+    background: #f8f5ef;
+
+    border-radius: 15px;
+
+    overflow: hidden;
+
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+
+
+/* HEADER */
+
+.ai-chat-header {
+
+    padding: 15px;
+
+    font-weight: bold;
+
+    font-size: 18px;
+
+    background: #5b3a29;
+
+    color: white;
+
+}
+
+
+
+/* MENSAJES */
+
+.ai-chat-messages {
+
+    flex: 1;
+
+    padding: 15px;
+
+    overflow-y: auto;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+
+}
+
+
+
+.ai-message {
+
+    background: white;
+
+    padding: 12px 15px;
+
+    border-radius: 12px;
+
+    max-width: 85%;
+
+    line-height: 1.4;
+
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+
+}
+
+
+
+/* INPUT */
+
+.ai-chat-input {
+
+    display: flex;
+
+    gap: 10px;
+
+    padding: 12px;
+
+    background: white;
+
+}
+
+
+
+.ai-chat-input input {
+
+    flex: 1;
+
+    padding: 10px;
+
+    border-radius: 10px;
+
+    border: 1px solid #ccc;
+
+}
+
+
+
+.ai-chat-input button {
+
+    padding: 10px 18px;
+
+    border-radius: 10px;
+
+    border: none;
+
+    cursor: pointer;
+
+}
+
+
+.ai-chat-messages {
+    line-height: 1.6;
+    white-space: normal;
+    text-align: left;
+    padding: 12px 15px;
+}
+
+.ai-chat-messages strong {
+    display: inline-block;
+    margin-top: 8px;
 }
