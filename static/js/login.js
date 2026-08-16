@@ -5,7 +5,6 @@ document.getElementById('formulario-login').addEventListener('submit', async (e)
     const password = document.getElementById('password-login').value;
     const alerta = document.getElementById('mensaje-alerta');
 
-    
     const datosLogin = {
         correo: correo,
         password: password
@@ -24,25 +23,84 @@ document.getElementById('formulario-login').addEventListener('submit', async (e)
         const resultado = await respuesta.json();
 
         if (respuesta.status === 200) {
+
             alerta.style.color = "green";
             alerta.innerText = resultado.mensaje;
-            
-            
-           localStorage.setItem('usuario_nombre', resultado.usuario.nombre);
-            localStorage.setItem('usuario_id', resultado.usuario.id_usuario); 
 
+            localStorage.setItem(
+                'usuario_nombre',
+                resultado.usuario.nombre
+            );
+
+            localStorage.setItem(
+                'usuario_id',
+                resultado.usuario.id_usuario
+            );
+
+            // =====================================================
+            // INICIAR RECOMENDACIÓN INICIAL
+            // =====================================================
+
+            sessionStorage.setItem(
+                "recomendacion_inicial_en_proceso",
+                "true"
+            );
             
+            fetch('http://127.0.0.1:5000/api/recomendacion-inicial', {
+                method: 'POST'
+            })
+            .then(async respuestaInicial => {
+            
+                const resultadoInicial = await respuestaInicial.json();
+            
+                console.log(
+                    "RECOMENDACIÓN INICIAL:",
+                    resultadoInicial
+                );
+            
+                sessionStorage.removeItem(
+                    "recomendacion_inicial_en_proceso"
+                );
+            
+            })
+            .catch(error => {
+            
+                console.error(
+                    "ERROR EN RECOMENDACIÓN INICIAL:",
+                    error
+                );
+            
+                sessionStorage.removeItem(
+                    "recomendacion_inicial_en_proceso"
+                );
+            
+            });
+            
+
+            // =====================================================
+            // ENTRAR A BOOK WELLNESS
+            // =====================================================
+
             setTimeout(() => {
-                window.location.href = "/"; 
+                window.location.href = "/";
             }, 1500);
+
         } else {
+
             alerta.style.color = "red";
-            alerta.innerText = resultado.error || "Credenciales incorrectas.";
+
+            alerta.innerText =
+                resultado.error ||
+                "Credenciales incorrectas.";
         }
 
     } catch (error) {
+
         console.error("Error detectado:", error);
+
         alerta.style.color = "red";
-        alerta.innerText = "No hay conexión con el servidor.";
+
+        alerta.innerText =
+            "No hay conexión con el servidor.";
     }
 });
