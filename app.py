@@ -8,6 +8,7 @@ from routes.usuarios import registrar_rutas as usuarios_routes
 from routes.lectura import registrar_rutas as lectura_routes
 from routes.seguimiento import registrar_rutas as seguimiento_routes
 from IA.recomendador import recomendador_bp
+from routes.objetivos import objetivos_bp
 
 from IA.asistente import ia_bp
 
@@ -16,6 +17,8 @@ app = Flask(__name__)
 app.secret_key = "ilovesucklemons" # clave secretosa
 
 app.register_blueprint(ia_bp)
+
+app.register_blueprint(objetivos_bp)
 
 app.register_blueprint(recomendador_bp)
 
