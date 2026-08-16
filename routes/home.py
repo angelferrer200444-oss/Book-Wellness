@@ -19,6 +19,7 @@ def registrar_rutas(app):
 
     @app.route("/")
     def home():
+
         libros_leyendo = []
         libros_pendientes = []
         racha_actual = 0
@@ -26,8 +27,21 @@ def registrar_rutas(app):
         id_usuario = session.get("id_usuario")
 
         if id_usuario:
-            libros_leyendo = Libro.obtener_libros_usuario(id_usuario, "leyendo")
-            libros_pendientes = Libro.obtener_libros_usuario(id_usuario, "pendiente")
+
+            orden = request.args.get("orden")
+
+            libros_leyendo = Libro.obtener_libros_usuario(
+                id_usuario,
+                "leyendo",
+                orden
+            )
+
+            libros_pendientes = Libro.obtener_libros_usuario(
+                id_usuario,
+                "pendiente",
+                orden
+            )
+
             perfil = Estadistica.consultar(id_usuario)
             racha_actual = perfil['racha_actual']
 
@@ -37,6 +51,7 @@ def registrar_rutas(app):
             libros_pendientes=libros_pendientes,
             racha_actual=racha_actual
         )
+
 
 
     # -------------------------
@@ -135,6 +150,7 @@ def registrar_rutas(app):
             inconclusos=inconclusos,
             audiolibros=audiolibros
         )
+        
     @app.route('/api/reanudar_libro', methods=['POST'])
     def reanudar_libro():
         from flask import request, jsonify, session
@@ -482,5 +498,8 @@ def registrar_rutas(app):
             "Botones superiores/historial_animo.html",
             estados_animo=estados_animo
         )
+
+    
+
 
     
