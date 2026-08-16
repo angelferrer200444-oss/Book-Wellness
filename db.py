@@ -115,6 +115,28 @@ def guardar_mensaje(id_usuario, rol, mensaje):
     cursor.close()
     conexion.close()
 
+def obtener_estado_recomendacion_inicial(id_usuario):
+
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+
+    cursor.execute("""
+        SELECT recomendacion_inicial_generada
+        FROM usuarios
+        WHERE id_usuario = %s
+    """, (id_usuario,))
+
+    resultado = cursor.fetchone()
+
+    cursor.close()
+    conexion.close()
+
+    if not resultado:
+        return False
+
+    return resultado[0] == 1
+
+
 ##########################################################
 # OBTENER HISTORIAL IA
 ##########################################################
@@ -149,3 +171,4 @@ def obtener_historial(id_usuario, limite=20):
     historial.reverse()
 
     return historial
+
