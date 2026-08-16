@@ -1,9 +1,12 @@
 from flask import Blueprint, request, jsonify, session
 from .orquestador import OrquestadorIA
+from .IAOBjetivo import IAObjetivo
 
 ia_bp = Blueprint("ia", __name__)
 
 motor = OrquestadorIA()
+
+motor_objetivos = IAObjetivo()
 
 PROMPT_SISTEMA = """
 Eres AM, un asistente especializado en lectura.
@@ -20,7 +23,13 @@ def preguntar_ia():
 
     datos = request.get_json()
 
+    print("DATOS RECIBIDOS:", datos)
+
     mensaje = datos.get("mensaje", "").strip()
+
+    seccion = datos.get("seccion", "general")
+
+    print("SECCION ACTUAL:", seccion)
 
     if "id_usuario" not in session:
 
@@ -37,15 +46,25 @@ def preguntar_ia():
 
         id_usuario = session["id_usuario"]
 
-        respuesta = motor.generar_texto(
+        if seccion == "objetivos":
 
-            id_usuario,
+            respuesta = motor_objetivos.conversar(
+                id_usuario,
+                mensaje
+            )
 
-            PROMPT_SISTEMA,
+        else:
 
-            mensaje
+            respuesta = motor.generar_texto(
 
-        )
+                id_usuario,
+
+                PROMPT_SISTEMA,
+
+                mensaje
+
+            )
+
 
     except Exception as e:
 
@@ -56,4 +75,6 @@ def preguntar_ia():
     return jsonify({
         "respuesta": respuesta
     })
+
+
 
