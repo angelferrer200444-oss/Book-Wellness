@@ -88,16 +88,31 @@ Book Wellness
                         
                         </div>                                                
 
-                        <button class="tool-btn">
-                            Ordenar
-                        </button>
+                        <div class="filter-container">
+
+                            <button
+                                class="tool-btn"
+                                id="sortBtn">
+                        
+                                <span>Ordenar</span>
+                        
+                                <span>▼</span>
+                        
+                            </button>
+                        
+                            <div
+                                id="sortMenu"
+                                class="filter-menu">
+                            </div>
+                        
+                        </div>
+                        
+                        
 
                         <!-- BUSCADOR -->
                         <div class="search-box">
 
                             <form action="/buscar" method="GET">
-
-                                <div class="search-box">
                             
                                     <span class="search-icon">
                                         🔍
@@ -109,8 +124,6 @@ Book Wellness
                                         placeholder="¿Qué deseas leer hoy?"
                                         required
                                     >
-                            
-                                </div>
                             
                             </form>                            
 
