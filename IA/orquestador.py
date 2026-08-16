@@ -11,7 +11,7 @@ class OrquestadorIA:
         self,
         api_key=None,
         modelo="gemini-2.5-flash",
-        timeout=45
+        timeout=120
     ):
 
         self.api_key = api_key or API_KEY
