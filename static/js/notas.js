@@ -346,3 +346,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
     actualizarPlaceholder();
 });
+
