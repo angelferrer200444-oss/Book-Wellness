@@ -1,119 +1,651 @@
 <div class="info-cards horizontal-scroll-container" id="main-goals-container">
 
-    <div class="card card-container-design">
-        <div class="card-header-brown">Metas Activas</div>
-        
-        <div class="db-diagram-box">
-            <div class="diagram-header">
-                <span class="db-icon">📊</span> Objetivos Global
-            </div>
-            <div class="diagram-body">
-                <div class="diagram-row item-highlight">
-                    <span class="diag-field">Meta actual</span>
-                    <span class="diag-value">Leer 24 libros</span>
-                </div>
-                <div class="diagram-row">
-                    <span class="diag-field">Progreso</span>
-                    <span class="diag-value">12 / 24 libros</span>
-                </div>
-                <!-- Barra de progreso añadida -->
-                <div class="progress-container">
-                    <div class="progress-bar" style="width: 50%;"></div>
-                </div>
-                <div class="diagram-row">
-                    <span class="diag-field">Descripción</span>
-                    <span class="diag-value description-text">Hábito de lectura diaria de 20 minutos al despertar.</span>
-                </div>
-                <div class="diagram-row border-top-dash">
-                    <span class="diag-field">Estado</span>
-                    <span class="diag-status status-pending">En progreso (50%)</span>
-                </div>
-            </div>
+    <!-- =====================================================
+         OBJETIVOS ACTIVOS
+    ====================================================== -->
+
+    <div
+        class="card card-container-design goals-main-card"
+        id="empty-goals-card">
+
+        <div class="card-header-brown">
+            Metas Activas
         </div>
+
+        <div class="db-diagram-box">
+
+            <div class="diagram-header">
+
+                <span class="db-icon">
+                    🎯
+                </span>
+
+                Mis Objetivos
+
+            </div>
+
+            <div class="diagram-body">
+
+                <div class="empty-goals">
+
+                    <div class="empty-goals-icon">
+                        🎯
+                    </div>
+
+                    <div class="empty-goals-title">
+                        Aún no tienes objetivos
+                    </div>
+
+                    <div class="empty-goals-description">
+                        Crea tu primer objetivo para comenzar
+                        a construir tu hábito de lectura.
+                    </div>
+
+                    <button
+                        type="button"
+                        class="add-db-btn empty-create-btn"
+                        id="empty-create-btn">
+
+                        <div class="plus-circle">
+                            <span class="plus-sign">+</span>
+                        </div>
+
+                        <span class="btn-subtext">
+                            Crear objetivo
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
+
+
+    <!-- =====================================================
+         OBJETIVOS COMPLETADOS
+    ====================================================== -->
+
     <div class="card card-container-design">
-        <div class="card-header-brown">Logros Obtenidos</div>
-        
-        <div class="db-diagram-box">
-            <div class="diagram-header">
-                <span class="db-icon">🏆</span> Historial Logros
-            </div>
-            <div class="diagram-body">
-                <div class="diagram-row item-highlight">
-                    <span class="diag-field">Meta cumplida</span>
-                    <span class="diag-value">Maratón de Sci-Fi</span>
-                </div>
-                <div class="diagram-row">
-                    <span class="diag-field">Progreso</span>
-                    <span class="diag-value">3 / 3 libros</span>
-                </div>
-                <!-- Barra de progreso añadida (Completada) -->
-                <div class="progress-container">
-                    <div class="progress-bar bar-success" style="width: 100%;"></div>
-                </div>
-                <div class="diagram-row">
-                    <span class="diag-field">Detalle</span>
-                    <span class="diag-value description-text">Leer la trilogía de Fundación completa en un mes.</span>
-                </div>
-                <div class="diagram-row border-top-dash">
-                    <span class="diag-field">Completado</span>
-                    <span class="diag-status status-success">Logrado (100%)</span>
-                </div>
-            </div>
+
+        <div class="card-header-brown">
+            Logros Obtenidos
         </div>
+
+        <div class="db-diagram-box">
+
+            <div class="diagram-header">
+                <span class="db-icon">🏆</span>
+                Objetivos Completados
+            </div>
+
+            <div
+                class="diagram-body goals-list"
+                id="completed-goals-container">
+
+                <div class="empty-completed">
+
+                    <span class="empty-completed-icon">
+                        🏆
+                    </span>
+
+                    <span>
+                        Aquí aparecerán tus objetivos
+                        cuando los completes.
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
-    <div class="card card-container-design add-target-card" id="add-button-card">
-        <div class="card-header-brown">Nuevo Registro</div>
-        
+
+    <!-- =====================================================
+         NUEVO OBJETIVO
+    ====================================================== -->
+
+    <div
+        class="card card-container-design add-target-card"
+        id="add-button-card">
+
+        <div class="card-header-brown">
+            Nuevo Registro
+        </div>
+
         <div class="db-diagram-box add-diagram-box">
-            <button class="add-db-btn" id="open-modal-btn" title="Agregar nuevo objetivo">
+
+            <button
+                type="button"
+                class="add-db-btn"
+                id="open-modal-btn"
+                title="Agregar nuevo objetivo">
+
                 <div class="plus-circle">
                     <span class="plus-sign">+</span>
                 </div>
-                <span class="btn-subtext">Insertar Objetivo</span>
+
+                <span class="btn-subtext">
+                    Insertar Objetivo
+                </span>
+
             </button>
+
         </div>
+
     </div>
 
 </div>
 
-<div class="modal-overlay" id="goal-modal">
-    <div class="modal-card">
-        <div class="modal-header">Nuevo Objetivo</div>
-        <form id="goal-form" class="modal-body">
-            <div class="form-group">
-                <label for="goal-title">Título del Objetivo</label>
-                <input type="text" id="goal-title" placeholder="Ej: Lector Veloz, Maratón Fantasía" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="goal-desc">Descripción Corta</label>
-                <input type="text" id="goal-desc" placeholder="Ej: Leer antes de acostarse" required>
-            </div>
 
-            <div class="form-row-inputs">
-                <div class="form-group" style="width: 100%;">
-                    <label for="goal-total">Meta Total</label>
-                    <input type="number" id="goal-total" min="1" value="10" required>
-                </div>
-            </div>
 
-            <div class="form-group">
-                <label for="goal-unit">Unidad de Medida</label>
-                <input type="text" id="goal-unit" placeholder="Ej: páginas, libros, días" value="páginas" required>
-            </div>
+<!-- =====================================================
+    MODAL CREAR OBJETIVO
+====================================================== -->
 
-            <div class="form-group">
-                <label for="goal-date">Fecha de Finalización</label>
-                <input type="date" id="date-picker-input" required>
-            </div>
+<div
+   class="modal-overlay"
+   id="goal-modal">
 
-            <div class="modal-actions">
-                <button type="button" class="form-btn btn-cancel" id="close-modal-btn">Cancelar</button>
-                <button type="submit" class="form-btn btn-save">Guardar Objetivo</button>
-            </div>
-        </form>
-    </div>
+   <div class="modal-card">
+
+       <!-- CABECERA -->
+
+       <div class="modal-header">
+
+           <div>
+
+               <div class="modal-title">
+                   Nuevo Objetivo
+               </div>
+
+               <div class="modal-subtitle">
+                   Define tu próximo reto de lectura.
+               </div>
+
+           </div>
+
+           <button
+               type="button"
+               class="modal-close-btn"
+               id="close-modal-btn"
+               aria-label="Cerrar">
+
+               ×
+
+           </button>
+
+       </div>
+
+
+       <!-- FORMULARIO -->
+
+       <form
+           id="goal-form"
+           class="modal-body">
+
+
+           <div class="goal-creator-layout">
+
+
+               <!-- =================================================
+                    COLUMNA IZQUIERDA
+                    TIPOS DE OBJETIVO
+               ================================================== -->
+
+               <div class="goal-types-panel">
+
+                   <div class="form-group">
+
+                       <label>
+                           ¿Qué quieres conseguir?
+                       </label>
+
+
+                       <div class="goal-type-options">
+
+
+                           <button
+                               type="button"
+                               class="goal-type-card"
+                               data-goal-type="libros">
+
+                               <span class="goal-type-icon">
+                                   📚
+                               </span>
+
+                               <span class="goal-type-name">
+                                   Leer libros
+                               </span>
+
+                               <span class="goal-type-description">
+                                   Alcanzar una cantidad de libros.
+                               </span>
+
+                           </button>
+
+
+                           <button
+                               type="button"
+                               class="goal-type-card"
+                               data-goal-type="paginas">
+
+                               <span class="goal-type-icon">
+                                   📖
+                               </span>
+
+                               <span class="goal-type-name">
+                                   Leer páginas
+                               </span>
+
+                               <span class="goal-type-description">
+                                   Alcanzar una cantidad de páginas.
+                               </span>
+
+                           </button>
+
+
+                           <button
+                               type="button"
+                               class="goal-type-card"
+                               data-goal-type="tiempo">
+
+                               <span class="goal-type-icon">
+                                   ⏱️
+                               </span>
+
+                               <span class="goal-type-name">
+                                   Leer durante cierto tiempo
+                               </span>
+
+                               <span class="goal-type-description">
+                                   Crear un objetivo basado en tiempo.
+                               </span>
+
+                           </button>
+
+
+                           <button
+                               type="button"
+                               class="goal-type-card"
+                               data-goal-type="rutina">
+
+                               <span class="goal-type-icon">
+                                   🔥
+                               </span>
+
+                               <span class="goal-type-name">
+                                   Crear una rutina
+                               </span>
+                                <span class="goal-type-description">
+                                   Mantener el hábito de lectura.
+                               </span>
+
+                           </button>
+                        
+                           <button
+                                type="button"
+                                class="goal-type-card"
+                                data-goal-type="ia">
+                            
+                                <span class="goal-type-icon">
+                                    🤖
+                                </span>
+                            
+                                <span class="goal-type-name">
+                                    ¿Necesitas ayuda para crear tu objetivo?
+                                </span>
+                            
+                                <span class="goal-type-description">
+                                    Tu bibliotecario Am al rescate.
+                                </span>
+                            
+                            </button>
+
+                           
+
+
+                       </div>
+
+                   </div>
+
+               </div>
+
+
+               <!-- =================================================
+                    COLUMNA DERECHA
+                    ENCUESTA / CONFIGURACIÓN
+               ================================================== -->
+
+               <div
+                   class="goal-survey-panel"
+                   id="goal-survey-panel">
+
+                   <div 
+                        id="goal-ai-chat"
+                        class="goal-ai-chat hidden">
+
+                        <div class="ai-chat-header">
+                            🤖 Am - Tu Bibliotecario
+                        </div>
+
+
+                        <div 
+                            id="ai-chat-messages"
+                            class="ai-chat-messages">
+                        </div>
+
+
+                        <div class="ai-chat-input">
+
+                            <input 
+                                type="text"
+                                id="ai-chat-input"
+                                placeholder="Cuentame tu objetivo con la lectura, y entre los dos armamos un plan...">
+
+                            <button
+                                type="button"
+                                id="ai-chat-send">
+                                Enviar
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+
+                   <!-- =================================================
+                        CONFIGURACIÓN DEL OBJETIVO
+                   ================================================== -->
+
+                   <div
+                       id="goal-configuration"
+                       class="goal-configuration hidden">
+
+
+                       <!-- TÍTULO -->
+
+                       <div class="form-group">
+
+                           <label for="goal-title">
+                               Título del objetivo
+                           </label>
+
+                           <input
+                               type="text"
+                               id="goal-title"
+                               placeholder="Ej: Maratón de lectura"
+                               maxlength="80">
+
+                       </div>
+
+
+                       <!-- DESCRIPCIÓN -->
+
+                       <div class="form-group">
+
+                           <label for="goal-desc">
+                               Descripción corta
+                           </label>
+
+                           <input
+                               type="text"
+                               id="goal-desc"
+                               placeholder="Ej: Leer durante mis vacaciones"
+                               maxlength="150">
+
+                       </div>
+
+
+                       <!-- CANTIDAD + UNIDAD -->
+
+                       <div class="form-row-inputs">
+
+                           <div class="form-group">
+
+                               <label for="goal-total">
+                                   Meta total
+                               </label>
+
+                               <input
+                                   type="number"
+                                   id="goal-total"
+                                   min="1"
+                                   step="1"
+                                   placeholder="5">
+
+                           </div>
+
+
+                           <div class="form-group">
+
+                               <label>
+                                   Unidad de medida
+                               </label>
+
+                               <div
+                                   class="goal-unit-display"
+                                   id="goal-unit">
+
+                                   Selecciona un tipo
+
+                               </div>
+
+                           </div>
+
+                       </div>
+
+
+                       <!-- =================================================
+                            CONDICIÓN
+                       ================================================== -->
+
+                       <div
+                           class="form-group"
+                           id="condition-group">
+
+                           <label for="goal-condition">
+                               ¿Quieres añadir una condición?
+                           </label>
+
+                           <select id="goal-condition">
+
+                               <option value="ninguna">
+                                   Cualquier lectura
+                               </option>
+
+                               <option value="genero">
+                                   Un género específico
+                               </option>
+                                <option value="autor">
+                                   Un autor específico
+                               </option>
+
+                               <option value="formato">
+                                   Un formato específico
+                               </option>
+
+                               <option value="libro">
+                                   Un libro específico
+                               </option>
+
+                           </select>
+
+                       </div>
+
+
+                       <!-- VALOR DE CONDICIÓN -->
+
+                       <div
+                           class="form-group hidden"
+                           id="condition-value-group">
+
+                           <label for="goal-condition-value">
+                               Especifica la condición
+                           </label>
+
+                           <input
+                               type="text"
+                               id="goal-condition-value"
+                               placeholder="Ej: Fantasía">
+
+                       </div>
+
+
+                       <!-- =================================================
+                            FRECUENCIA
+                       ================================================== -->
+
+                       <div
+                           class="form-group hidden"
+                           id="frequency-group">
+
+                           <label for="goal-frequency">
+                               Frecuencia
+                           </label>
+
+                           <select id="goal-frequency">
+
+                               <option value="diaria">
+                                   Todos los días
+                               </option>
+
+                               <option value="semanal">
+                                   Cada semana
+                               </option>
+
+                               <option value="mensual">
+                                   Cada mes
+                               </option>
+
+                           </select>
+
+                       </div>
+
+
+                       <!-- =================================================
+                            FECHAS
+                       ================================================== -->
+
+                       <div class="form-row-inputs">
+
+                           <div class="form-group">
+
+                               <label for="goal-start-date">
+                                   Fecha de inicio
+                               </label>
+
+                               <input
+                                   type="date"
+                                   id="goal-start-date">
+
+                           </div>
+
+
+                           <div class="form-group">
+
+                               <label for="goal-end-date">
+                                   Fecha de finalización
+                               </label>
+
+                               <input
+                                   type="date"
+                                   id="goal-end-date">
+
+                           </div>
+
+                       </div>
+
+
+                       <!-- =================================================
+                            PREVISUALIZACIÓN
+                       ================================================== -->
+
+                       <div class="goal-preview">
+
+                           <div class="goal-preview-title">
+                               Vista previa
+                           </div>
+
+                           <div
+                               class="goal-preview-text"
+                               id="goal-preview">
+
+                               Selecciona un tipo de objetivo
+                               para comenzar.
+
+                           </div>
+
+                       </div>
+
+
+                   </div>
+
+
+                   <!-- MENSAJE INICIAL -->
+                    <div
+                       class="goal-survey-empty"
+                       id="goal-survey-empty">
+
+                       <div class="goal-survey-empty-icon">
+                           🎯
+                       </div>
+
+                       <div class="goal-survey-empty-title">
+                           Comencemos
+                       </div>
+
+                       <div class="goal-survey-empty-text">
+                           Selecciona un tipo de objetivo
+                           para configurar tu reto.
+                       </div>
+
+                   </div>
+
+
+               </div>
+
+           </div>
+
+
+           <!-- =================================================
+                BOTONES
+           ================================================== -->
+
+           <div class="modal-actions">
+
+               <button
+                   type="button"
+                   class="form-btn btn-cancel"
+                   id="cancel-goal-btn">
+
+                   Cancelar
+
+               </button>
+
+
+               <button
+                   type="submit"
+                   class="form-btn btn-save"
+                   id="save-goal-btn"
+                   disabled>
+
+                   Guardar Objetivo
+
+               </button>
+
+           </div>
+
+
+       </form>
+
+   </div>
+
 </div>
