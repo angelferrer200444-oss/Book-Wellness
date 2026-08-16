@@ -10,13 +10,21 @@ document.addEventListener("DOMContentLoaded",()=>{
 
     if(carousel){
 
+
         let posicion = 0;
+
         let pausado = false;
+
         let pausaEmocion = false;
+
         let isDown = false;
+
         let startX = 0;
+
         let movimiento = 0;
-        
+
+
+
         const panels = document.querySelectorAll(".sidebar-column");
 
         // =========================
@@ -72,7 +80,11 @@ document.addEventListener("DOMContentLoaded",()=>{
 
             });
 
+
+
         });
+
+
 
 
         // =========================
@@ -82,19 +94,31 @@ document.addEventListener("DOMContentLoaded",()=>{
 
         function moverPanel(){
 
+
             carousel.style.transform =
             `translateX(-${posicion * 33.333}%)`;
+
+
         }
+
+
+
 
         // =========================
         // CARRUSEL AUTOMÁTICO
         // =========================
 
+
         setInterval(()=>{
+
 
             if(pausado || pausaEmocion || isDown) return;
 
+
+
             posicion++;
+
+
 
             if(posicion > 2){
 
@@ -102,31 +126,55 @@ document.addEventListener("DOMContentLoaded",()=>{
 
             }
 
+
+
             moverPanel();
 
+
+
         },5000);
+
+
+
+
+
+
 
         // =========================
         // DRAG MANUAL
         // =========================
 
+
         carousel.addEventListener("mousedown",(e)=>{
+
 
             isDown = true;
 
             pausado = true;
 
+
             startX = e.pageX;
+
+
 
         });
 
+
+
+
+
         document.addEventListener("mouseup",()=>{
 
+
             if(!isDown) return;
+
+
 
             isDown = false;
 
             pausado = false;
+
+
 
             if(movimiento > 80){
 
@@ -134,11 +182,15 @@ document.addEventListener("DOMContentLoaded",()=>{
 
             }
 
+
+
             if(movimiento < -80){
 
                 posicion++;
 
             }
+
+
 
             if(posicion < 0){
 
@@ -146,27 +198,54 @@ document.addEventListener("DOMContentLoaded",()=>{
 
             }
 
+
+
             if(posicion > 2){
 
                 posicion = 0;
 
             }
 
+
+
             moverPanel();
+
+
 
             movimiento = 0;
 
+
+
         });
+
+
+
+
+
+
 
         document.addEventListener("mousemove",(e)=>{
 
+
             if(!isDown) return;
+
+
 
             movimiento = e.pageX - startX;
 
+
+
         });
 
+
+
     }
+
+
+
+
+
+
 
     // =========================
     // EMOCIONES
@@ -231,6 +310,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 
     });
 
+
     // =========================
     // CLIC EN EMOCIÓN
     // =========================
@@ -254,8 +334,14 @@ document.addEventListener("DOMContentLoaded",()=>{
             if (carousel) {
                 pausaEmocion = true;
             }
+
         });
+
     });
+
+
+
+
 });
 
 
