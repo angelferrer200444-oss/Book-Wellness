@@ -18,9 +18,7 @@ async function cargarRecomendaciones(
     
 
 
-    /*
-     * Mostrar cargando
-     */
+    
     contenedor.innerHTML = `
         <div class="loader-container">
             <div class="loader"></div>
@@ -44,15 +42,7 @@ async function cargarRecomendaciones(
         let libros;
 
 
-        /*
-         * Si Reflexivo ya nos entregó
-         * las recomendaciones, usamos esas.
-         *
-         * NO hacemos otro fetch.
-         *
-         * Así evitamos llamar nuevamente
-         * al recomendador.
-         */
+        
         if (
             recomendacionesNuevas &&
             recomendacionesNuevas.length > 0
@@ -62,13 +52,7 @@ async function cargarRecomendaciones(
 
         } else {
 
-            /*
-             * Carga normal de la página.
-             *
-             * Aquí solamente obtenemos
-             * las recomendaciones guardadas
-             * en cache.
-             */
+            
             const respuesta = await fetch(
                 "/api/recomendaciones"
             );
