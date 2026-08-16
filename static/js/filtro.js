@@ -69,3 +69,63 @@ buscador.addEventListener("input", ()=>{
     });
 
 });
+
+
+// =====================================================
+// ORDENAR
+// =====================================================
+
+const sortBtn =
+document.getElementById("sortBtn");
+
+const sortMenu =
+document.getElementById("sortMenu");
+
+sortBtn.addEventListener("click", () => {
+
+    sortMenu.classList.toggle("show");
+
+});
+
+
+// OPCIONES DE ORDEN
+
+const opcionesOrden = [
+    {
+        texto: "Más reciente",
+        valor: "reciente"
+    },
+    {
+        texto: "Más antiguo",
+        valor: "antiguo"
+    },
+    {
+        texto: "Título A-Z",
+        valor: "az"
+    },
+    {
+        texto: "Título Z-A",
+        valor: "za"
+    }
+];
+
+
+// CREAR OPCIONES
+
+opcionesOrden.forEach(opcion => {
+
+    const enlace =
+    document.createElement("a");
+
+    enlace.className =
+    "genre-item";
+
+    enlace.href =
+    `/?orden=${opcion.valor}`;
+
+    enlace.textContent =
+    opcion.texto;
+
+    sortMenu.appendChild(enlace);
+
+});
