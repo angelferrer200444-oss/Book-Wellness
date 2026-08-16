@@ -150,13 +150,14 @@ class Libro:
     @staticmethod
     def obtener_libros_usuario(
         id_usuario,
-        categoria
+        categoria,
+        orden=None
     ):
 
         conexion = obtener_conexion()
         cursor = conexion.cursor(dictionary=True)
 
-        cursor.execute("""
+        query = """
             SELECT
                 id_libro,
                 titulo,
@@ -168,10 +169,27 @@ class Libro:
             FROM libros
             WHERE id_usuario = %s
             AND categoria = %s
-        """, (
-            id_usuario,
-            categoria
-        ))
+        """
+
+        if orden == "reciente":
+            query += " ORDER BY id_libro DESC"
+
+        elif orden == "antiguo":
+            query += " ORDER BY id_libro ASC"
+
+        elif orden == "az":
+            query += " ORDER BY titulo ASC"
+
+        elif orden == "za":
+            query += " ORDER BY titulo DESC"
+
+        cursor.execute(
+            query,
+            (
+                id_usuario,
+                categoria
+            )
+        )
 
         libros = cursor.fetchall()
 
@@ -179,6 +197,7 @@ class Libro:
         conexion.close()
 
         return libros
+
 
     @staticmethod
     def eliminar(
@@ -768,3 +787,4 @@ class Libro:
         cursor.close()
         conexion.close()
         return libros
+
