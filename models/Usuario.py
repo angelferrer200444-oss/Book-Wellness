@@ -10,12 +10,15 @@ class Usuario:
         id_usuario=None,
         nombre=None,
         correo=None,
-        password=None
+        password=None,
+        nivel_actual=None
     ):
+
         self.id_usuario = id_usuario
         self.nombre = nombre
         self.correo = correo
         self.password = password
+        self.nivel_actual = nivel_actual
 
 
     def registrar(self):
@@ -29,13 +32,20 @@ class Usuario:
 
         cursor.execute("""
             INSERT INTO usuarios
-            (nombre, correo, password)
-            VALUES (%s, %s, %s)
+            (
+                nombre,
+                correo,
+                password,
+                nivel_actual
+            )
+            VALUES (%s, %s, %s, %s)
         """, (
             self.nombre,
             self.correo,
-            self.password
+            self.password,
+            self.nivel_actual
         ))
+
 
         conexion.commit()
 
@@ -71,7 +81,11 @@ class Usuario:
         cursor = conexion.cursor(dictionary=True)
 
         cursor.execute("""
-            SELECT id_usuario, nombre, correo
+            SELECT
+                id_usuario,
+                nombre,
+                correo,
+                recomendacion_inicial_generada
             FROM usuarios
             WHERE correo = %s
             AND password = %s
@@ -79,6 +93,7 @@ class Usuario:
             correo,
             password
         ))
+
 
         datos = cursor.fetchone()
 
@@ -112,3 +127,4 @@ class Usuario:
         implementaciones.
         """
         pass
+
