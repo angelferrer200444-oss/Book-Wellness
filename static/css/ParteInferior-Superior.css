@@ -265,3 +265,25 @@
     color: #7b5a4b;
     font-family: 'Cinzel', serif;
 }
+
+.search-box form {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+/* =========================================
+   UNIR FILTRO + ORDENAR + BUSCADOR
+   ========================================= */
+
+   #filterBtn {
+    border-radius: 20px 0 0 20px;
+}
+
+#sortBtn {
+    border-radius: 0;
+}
+
+.reading-tools > .search-box {
+    border-radius: 0 20px 20px 0;
+}
