@@ -10,6 +10,12 @@ async function cargarRecomendaciones(
 
     const contenedor =
         document.getElementById("recomendaciones");
+    
+    const recomendacionInicialEnProceso =
+        sessionStorage.getItem(
+            "recomendacion_inicial_en_proceso"
+        ) === "true";
+    
 
 
     /*
@@ -24,6 +30,13 @@ async function cargarRecomendaciones(
             </span>
         </div>
     `;
+
+    if (recomendacionInicialEnProceso) {
+
+        esperarRecomendacionesIniciales();
+    
+        return;
+    }
 
 
     try {
@@ -165,6 +178,55 @@ async function cargarRecomendaciones(
         `;
 
     }
+
+}
+
+async function esperarRecomendacionesIniciales() {
+
+    const contenedor =
+        document.getElementById("recomendaciones");
+
+
+    const intervalo = setInterval(async () => {
+
+        try {
+
+            const respuesta = await fetch(
+                "/api/recomendaciones"
+            );
+
+            const libros = await respuesta.json();
+
+
+            if (
+                libros &&
+                libros.length > 0
+            ) {
+
+                clearInterval(intervalo);
+
+
+                sessionStorage.removeItem(
+                    "recomendacion_inicial_en_proceso"
+                );
+
+
+                cargarRecomendaciones(libros);
+
+            }
+
+
+        } catch(error) {
+
+            console.error(
+                "Error comprobando recomendaciones:",
+                error
+            );
+
+        }
+
+
+    }, 3000);
 
 }
 
