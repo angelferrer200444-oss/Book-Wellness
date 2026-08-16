@@ -122,6 +122,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 }
 
+                console.log("🟡 3. Terminó Triste, voy a restaurar el panel");
+
+                restaurarPanelIANormal();
+
 
                 // ==========================================
                 // TRISTE
@@ -153,8 +157,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
                             botonTriste.addEventListener(
                                 "click",
-                                mostrarCampoTriste
+                                function () {
+                                    console.log("🔥 CLICK EN CUÉNTAME TRISTE");
+                                    mostrarCampoTriste();
+                                }
                             );
+                            
 
                         }
 
@@ -450,7 +458,11 @@ async function enviarRespuestaTriste() {
 
         }
 
+        restaurarPanelIANormal()
+
     }
+
+    
 
     catch (error) {
 
@@ -534,10 +546,14 @@ async function enviarRespuestaTriste() {
 
 function mostrarCampoTriste() {
 
+    console.log(
+        "🔴 mostrarCampoTriste() EJECUTADA. Elemento actual:",
+        document.activeElement
+    );
+
     const panel =
-        document.querySelector(
-            ".bw-ai-panel"
-        );
+        document.querySelector(".bw-ai-panel");
+
 
 
     if (!panel) {
@@ -789,10 +805,11 @@ function mostrarResultadoTriste(datos) {
 
 function restaurarPanelIANormal() {
 
+    console.log("🟢 2. restaurarPanelIANormal() EJECUTADA");
+
     const panel =
-        document.querySelector(
-            ".bw-ai-panel"
-        );
+        document.querySelector(".bw-ai-panel");
+
 
 
     if (!panel) {
