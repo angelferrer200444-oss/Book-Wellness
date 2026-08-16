@@ -233,3 +233,5 @@ class Estadistica:
 
         horas = minutos / 60
         return f"{horas:.1f} h"
+
+
