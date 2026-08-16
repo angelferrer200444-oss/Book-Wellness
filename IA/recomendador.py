@@ -783,7 +783,7 @@ class RecomendadorLibros:
 
             resultado = self.ia.generar_json(
                 prompt,
-                timeout=45
+                timeout=120
             )
 
             estado = resultado.get(
@@ -1098,6 +1098,11 @@ def recomendaciones():
         cache = db.obtener_recomendaciones_cache(id_usuario)
         if cache:
             return jsonify(cache)
+        
+        generada = db.obtener_estado_recomendacion_inicial(id_usuario)
+
+        if not generada:
+            return jsonify([])
 
     
 
@@ -1116,4 +1121,3 @@ def recomendaciones():
         print("=" * 60)
 
         return jsonify([])
-
