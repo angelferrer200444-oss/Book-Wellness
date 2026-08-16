@@ -16,7 +16,7 @@ body {
     background:
 
     /* PATRÓN */
-    url("545\ sin\ título_20260529172529.png"),
+    url("545 sin título_20260529172529.png"),
 
     /* LUZ SUPERIOR */
     radial-gradient(
@@ -1073,5 +1073,20 @@ a{
     transition:
         transform .3s ease;
 
+}
+
+.bw-ai-panel .bw-ai-button-triste {
+    width: 100%;
+    min-width: 0;
+    height: 45px;
+    min-height: 45px;
+    padding: 0 20px;
+    font-size: 16px;
+    box-sizing: border-box;
+    white-space: nowrap;
+}
+
+#sortBtn {
+    border-radius: 0 25px 25px 0;
 }
 
