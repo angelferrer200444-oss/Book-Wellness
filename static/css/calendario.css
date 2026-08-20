@@ -142,16 +142,36 @@
     font-weight: bold;
 }
 
-.week-item.sesion-day .day-number {
-    outline: 2px solid #7c1f16;
-    outline-offset: 2px;
-    border-radius: 50%;
+.week-item.fecha-limite-day .day-number {
+    border: 2px solid #c0392b !important;
+    color: #c0392b !important;
 }
 
+.week-item.concluido-day .day-number {
+    border: 2px solid #27ae60 !important;
+    color: #27ae60 !important;
+}
+
+.week-item.primera-sesion-day .day-number {
+    border: 2px solid #f39c12 !important;
+    font-weight: bold;
+}
+
+.week-item.expirada-day .day-number {
+    border: 2px solid #888 !important;
+    color: #888 !important;
+    text-decoration: line-through;
+}
+.week-item.fecha-limite-day,
+.week-item.expirada-day,
+.week-item.concluido-day,
+.week-item.primera-sesion-day,
+.week-item.sesion-day,
+.week-item.fin-libro-day {
+    outline: none !important;
+}
 .week-item.fin-libro-day .day-number {
-    outline: 2px solid #c8a84b;
-    outline-offset: 2px;
-    border-radius: 50%;
+    border: 2px solid #c8a84b !important;
     font-weight: bold;
 }
 
@@ -197,3 +217,38 @@
     font-size: 18px;
     font-weight: 600;
 }
+
+.fecha-limite-day {
+    outline: 2px solid #c0392b;
+    outline-offset: -2px;
+    color: #c0392b;
+}
+
+.concluido-day {
+    outline: 2px solid #27ae60;
+    outline-offset: -2px;
+    color: #27ae60;
+}
+
+.primera-sesion-day {
+    outline: 2px solid #f39c12;
+    outline-offset: -2px;
+    font-weight: bold;
+}
+.expirada-day {
+    outline: 2px solid #888;
+    outline-offset: -2px;
+    color: #888;
+    text-decoration: line-through;
+}
+.status-expired .badge {
+    background: #888;
+    color: #fff;
+}
+
+.status-expired .date-box .time-bar {
+    background: #888;
+    color: #fff;
+}
+
+
