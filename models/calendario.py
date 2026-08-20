@@ -21,14 +21,31 @@ class Calendario:
         cursor = conexion.cursor(dictionary=True)
 
         cursor.execute("""
-            SELECT DATE(fecha_inicio) as fecha, 'sesion' as tipo
+            SELECT DATE(fecha_inicio) as fecha, 'primera_sesion' as tipo
             FROM lecturas
             WHERE id_usuario = %s AND fecha_inicio IS NOT NULL
+
             UNION
-            SELECT DATE(fecha_limite) as fecha, 'fin_libro' as tipo
+
+            SELECT DATE(fecha_limite) as fecha,
+                CASE WHEN fecha_limite < CURDATE() THEN 'expirada' ELSE 'fecha_limite' END as tipo
             FROM lecturas
             WHERE id_usuario = %s AND fecha_limite IS NOT NULL
-        """, (id_usuario, id_usuario))
+            AND estado != 'He terminado el libro'
+
+            UNION
+
+            SELECT DATE(fecha_fin) as fecha, 'concluido' as tipo
+            FROM lecturas
+            WHERE id_usuario = %s AND fecha_fin IS NOT NULL
+            AND estado = 'He terminado el libro'
+
+            UNION
+
+            SELECT DATE(fecha) as fecha, 'sesion' as tipo
+            FROM sesiones
+            WHERE id_usuario = %s AND fecha IS NOT NULL
+        """, (id_usuario, id_usuario, id_usuario, id_usuario))
 
         filas = cursor.fetchall()
         cursor.close()
@@ -41,8 +58,11 @@ class Calendario:
             fecha_str = str(fila['fecha'])
             if fecha_str not in fechas:
                 fechas[fecha_str] = fila['tipo']
-            elif fila['tipo'] == 'fin_libro':
-                fechas[fecha_str] = 'fin_libro'
+            else:
+                # prioridad: concluido > fecha_limite > sesion
+                prioridad = {'concluido': 4, 'fecha_limite': 3, 'primera_sesion': 2, 'sesion': 1}
+                if prioridad.get(fila['tipo'], 0) > prioridad.get(fechas[fecha_str], 0):
+                    fechas[fecha_str] = fila['tipo']
 
         return fechas
 
