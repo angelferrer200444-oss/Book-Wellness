@@ -55,6 +55,32 @@ function renderCalendar() {
             dateElement.addEventListener('click', () => abrirModal(fechaStr));
         }
 
+        if(fechasMarcadas[fechaStr] === 'concluido') {
+            dateElement.classList.add("concluido-day");
+            dateElement.style.cursor = "pointer";
+            dateElement.addEventListener('click', () => abrirModal(fechaStr));
+        } else if(fechasMarcadas[fechaStr] === 'fecha_limite') {
+            dateElement.classList.add("fecha-limite-day");
+            dateElement.style.cursor = "pointer";
+            dateElement.addEventListener('click', () => abrirModal(fechaStr));
+        } else if(fechasMarcadas[fechaStr] === 'sesion') {
+            dateElement.classList.add("sesion-day");
+            dateElement.style.cursor = "pointer";
+            dateElement.addEventListener('click', () => abrirModal(fechaStr));
+        }
+
+        if(fechasMarcadas[fechaStr] === 'primera_sesion') {
+            dateElement.classList.add("primera-sesion-day");
+            dateElement.style.cursor = "pointer";
+            dateElement.addEventListener('click', () => abrirModal(fechaStr));
+        }
+        if(fechasMarcadas[fechaStr] === 'expirada') {
+            dateElement.classList.add("expirada-day");
+            dateElement.style.cursor = "pointer";
+            dateElement.addEventListener('click', () => abrirModal(fechaStr));
+        }
+
+
         calendarDates.appendChild(dateElement);
     }
 }
@@ -78,16 +104,51 @@ async function abrirModal(fecha) {
                 return;
             }
 
-            timeline.innerHTML = eventos.map(ev => {
-                const esSesion = ev.tipo === 'sesion';
-                const badge = esSesion ? 'Sesión' : (ev.estado === 'Terminé' ? 'Cumplido' : 'Pendiente');
-                const badgeClass = esSesion || ev.estado === 'Terminé' ? 'status-completed' : 'status-pending';
-                const desc = esSesion
-                    ? `📖 ${ev.paginas_leidas || 0} páginas leídas · ⏱️ ${Math.floor((ev.tiempo_minutos||0)/60)}h ${(ev.tiempo_minutos||0)%60}m`
-                    : `⏰ Fecha límite para terminar este libro`;
-                const fecha_obj = new Date(ev.fecha_inicio || ev.fecha_limite);
-                const diaNum = fecha_obj.getUTCDate();
-                const mesNom = months[fecha_obj.getUTCMonth()].substring(0,3).toUpperCase();
+                                timeline.innerHTML = eventos.map(ev => {
+        const esSesion = ev.tipo === 'sesion' || ev.tipo === 'primera_sesion';
+        const esConcluido = ev.tipo === 'concluido';
+        const esLimite = ev.tipo === 'fecha_limite';
+        const esExpirada = ev.tipo === 'expirada';
+
+        let descLimite = '';
+        if(esLimite || esExpirada) {
+            if(ev.estado === 'He terminado el libro' && ev.fecha_fin && ev.fecha_limite) {
+                const fin = new Date(ev.fecha_fin);
+                const limite = new Date(ev.fecha_limite);
+                const diasSobraron = Math.round((limite - fin) / (1000 * 60 * 60 * 24));
+                descLimite = diasSobraron >= 0
+                    ? `✅ Completada antes · ${diasSobraron} días de sobra`
+                    : `⚠️ No completada`;
+                        } else if(esExpirada) {
+                descLimite = `❌ Venció sin terminar el libro`;
+            } else {
+                descLimite = `⏳ Aún en plazo`;
+            }
+        }
+        
+
+                const badge = esSesion
+            ? (ev.tipo === 'primera_sesion' ? '🌟 Primera Sesión' : 'Sesión')
+            : esConcluido ? '✅ Concluido'
+            : (ev.estado === 'He terminado el libro' ? '✅ Completada'
+                : esExpirada ? '❌ Vencida'
+                : '⏳ En curso');
+
+                const badgeClass = (esSesion || esConcluido)
+            ? 'status-completed'
+            : esExpirada ? 'status-expired'
+            : 'status-pending';
+            
+        const desc = esSesion
+            ? `${ev.tipo === 'primera_sesion' ? '🌟 Primera sesión · ' : ''}📖 ${ev.paginas_leidas || 0} páginas · ⏱️ ${Math.floor((ev.tiempo_minutos||0)/60)}h ${(ev.tiempo_minutos||0)%60}m${ev.como_te_sientes ? ' · ' + ev.como_te_sientes : ''}`
+            : esConcluido
+            ? `🎉 Libro terminado · 📖 ${ev.paginas_leidas || 0} páginas totales`
+            : descLimite;
+
+        const fechaStr = ev.fecha_inicio || ev.fecha || ev.fecha_limite || ev.fecha_fin || '';
+        const [anioEv, mesEv, diaEv] = fechaStr.split('-');
+        const diaNum = parseInt(diaEv);
+        const mesNom = months[parseInt(mesEv)-1].substring(0,3).toUpperCase();
 
                 return `
                     <div class="timeline-item ${badgeClass}">
@@ -96,12 +157,13 @@ async function abrirModal(fecha) {
                                 <span class="day">${diaNum}</span>
                                 <span class="month">${mesNom}</span>
                             </div>
-                            <div class="time-bar">${esSesion ? '📖 Sesión' : '⏰ Límite'}</div>
+                            <div class="time-bar">${esSesion ? '📖 Sesión' : esConcluido ? '✅ Concluido' : esExpirada ? '⚠️ Expirada' : '⏰ Límite'}</div>
                         </div>
                         <div class="event-card">
                             <div class="badge">${badge}</div>
                             <h3 class="event-title">${ev.titulo}</h3>
                             <p class="event-desc">${desc}</p>
+                            
                         </div>
                     </div>
                 `;
@@ -163,7 +225,7 @@ function cerrarModal() {
     if(modal) modal.style.display = 'none';
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     monthYear = document.getElementById("monthYear");
     calendarDates = document.getElementById("calendarDates");
     prevBtn = document.getElementById("prevMonth");
@@ -179,5 +241,17 @@ document.addEventListener('DOMContentLoaded', () => {
         renderCalendar();
     });
 
-    cargarFechas();
+    const params = new URLSearchParams(window.location.search);
+    const fechaParam = params.get('fecha');
+
+    if(fechaParam) {
+        const [anio, mes, dia] = fechaParam.split('-').map(Number);
+        currentDate = new Date(anio, mes - 1, dia);
+    }
+
+    await cargarFechas();
+
+    if(fechaParam) {
+        abrirModal(fechaParam);
+    }
 });
