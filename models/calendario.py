@@ -93,6 +93,7 @@ class Calendario:
         cursor.close()
         conexion.close()
         return libros
+
     @staticmethod
     def guardar_fecha_limite(id_usuario, id_libro, fecha_limite):
         conexion = obtener_conexion()
@@ -104,3 +105,50 @@ class Calendario:
         conexion.commit()
         cursor.close()
         conexion.close()
+
+    @staticmethod
+    def obtener_actividades_usuarios_por_fecha(fecha):
+        """
+        Consulta todos los eventos (sesiones iniciadas o fechas límite de libros)
+        que coinciden con la fecha enviada, junto con los datos del usuario para el
+        sistema de notificaciones por correo.
+        """
+        conexion = obtener_conexion()
+        cursor = conexion.cursor(dictionary=True)
+
+        cursor.execute("""
+            SELECT u.id_usuario, u.nombre, u.correo, l.titulo, 'sesion' AS tipo
+            FROM lecturas lec
+            JOIN usuarios u ON lec.id_usuario = u.id_usuario
+            JOIN libros l ON lec.id_libro = l.id_libro
+            WHERE DATE(lec.fecha_inicio) = %s AND lec.fecha_inicio IS NOT NULL
+            
+            UNION ALL
+            
+            SELECT u.id_usuario, u.nombre, u.correo, l.titulo, 'fin_libro' AS tipo
+            FROM lecturas lec
+            JOIN usuarios u ON lec.id_usuario = u.id_usuario
+            JOIN libros l ON lec.id_libro = l.id_libro
+            WHERE DATE(lec.fecha_limite) = %s AND lec.fecha_limite IS NOT NULL
+        """, (fecha, fecha))
+
+        filas = cursor.fetchall()
+        cursor.close()
+        conexion.close()
+
+        usuarios = {}
+        for fila in filas:
+            uid = fila['id_usuario']
+            if uid not in usuarios:
+                usuarios[uid] = {
+                    'id_usuario': uid,
+                    'nombre': fila['nombre'],
+                    'correo': fila['correo'],
+                    'eventos': []
+                }
+            usuarios[uid]['eventos'].append({
+                'titulo': fila['titulo'],
+                'tipo': fila['tipo']
+            })
+
+        return list(usuarios.values())
