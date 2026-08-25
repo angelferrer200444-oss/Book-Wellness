@@ -23,6 +23,7 @@ class Seguimiento:
         limites = cursor.fetchall()
 
         # Sesiones individuales
+
         cursor.execute("""
             SELECT l.titulo, l.autor, l.portada, l.id_libro,
                 s.paginas_leidas_sesion as paginas_leidas,
@@ -32,6 +33,11 @@ class Seguimiento:
             JOIN lecturas lec ON s.id_lectura = lec.id_lectura
             JOIN libros l ON lec.id_libro = l.id_libro
             WHERE s.id_usuario = %s AND DATE(s.fecha) = %s
+            AND s.id_sesion != (
+                SELECT MIN(s2.id_sesion)
+                FROM sesiones s2
+                WHERE s2.id_lectura = lec.id_lectura
+            )
         """, (id_usuario, fecha))
         sesiones = cursor.fetchall()
         
@@ -39,19 +45,23 @@ class Seguimiento:
             if ev.get('fecha'):
                 ev['fecha'] = str(ev['fecha'])
 
-        # Primera sesión de cada libro
+        # Primera sesión de cada libro 
         cursor.execute("""
             SELECT l.titulo, l.autor, l.portada, l.id_libro,
-                lec.paginas_leidas, lec.tiempo_minutos,
-                lec.fecha_inicio as fecha, lec.capitulos_leidos,
-                (SELECT nl.como_te_sientes 
-                    FROM notas_lectura nl 
-                    WHERE nl.id_lectura = lec.id_lectura 
-                    ORDER BY nl.id_nota ASC LIMIT 1) as como_te_sientes,
+                s.paginas_leidas_sesion as paginas_leidas,
+                s.tiempo_minutos, s.fecha, s.capitulos_leidos,
+                s.como_te_sientes,
                 'primera_sesion' as tipo
-            FROM lecturas lec
+            FROM sesiones s
+            JOIN lecturas lec ON s.id_lectura = lec.id_lectura
             JOIN libros l ON lec.id_libro = l.id_libro
-            WHERE lec.id_usuario = %s AND DATE(lec.fecha_inicio) = %s
+            WHERE s.id_usuario = %s
+            AND s.id_sesion = (
+                SELECT MIN(s2.id_sesion)
+                FROM sesiones s2
+                WHERE s2.id_lectura = lec.id_lectura
+            )
+            AND DATE(s.fecha) = %s
         """, (id_usuario, fecha))
         primeras_sesiones = cursor.fetchall()
 
@@ -75,8 +85,8 @@ class Seguimiento:
         conexion.close()
 
         for ev in sesiones:
-            if ev.get('fecha_inicio'):
-                ev['fecha_inicio'] = str(ev['fecha_inicio'])
+            if ev.get('fecha'):
+                ev['fecha'] = str(ev['fecha'])
 
         for ev in limites:
             if ev.get('fecha_limite'):
