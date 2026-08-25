@@ -301,12 +301,13 @@ def registrar_rutas(app):
                 pagina_actual=datos.get('pagina_actual', 0),
                 capitulos_leidos=datos.get('capitulos_leidos', 0)
             )
+ 
 
             id_lectura = lectura.guardar()
-            print("ESTADO RECIBIDO:", datos.get('estado'))  # ← aquí
-
-            id_lectura = lectura.guardar()
-            print("ESTADO RECIBIDO:", datos.get('estado'))
+            lectura.id_lectura = id_lectura
+            lectura.guardar_sesion(como_te_sientes=datos.get('estado_animo'))
+            continuar = datos.get('estado')
+            print("ESTADO RECIBIDO:", repr(continuar))
 
             # Actualizar categoría del libro
             continuar = datos.get('estado')
