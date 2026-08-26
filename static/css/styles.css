@@ -16,7 +16,7 @@ body {
     background:
 
     /* PATRÓN */
-    url("545\ sin\ título_20260529172529.png"),
+    url("545 sin título_20260529172529.png"),
 
     /* LUZ SUPERIOR */
     radial-gradient(
@@ -701,50 +701,6 @@ body::before {
     border-top: 1px solid #eee;
 }
 
-/* =========================
-   BOTÓN DE NOTIFICACIONES
-========================= */
-.notif-menu-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    margin: 10px 0;
-}
-
-.notif-title {
-    font-size: 13px;
-    font-weight: 600;
-    color: #4a1f14;
-    font-family: 'Cinzel', serif;
-}
-
-.btn-notif {
-    width: 100%;
-    padding: 6px 10px;
-    border-radius: 6px;
-    font-family: 'Cinzel', serif;
-    font-size: 12px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    border: 2px solid #2c0906;
-}
-
-.btn-notif.active {
-    background: linear-gradient(to bottom, #3d6a45, #28472e);
-    color: #f2e3cd;
-}
-
-.btn-notif.inactive {
-    background: linear-gradient(to bottom, #7f2618, #4a150d);
-    color: #efe3cf;
-}
-
-.btn-notif:hover {
-    filter: brightness(1.12);
-}
-
 #btn-logout {
     background: #8B3A3A;
     color: white;
@@ -1117,4 +1073,63 @@ a{
     transition:
         transform .3s ease;
 
+}
+
+.bw-ai-panel .bw-ai-button-triste {
+    width: 100%;
+    min-width: 0;
+    height: 45px;
+    min-height: 45px;
+    padding: 0 20px;
+    font-size: 16px;
+    box-sizing: border-box;
+    white-space: nowrap;
+}
+
+#sortBtn {
+    border-radius: 0 25px 25px 0;
+}
+
+/* =========================
+   BOTÓN DE NOTIFICACIONES
+========================= */
+.notif-menu-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin: 10px 0;
+}
+
+.notif-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #4a1f14;
+    font-family: 'Cinzel', serif;
+}
+
+.btn-notif {
+    width: 100%;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    border: 2px solid #2c0906;
+}
+
+.btn-notif.active {
+    background: linear-gradient(to bottom, #3d6a45, #28472e);
+    color: #f2e3cd;
+}
+
+.btn-notif.inactive {
+    background: linear-gradient(to bottom, #7f2618, #4a150d);
+    color: #efe3cf;
+}
+
+.btn-notif:hover {
+    filter: brightness(1.12);
 }
