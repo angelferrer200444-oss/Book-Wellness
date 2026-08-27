@@ -3,7 +3,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const btnUsuario = document.getElementById('btn-usuario');
     const dropdown = document.getElementById('user-dropdown');
     const nombreDropdown = document.getElementById('nombre-usuario-dropdown');
-    const btnNotificaciones = document.getElementById('btn-notificaciones');
+
+    // Elementos del botón de notificaciones
+    const btnNotif = document.getElementById('btn-toggle-notif');
+    const labelNotif = document.getElementById('notif-btn-label');
 
     if (!btnUsuario) return;
 
@@ -38,33 +41,37 @@ document.addEventListener('DOMContentLoaded', function() {
     // ==========================================
     // LÓGICA DEL BOTÓN DE NOTIFICACIONES
     // ==========================================
-    if (btnNotificaciones) {
-        // Consultar el estado inicial al cargar
+    if (btnNotif) {
+        // Consultar el estado inicial al cargar la página
         fetch('/notificaciones/estado')
             .then(res => res.json())
             .then(data => {
-                actualizarTextoNotificaciones(data.activadas);
+                actualizarBotonNotificaciones(data.activadas);
             })
             .catch(() => {
-                btnNotificaciones.innerText = "🔔 Notificaciones: Activadas";
+                actualizarBotonNotificaciones(true);
             });
 
-        // Alternar al hacer clic
-        btnNotificaciones.addEventListener('click', function(e) {
-            e.stopPropagation(); // Evita que se cierre el dropdown
+        // Alternar el estado al hacer clic
+        btnNotif.addEventListener('click', function(e) {
+            e.stopPropagation(); // Evita que se cierre el menú desplegable
             fetch('/notificaciones/toggle', { method: 'POST' })
                 .then(res => res.json())
                 .then(data => {
-                    actualizarTextoNotificaciones(data.activadas);
+                    actualizarBotonNotificaciones(data.activadas);
                 });
         });
     }
 
-    function actualizarTextoNotificaciones(activadas) {
+    function actualizarBotonNotificaciones(activadas) {
         if (activadas) {
-            btnNotificaciones.innerText = "🔔 Notificaciones: Activadas";
+            btnNotif.classList.remove('inactive');
+            btnNotif.classList.add('active');
+            if (labelNotif) labelNotif.innerText = "🔔 Activadas";
         } else {
-            btnNotificaciones.innerText = "🔕 Notificaciones: Desactivadas";
+            btnNotif.classList.remove('active');
+            btnNotif.classList.add('inactive');
+            if (labelNotif) labelNotif.innerText = "🔕 Desactivadas";
         }
     }
 
