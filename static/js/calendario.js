@@ -118,8 +118,8 @@ async function abrirModal(fecha) {
                 const diasSobraron = Math.round((limite - fin) / (1000 * 60 * 60 * 24));
                 descLimite = diasSobraron >= 0
                     ? `✅ Completada antes · ${diasSobraron} días de sobra`
-                    : `⚠️ No completada`;
-                        } else if(esExpirada) {
+                    : `⏰ Terminado ${Math.abs(diasSobraron)} días tarde`;
+            } else if(esExpirada) {
                 descLimite = `❌ Venció sin terminar el libro`;
             } else {
                 descLimite = `⏳ Aún en plazo`;
@@ -127,10 +127,18 @@ async function abrirModal(fecha) {
         }
         
 
-                const badge = esSesion
+                    let terminadoTarde = false;
+        if(ev.estado === 'He terminado el libro' && ev.fecha_fin && ev.fecha_limite) {
+            const fin = new Date(ev.fecha_fin);
+            const limite = new Date(ev.fecha_limite);
+            terminadoTarde = fin > limite;
+        }
+
+        const badge = esSesion
             ? (ev.tipo === 'primera_sesion' ? '🌟 Primera Sesión' : 'Sesión')
             : esConcluido ? '✅ Concluido'
-            : (ev.estado === 'He terminado el libro' ? '✅ Completada'
+            : (ev.estado === 'He terminado el libro'
+                ? (terminadoTarde ? '⏰ Completada tarde' : '✅ Completada')
                 : esExpirada ? '❌ Vencida'
                 : '⏳ En curso');
 
