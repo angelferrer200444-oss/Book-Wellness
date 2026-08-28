@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+    
+
     // =====================================================
     // ELEMENTOS
     // =====================================================
@@ -745,9 +747,21 @@ document.addEventListener("DOMContentLoaded", () => {
                             <span class="diag-value">${frecuenciaTexto}</span>
                         </div>
                         <div class="diagram-row border-top-dash">
-                            <span class="diag-field">Estado</span>
-                            <span class="diag-status ${estadoClase}">${estadoTexto} (${Math.round(objetivo.porcentaje)}%)</span>
+                            <span class="diag-field">Progreso</span>
+
+                            <div class="goal-progress-wrapper">
+
+                                <div class="goal-progress-bar">
+                                    <div class="goal-progress-fill"></div>
+                                </div>
+
+                                <span class="diag-status ${estadoClase}">
+                                    ${estadoTexto} (0%)
+                                </span>
+
+                            </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -1316,7 +1330,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     }
     
-
+    
 
     // =====================================================
     // INICIO
@@ -1327,5 +1341,8 @@ document.addEventListener("DOMContentLoaded", () => {
     cargarObjetivos();
 
 });
+
+
+
 
 
