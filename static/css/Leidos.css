@@ -47,10 +47,17 @@
     width:95%;
     height:250px;
     display:flex;
-    justify-content:center;
+    justify-content:flex-start;
     align-items:flex-end;
     gap:35px;
     padding-bottom:2px;
+    overflow-x:auto;
+    overflow-y:hidden;
+    scroll-behavior:smooth;
+}
+
+.book-cover-item{
+    flex-shrink:0;
 }
 
 .shelf-wood{
