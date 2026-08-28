@@ -530,28 +530,46 @@ Book Wellness
                                 <span class="db-icon">📊</span> Objetivos Global
                             </div>
                             <div class="diagram-body">
-                                <div class="diagram-row item-highlight">
+
+                                <!-- SIN OBJETIVOS -->
+                                <div class="diagram-row item-highlight" id="index-no-goal">
+                                    <span class="diag-value">No hay objetivos agregados</span>
+                                </div>
+                            
+                                <!-- CON OBJETIVO -->
+                                <div class="diagram-row item-highlight" id="index-goal-title-row">
                                     <span class="diag-field">Meta actual</span>
-                                    <span class="diag-value">Leer 24 libros</span>
+                                    <span class="diag-value" id="index-goal-title"></span>
                                 </div>
-                                <div class="diagram-row">
+                            
+                                <div class="diagram-row" id="index-goal-progress-row">
                                     <span class="diag-field">Progreso</span>
-                                    <span class="diag-value">12 / 24 libros</span>
+                                    <span class="diag-value" id="index-goal-progress"></span>
                                 </div>
-                                <!-- Barra de progreso añadida -->
-                                <div class="progress-container">
-                                    <div class="progress-bar" style="width: 50%;"></div>
+                            
+                                <div class="progress-container" id="index-goal-bar-row">
+                                    <div
+                                        class="progress-bar"
+                                        id="index-goal-progress-bar">
+                                    </div>
                                 </div>
-                                <div class="diagram-row border-top-dash">
+                            
+                                <div class="diagram-row border-top-dash" id="index-goal-status-row">
                                     <span class="diag-field">Estado</span>
-                                    <span class="diag-status status-pending">En progreso (50%)</span>
+                                    <span
+                                        class="diag-status status-pending"
+                                        id="index-goal-status">
+                                    </span>
                                 </div>
+                            
                                 <a href="{{ url_for('objetivo') }}">
                                     <button class="btn-objetivos">
                                         OBJETIVOS
                                     </button>
                                 </a>
+                            
                             </div>
+                            
                         </div>
                     </div>
         
@@ -621,5 +639,7 @@ Book Wellness
 <script src="{{ url_for('static', filename='js/recomendaciones.js') }}"></script>
 <script src="{{ url_for('static', filename='js/sidebar-carousel.js') }}"></script>
 <script src="{{ url_for('static', filename='js/emociones.js') }}"></script>
+<script src="{{ url_for('static', filename='js/objetivo-index.js') }}"></script>
 
 {% endblock %}
+
