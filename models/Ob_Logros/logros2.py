@@ -26,6 +26,11 @@ class Logros2:
         "policial"
     ]
 
+    GENEROS_FANTASIA = [
+        "fantasy",
+        "fantasía"
+    ]
+
     # ==========================================
     # MÉTODO PRINCIPAL
     # ==========================================
@@ -33,21 +38,173 @@ class Logros2:
     @staticmethod
     def obtener_logros(usuario_id):
         return [
-            Logros2.primeros_pasos(usuario_id),
-            Logros2.devorador_de_paginas(usuario_id),
-            Logros2.explorador_de_mundos(usuario_id),
-            Logros2.detective_literario(usuario_id),
-            Logros2.mente_constante(usuario_id),
-            Logros2.anotador_estrella(usuario_id),
-            Logros2.bibliofilo(usuario_id)
+            Logros2.explorador_de_misterio(usuario_id),
+            Logros2.viaje_fantastico(usuario_id),
+            Logros2.paso_a_paso(usuario_id),
+            
+            Logros2.erudito(usuario_id),
+            Logros2.lector_veloz(usuario_id),
+            Logros2.amor_por_los_clasicos(usuario_id)
         ]
 
     # ==========================================
-    # 8. PRIMEROS PASOS
+    # 8. EXPLORADOR DE MISTERIO
     # ==========================================
 
     @staticmethod
-    def primeros_pasos(usuario_id):
+    def explorador_de_misterio(usuario_id):
+
+        conexion = obtener_conexion()
+        cursor = conexion.cursor(dictionary=True)
+
+        cursor.execute("""
+            SELECT
+                COUNT(DISTINCT id_libro) AS libros
+            FROM libros
+            WHERE id_usuario = %s
+            AND categoria = 'leido'
+            AND genero IS NOT NULL
+            AND (
+                INSTR(LOWER(genero), 'misterio') > 0
+                OR INSTR(LOWER(genero), 'mystery') > 0
+                OR INSTR(LOWER(genero), 'thriller') > 0
+                OR INSTR(LOWER(genero), 'suspense') > 0
+                OR INSTR(LOWER(genero), 'crimen') > 0
+                OR INSTR(LOWER(genero), 'crime') > 0
+                OR INSTR(LOWER(genero), 'policial') > 0
+            )
+        """, (usuario_id,))
+
+        resultado = cursor.fetchone()
+
+        cursor.close()
+        conexion.close()
+
+        libros_misterio = resultado["libros"] or 0
+        objetivo = 2
+
+        progreso = min(
+            libros_misterio,
+            objetivo
+        )
+
+        porcentaje = min(
+            int((progreso / objetivo) * 100),
+            100
+        )
+
+        return {
+            "id": 8,
+            "nombre": "Explorador de Misterio",
+            "progreso": progreso,
+            "objetivo": objetivo,
+            "porcentaje": porcentaje,
+            "completado": libros_misterio >= objetivo
+        }
+
+    # ==========================================
+    # 9. VIAJE FANTÁSTICO
+    # ==========================================
+
+    @staticmethod
+    def viaje_fantastico(usuario_id):
+
+        conexion = obtener_conexion()
+        cursor = conexion.cursor(dictionary=True)
+
+        cursor.execute("""
+            SELECT
+                COUNT(DISTINCT id_libro) AS libros
+            FROM libros
+            WHERE id_usuario = %s
+            AND categoria = 'leido'
+            AND genero IS NOT NULL
+            AND (
+                INSTR(LOWER(genero), 'fantasy') > 0
+                OR INSTR(LOWER(genero), 'fantasía') > 0
+            )
+        """, (usuario_id,))
+
+        resultado = cursor.fetchone()
+
+        cursor.close()
+        conexion.close()
+
+        libros_fantasia = resultado["libros"] or 0
+        objetivo = 3
+
+        progreso = min(
+            libros_fantasia,
+            objetivo
+        )
+
+        porcentaje = min(
+            int((progreso / objetivo) * 100),
+            100
+        )
+
+        return {
+            "id": 9,
+            "nombre": "Viaje Fantástico",
+            "progreso": progreso,
+            "objetivo": objetivo,
+            "porcentaje": porcentaje,
+            "completado": libros_fantasia >= objetivo
+        }
+
+    # ==========================================
+    # 10. PASO A PASO
+    # ==========================================
+
+    @staticmethod
+    def paso_a_paso(usuario_id):
+        conexion = obtener_conexion()
+        cursor = conexion.cursor(dictionary=True)
+
+        cursor.execute("""
+            SELECT
+                COALESCE(SUM(capitulos_leidos), 0) AS capitulos
+            FROM lecturas
+            WHERE id_usuario = %s
+        """, (usuario_id,))
+
+        resultado = cursor.fetchone()
+
+        cursor.close()
+        conexion.close()
+
+        capitulos_leidos = resultado["capitulos"] or 0
+        objetivo = 25
+
+        progreso = min(
+            capitulos_leidos,
+            objetivo
+        )
+
+        porcentaje = min(
+            int((progreso / objetivo) * 100),
+            100
+        )
+
+        return {
+            "id": 10,
+            "nombre": "Paso a Paso",
+            "progreso": progreso,
+            "objetivo": objetivo,
+            "porcentaje": porcentaje,
+            "completado": capitulos_leidos >= objetivo
+        }
+
+    # ==========================================
+    # 11. Explorador del alba: Pendiente hasta colocar un sistema de horas
+    # ==========================================
+
+    # ==========================================
+    # 12. ERUDITO
+    # ==========================================
+
+    @staticmethod
+    def erudito(usuario_id):
 
         conexion = obtener_conexion()
         cursor = conexion.cursor(dictionary=True)
@@ -66,7 +223,7 @@ class Logros2:
         conexion.close()
 
         libros_leidos = resultado["libros"] or 0
-        objetivo = 1
+        objetivo = 5
 
         progreso = min(
             libros_leidos,
@@ -79,8 +236,8 @@ class Logros2:
         )
 
         return {
-            "id": 8,
-            "nombre": "Primeros Pasos",
+            "id": 12,
+            "nombre": "Erudito",
             "progreso": progreso,
             "objetivo": objetivo,
             "porcentaje": porcentaje,
@@ -88,20 +245,24 @@ class Logros2:
         }
 
     # ==========================================
-    # 9. DEVORADOR DE PÁGINAS
+    # 13. LECTOR VELOZ
     # ==========================================
 
     @staticmethod
-    def devorador_de_paginas(usuario_id):
+    def lector_veloz(usuario_id):
 
         conexion = obtener_conexion()
         cursor = conexion.cursor(dictionary=True)
 
         cursor.execute("""
             SELECT
-                COALESCE(SUM(paginas_leidas), 0) AS paginas
+                COUNT(DISTINCT id_libro) AS libros
             FROM lecturas
             WHERE id_usuario = %s
+            AND estado = 'terminado'
+            AND fecha_inicio IS NOT NULL
+            AND fecha_fin IS NOT NULL
+            AND DATEDIFF(fecha_fin, fecha_inicio) <= 2
         """, (usuario_id,))
 
         resultado = cursor.fetchone()
@@ -109,11 +270,11 @@ class Logros2:
         cursor.close()
         conexion.close()
 
-        paginas_leidas = resultado["paginas"] or 0
-        objetivo = 100
+        libros_veloces = resultado["libros"] or 0
+        objetivo = 1
 
         progreso = min(
-            paginas_leidas,
+            libros_veloces,
             objetivo
         )
 
@@ -121,92 +282,21 @@ class Logros2:
             int((progreso / objetivo) * 100),
             100
         )
-
         return {
-            "id": 9,
-            "nombre": "Devorador de Páginas",
+            "id": 13,
+            "nombre": "Lector Veloz",
             "progreso": progreso,
             "objetivo": objetivo,
             "porcentaje": porcentaje,
-            "completado": paginas_leidas >= objetivo
+            "completado": libros_veloces >= objetivo
         }
 
     # ==========================================
-    # 10. EXPLORADOR DE MUNDOS
+    # 14. AMOR POR LOS CLÁSICOS
     # ==========================================
 
     @staticmethod
-    def explorador_de_mundos(usuario_id):
-
-        conexion = obtener_conexion()
-        cursor = conexion.cursor(dictionary=True)
-
-        cursor.execute("""
-            SELECT
-                l.paginas_leidas,
-                b.genero
-            FROM lecturas l
-            INNER JOIN libros b
-                ON l.id_libro = b.id_libro
-            WHERE l.id_usuario = %s
-            AND b.id_usuario = %s
-            AND l.paginas_leidas > 0
-        """, (
-            usuario_id,
-            usuario_id
-        ))
-
-        lecturas = cursor.fetchall()
-
-        cursor.close()
-        conexion.close()
-
-        paginas_aventura = 0
-
-        for lectura in lecturas:
-
-            genero = lectura.get("genero")
-
-            if not genero:
-                continue
-
-            genero = str(genero).lower()
-
-            pertenece = any(
-                palabra in genero
-                for palabra in Logros2.GENEROS_AVENTURA
-            )
-
-            if pertenece:
-                paginas_aventura += lectura["paginas_leidas"]
-
-        objetivo = 100
-
-        progreso = min(
-            paginas_aventura,
-            objetivo
-        )
-
-        porcentaje = min(
-            int((progreso / objetivo) * 100),
-            100
-        )
-
-        return {
-            "id": 10,
-            "nombre": "Explorador de Mundos",
-            "progreso": progreso,
-            "objetivo": objetivo,
-            "porcentaje": porcentaje,
-            "completado": paginas_aventura >= objetivo
-        }
-
-    # ==========================================
-    # 11. DETECTIVE LITERARIO
-    # ==========================================
-
-    @staticmethod
-    def detective_literario(usuario_id):
+    def amor_por_los_clasicos(usuario_id):
 
         conexion = obtener_conexion()
         cursor = conexion.cursor(dictionary=True)
@@ -219,11 +309,11 @@ class Logros2:
             AND categoria = 'leido'
             AND genero IS NOT NULL
             AND (
-                INSTR(LOWER(genero), 'misterio') > 0
-                OR INSTR(LOWER(genero), 'mystery') > 0
-                OR INSTR(LOWER(genero), 'thriller') > 0
-                OR INSTR(LOWER(genero), 'crimen') > 0
-                OR INSTR(LOWER(genero), 'crime') > 0
+                INSTR(LOWER(genero), 'classic') > 0
+                OR INSTR(LOWER(genero), 'clásico') > 0
+                OR INSTR(LOWER(genero), 'clasico') > 0
+                OR INSTR(LOWER(genero), 'literatura clásica') > 0
+                OR INSTR(LOWER(genero), 'literatura clasica') > 0
             )
         """, (usuario_id,))
 
@@ -232,144 +322,11 @@ class Logros2:
         cursor.close()
         conexion.close()
 
-        libros_misterio = resultado["libros"] or 0
+        libros_clasicos = resultado["libros"] or 0
         objetivo = 1
 
         progreso = min(
-            libros_misterio,
-            objetivo
-        )
-
-        porcentaje = min(
-            int((progreso / objetivo) * 100),
-            100
-        )
-
-        return {
-            "id": 11,
-            "nombre": "Detective Literario",
-            "progreso": progreso,
-            "objetivo": objetivo,
-            "porcentaje": porcentaje,
-            "completado": libros_misterio >= objetivo
-        }
-
-    # ==========================================
-    # 12. MENTE CONSTANTE
-    # ==========================================
-
-    @staticmethod
-    def mente_constante(usuario_id):
-
-        conexion = obtener_conexion()
-        cursor = conexion.cursor(dictionary=True)
-
-        cursor.execute("""
-            SELECT
-                COUNT(DISTINCT DATE(fecha_lectura)) AS dias
-            FROM lecturas
-            WHERE id_usuario = %s
-            AND paginas_leidas > 0
-        """, (usuario_id,))
-
-        resultado = cursor.fetchone()
-
-        cursor.close()
-        conexion.close()
-
-        dias_registrados = resultado["dias"] or 0
-        objetivo = 3
-
-        progreso = min(
-            dias_registrados,
-            objetivo
-        )
-
-        porcentaje = min(
-            int((progreso / objetivo) * 100),
-            100
-        )
-
-        return {
-            "id": 12,
-            "nombre": "Mente Constante",
-            "progreso": progreso,
-            "objetivo": objetivo,
-            "porcentaje": porcentaje,
-            "completado": dias_registrados >= objetivo
-        }
-
-    # ==========================================
-    # 13. ANOTADOR ESTRELLA
-    # ==========================================
-
-    @staticmethod
-    def anotador_estrella(usuario_id):
-
-        conexion = obtener_conexion()
-        cursor = conexion.cursor(dictionary=True)
-
-        cursor.execute("""
-            SELECT
-                COUNT(id_nota) AS notas
-            FROM notas_usuario
-            WHERE id_usuario = %s
-        """, (usuario_id,))
-
-        resultado = cursor.fetchone()
-
-        cursor.close()
-        conexion.close()
-
-        total_notas = resultado["notas"] or 0
-        objetivo = 5
-
-        progreso = min(
-            total_notas,
-            objetivo
-        )
-
-        porcentaje = min(
-            int((progreso / objetivo) * 100),
-            100
-        )
-
-        return {
-            "id": 13,
-            "nombre": "Anotador Estrella",
-            "progreso": progreso,
-            "objetivo": objetivo,
-            "porcentaje": porcentaje,
-            "completado": total_notas >= objetivo
-        }
-
-    # ==========================================
-    # 14. BIBLIÓFILO
-    # ==========================================
-
-    @staticmethod
-    def bibliofilo(usuario_id):
-
-        conexion = obtener_conexion()
-        cursor = conexion.cursor(dictionary=True)
-
-        cursor.execute("""
-            SELECT
-                COUNT(DISTINCT id_libro) AS libros
-            FROM libros
-            WHERE id_usuario = %s
-        """, (usuario_id,))
-
-        resultado = cursor.fetchone()
-
-        cursor.close()
-        conexion.close()
-
-        total_libros = resultado["libros"] or 0
-        objetivo = 5
-
-        progreso = min(
-            total_libros,
+            libros_clasicos,
             objetivo
         )
 
@@ -380,9 +337,9 @@ class Logros2:
 
         return {
             "id": 14,
-            "nombre": "Bibliófilo",
+            "nombre": "Amor por los Clásicos",
             "progreso": progreso,
             "objetivo": objetivo,
             "porcentaje": porcentaje,
-            "completado": total_libros >= objetivo
+            "completado": libros_clasicos >= objetivo
         }
