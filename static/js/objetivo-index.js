@@ -98,8 +98,14 @@ document.addEventListener("DOMContentLoaded", () => {
             // OBTENER EL OBJETIVO MÁS RECIENTE
             // =================================================
 
+            const objetivosActivos =
+                objetivos.filter(
+                    objetivo => objetivo.estado !== "completado"
+                );
+
             const objetivo =
-                obtenerObjetivoMasReciente(objetivos);
+                obtenerObjetivoMasReciente(objetivosActivos);
+
 
             console.log(
                 "OBJETIVO MÁS RECIENTE:",
