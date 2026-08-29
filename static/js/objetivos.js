@@ -1,7 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-
     
-
     // =====================================================
     // ELEMENTOS
     // =====================================================
@@ -13,6 +11,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const openModalBtn =
         document.getElementById("open-modal-btn");
+    
+    const completedContainer =
+        document.getElementById("completed-goals-container");
+    
 
     const emptyCreateBtn =
         document.getElementById("empty-create-btn");
@@ -101,6 +103,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let tipoSeleccionado = null;
 
     let objetivoEditandoId = null;
+
+    const objetivosData = new Map();
 
 
     // =====================================================
@@ -639,7 +643,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 if (!objetivoEditandoId) {
 
-                    agregarObjetivo(
+                    renderizarObjetivo(
                         datos.objetivo
                     );
                 }
@@ -751,13 +755,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
                             <div class="goal-progress-wrapper">
 
-                                <div class="goal-progress-bar">
-                                    <div class="goal-progress-fill"></div>
-                                </div>
+                            <div
+                                class="goal-progress-fill"
+                                style="width: ${objetivo.porcentaje || 0}%;">
+                            </div>
+                        
 
                                 <span class="diag-status ${estadoClase}">
-                                    ${estadoTexto} (0%)
+                                    ${estadoTexto} (${Number(objetivo.porcentaje || 0).toFixed(0)}%)
                                 </span>
+
 
                             </div>
                         </div>
@@ -773,15 +780,274 @@ document.addEventListener("DOMContentLoaded", () => {
     // =====================================================
 
     function agregarObjetivo(objetivo) {
-        const mainContainer = document.getElementById("main-goals-container");
-        const emptyCard = document.getElementById("empty-goals-card");
+
+        const mainContainer =
+            document.getElementById("main-goals-container");
+    
+        const emptyCard =
+            document.getElementById("empty-goals-card");
+    
+        if (!mainContainer) {
+            return;
+        }
     
         if (emptyCard) {
             emptyCard.remove();
         }
     
-        mainContainer.insertAdjacentHTML("beforeend", obtenerHTMLTarjeta(objetivo));
+        mainContainer.insertAdjacentHTML(
+            "beforeend",
+            obtenerHTMLTarjeta(objetivo)
+        );
     }
+
+    function mostrarTarjetaVaciaSiEsNecesario() {
+
+        const mainContainer =
+            document.getElementById(
+                "main-goals-container"
+            );
+    
+    
+        if (!mainContainer) {
+            return;
+        }
+    
+    
+        const objetivosActivos =
+            mainContainer.querySelectorAll(
+                ".goals-main-card[data-goal-id]"
+            );
+    
+    
+        const tarjetaVacia =
+            document.getElementById(
+                "empty-goals-card"
+            );
+    
+    
+        if (
+            objetivosActivos.length === 0 &&
+            !tarjetaVacia
+        ) {
+    
+            mainContainer.insertAdjacentHTML(
+                "afterbegin",
+                `
+                <div
+                    class="card card-container-design goals-main-card"
+                    id="empty-goals-card">
+    
+                    <div class="card-header-brown">
+                        Metas Activas
+                    </div>
+    
+                    <div class="db-diagram-box">
+    
+                        <div class="diagram-header">
+    
+                            <span class="db-icon">
+                                🎯
+                            </span>
+    
+                            Mis Objetivos
+    
+                        </div>
+    
+                        <div class="diagram-body">
+    
+                            <div class="empty-goals">
+    
+                                <div class="empty-goals-icon">
+                                    🎯
+                                </div>
+    
+                                <div class="empty-goals-title">
+                                    Aún no tienes objetivos activos
+                                </div>
+    
+                                <div class="empty-goals-description">
+                                    Crea un nuevo objetivo para comenzar
+                                    a construir tu hábito de lectura.
+                                </div>
+    
+                                <button
+                                    type="button"
+                                    class="add-db-btn empty-create-btn"
+                                    id="empty-create-btn">
+    
+                                    <div class="plus-circle">
+    
+                                        <span class="plus-sign">
+                                            +
+                                        </span>
+    
+                                    </div>
+    
+                                    <span class="btn-subtext">
+                                        Crear objetivo
+                                    </span>
+    
+                                </button>
+    
+                            </div>
+    
+                        </div>
+    
+                    </div>
+    
+                </div>
+                `
+            );
+    
+    
+            const nuevoBoton =
+                document.getElementById(
+                    "empty-create-btn"
+                );
+    
+    
+            if (nuevoBoton) {
+    
+                nuevoBoton.addEventListener(
+                    "click",
+                    () => {
+    
+                        prepararNuevoObjetivo();
+    
+                        abrirModal();
+    
+                    }
+                );
+            }
+        }
+    }
+    
+    
+
+    function agregarLogro(objetivo) {
+
+        if (!completedContainer) {
+            return;
+        }
+    
+        const id =
+            String(objetivo.id_objetivo);
+    
+        // =====================================================
+        // GUARDAR SIEMPRE EL OBJETIVO EN EL MAP
+        // =====================================================
+    
+        objetivosData.set(
+            id,
+            objetivo
+        );
+    
+    
+        // =====================================================
+        // EVITAR DUPLICADOS
+        // =====================================================
+    
+        const existe =
+            completedContainer.querySelector(
+                `.completed-goal-item[data-goal-id="${id}"]`
+            );
+    
+        if (existe) {
+            return;
+        }
+    
+    
+        // =====================================================
+        // QUITAR MENSAJE VACÍO
+        // =====================================================
+    
+        const mensajeVacio =
+            completedContainer.querySelector(
+                ".empty-completed"
+            );
+    
+        if (mensajeVacio) {
+            mensajeVacio.remove();
+        }
+    
+    
+        // =====================================================
+        // CREAR LOGRO
+        // =====================================================
+    
+        const logro =
+            document.createElement("div");
+    
+        logro.className =
+            "completed-goal-item";
+    
+        logro.dataset.goalId =
+            id;
+    
+    
+        logro.innerHTML = `
+    
+            <span class="completed-goal-icon">
+                🏆
+            </span>
+    
+            <span class="completed-goal-title">
+                ${objetivo.titulo}
+            </span>
+    
+            <span class="completed-goal-arrow">
+                ›
+            </span>
+    
+        `;
+    
+    
+        // =====================================================
+        // HACERLO INTERACTIVO
+        // =====================================================
+    
+        logro.style.cursor = "pointer";
+        logro.style.marginBottom = "10px";
+    
+    
+        completedContainer.appendChild(
+            logro
+        );
+    
+    
+        console.log(
+            "LOGRO AGREGADO:",
+            id,
+            objetivo
+        );
+    }
+    
+    
+    
+    
+    function renderizarObjetivo(objetivo) {
+
+        objetivosData.set(
+            String(objetivo.id_objetivo),
+            objetivo
+        );
+    
+    
+        if (objetivo.estado === "completado") {
+    
+            agregarLogro(objetivo);
+    
+        }
+    
+        else {
+    
+            agregarObjetivo(objetivo);
+    
+        }
+    }
+    
+    
 
     function convertirFechaInput(fecha) {
 
@@ -1093,11 +1359,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
     
     
-            if (tarjeta) {
-    
-                tarjeta.remove();
-    
-            }
+                if (tarjeta) {
+
+                    tarjeta.remove();
+                
+                }
+                
+                
+                objetivosData.delete(
+                    String(id)
+                );
+
+                mostrarTarjetaVaciaSiEsNecesario();
+                
     
     
         }
@@ -1122,13 +1396,348 @@ document.addEventListener("DOMContentLoaded", () => {
     // =====================================================
 
     function actualizarTarjeta(objetivo) {
-        const tarjeta = activeContainer.querySelector(`[data-goal-id="${objetivo.id_objetivo}"]`);
+
+        const id =
+            String(objetivo.id_objetivo);
     
-        if (tarjeta) {
-            tarjeta.outerHTML = obtenerHTMLTarjeta(objetivo);
+        // ---------------------------------------------
+        // Buscar tarjeta activa
+        // ---------------------------------------------
+    
+        const tarjetaActiva =
+            document.querySelector(
+                `[data-goal-id="${id}"].goals-main-card`
+            );
+    
+    
+        // ---------------------------------------------
+        // Buscar logro
+        // ---------------------------------------------
+    
+        const logro =
+            completedContainer
+                ? completedContainer.querySelector(
+                    `.completed-goal-item[data-goal-id="${id}"]`
+                )
+                : null;
+    
+    
+        // ---------------------------------------------
+        // Si está completado
+        // ---------------------------------------------
+    
+        if (objetivo.estado === "completado") {
+    
+            // Si todavía estaba como objetivo activo,
+            // eliminar su tarjeta.
+    
+            if (tarjetaActiva) {
+                tarjetaActiva.remove();
+            }
+    
+            // Si ya existe como logro, no duplicarlo.
+    
+            if (!logro) {
+                agregarLogro(objetivo);
+            }
+
+            mostrarTarjetaVaciaSiEsNecesario();
+    
         }
+    
+        // ---------------------------------------------
+        // Si está activo
+        // ---------------------------------------------
+    
+        else {
+
+            if (logro) {
+        
+                logro.remove();
+        
+                if (
+                    completedContainer &&
+                    !completedContainer.querySelector(
+                        ".completed-goal-item"
+                    )
+                ) {
+        
+                    completedContainer.innerHTML = `
+                        <div class="empty-completed">
+        
+                            <span class="empty-completed-icon">
+                                🏆
+                            </span>
+        
+                            <span>
+                                Aquí aparecerán tus objetivos
+                                cuando los completes.
+                            </span>
+        
+                        </div>
+                    `;
+                }
+            }
+        
+        
+            if (!tarjetaActiva) {
+        
+                agregarObjetivo(
+                    objetivo
+                );
+        
+            }
+        
+            else {
+        
+                tarjetaActiva.outerHTML =
+                    obtenerHTMLTarjeta(
+                        objetivo
+                    );
+        
+            }
+        }
+        
     }
 
+    if (completedContainer) {
+
+        completedContainer.addEventListener(
+            "click",
+            (evento) => {
+    
+                const logro =
+                    evento.target.closest(
+                        ".completed-goal-item"
+                    );
+    
+    
+                if (!logro) {
+                    return;
+                }
+    
+    
+                const id =
+                    String(
+                        logro.dataset.goalId
+                    );
+    
+    
+                console.log(
+                    "CLICK EN LOGRO:",
+                    id
+                );
+    
+    
+                const objetivo =
+                    objetivosData.get(id);
+    
+    
+                console.log(
+                    "OBJETIVO ENCONTRADO:",
+                    objetivo
+                );
+    
+    
+                if (!objetivo) {
+    
+                    console.error(
+                        "No existe el objetivo en objetivosData:",
+                        id
+                    );
+    
+                    return;
+                }
+    
+    
+                mostrarDetallesLogro(
+                    objetivo
+                );
+    
+            }
+        );
+    
+    }
+    
+
+    function mostrarDetallesLogro(objetivo) {
+
+        const condicionTexto =
+            objetivo.condicion_tipo === "ninguna"
+                ? "Cualquier lectura"
+                : `${objetivo.condicion_tipo}: ${objetivo.condicion_valor || ""}`;
+    
+    
+        const frecuenciaTexto =
+            objetivo.frecuencia ||
+            "No aplica";
+    
+    
+        const modal =
+            document.createElement("div");
+    
+        modal.classList.add(
+            "goal-achievement-modal"
+        );
+    
+    
+        modal.innerHTML = `
+    
+            <div class="goal-achievement-card">
+    
+                <button
+                    type="button"
+                    class="goal-achievement-close"
+                    title="Cerrar">
+    
+                    ×
+    
+                </button>
+    
+    
+                <div class="goal-achievement-title">
+    
+                    🏆 ${objetivo.titulo}
+    
+                </div>
+    
+    
+                <div class="goal-achievement-content">
+    
+                    <div class="achievement-row">
+    
+                        <span>Descripción</span>
+    
+                        <strong>
+                            ${objetivo.descripcion || "Sin descripción"}
+                        </strong>
+    
+                    </div>
+    
+    
+                    <div class="achievement-row">
+    
+                        <span>Meta</span>
+    
+                        <strong>
+                            ${objetivo.meta}
+                            ${objetivo.unidad}
+                        </strong>
+    
+                    </div>
+    
+    
+                    <div class="achievement-row">
+    
+                        <span>Progreso</span>
+    
+                        <strong>
+                            ${objetivo.progreso_actual}
+                            /
+                            ${objetivo.meta}
+                            ${objetivo.unidad}
+                        </strong>
+    
+                    </div>
+    
+    
+                    <div class="achievement-row">
+    
+                        <span>Inicio</span>
+    
+                        <strong>
+                            ${objetivo.fecha_inicio || "Sin fecha"}
+                        </strong>
+    
+                    </div>
+    
+    
+                    <div class="achievement-row">
+    
+                        <span>Finalización</span>
+    
+                        <strong>
+                            ${objetivo.fecha_fin || "Sin fecha"}
+                        </strong>
+    
+                    </div>
+    
+    
+                    <div class="achievement-row">
+    
+                        <span>Condición</span>
+    
+                        <strong>
+                            ${condicionTexto}
+                        </strong>
+    
+                    </div>
+    
+    
+                    <div class="achievement-row">
+    
+                        <span>Frecuencia</span>
+    
+                        <strong>
+                            ${frecuenciaTexto}
+                        </strong>
+    
+                    </div>
+    
+    
+                    <div class="achievement-completed">
+    
+                        ✓ Objetivo completado al
+                        ${Number(objetivo.porcentaje || 100).toFixed(0)}%
+    
+                    </div>
+    
+                </div>
+    
+            </div>
+    
+        `;
+    
+    
+        document.body.appendChild(
+            modal
+        );
+
+        
+    
+    
+        const cerrar =
+            modal.querySelector(
+                ".goal-achievement-close"
+            );
+    
+    
+        cerrar.addEventListener(
+            "click",
+            () => {
+    
+                modal.remove();
+    
+            }
+        );
+    
+    
+        modal.addEventListener(
+            "click",
+            (evento) => {
+    
+                if (
+                    evento.target === modal
+                ) {
+    
+                    modal.remove();
+    
+                }
+    
+            }
+        );
+    }
+    
 
     // =====================================================
     // CARGAR OBJETIVOS EXISTENTES
@@ -1150,13 +1759,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
             objetivos.forEach(
                 (objetivo) => {
-
-                    agregarObjetivo(
+            
+                    renderizarObjetivo(
                         objetivo
                     );
-
+            
                 }
             );
+                
 
 
         }
@@ -1341,8 +1951,3 @@ document.addEventListener("DOMContentLoaded", () => {
     cargarObjetivos();
 
 });
-
-
-
-
-
