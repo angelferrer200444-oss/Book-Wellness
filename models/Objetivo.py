@@ -48,6 +48,304 @@ class Objetivo:
             self.estado = "completado"
             self.completado = True
 
+    def calcular_progreso(self):
+        conexion = obtener_conexion()
+        cursor = conexion.cursor(dictionary=True)
+
+        try:
+            # -------------------------------------------------
+            # RUTINA
+            # -------------------------------------------------
+
+            if self.tipo == "rutina":
+
+                sql = """
+                    SELECT COUNT(DISTINCT s.fecha) AS total_dias
+                    FROM sesiones s
+                    WHERE s.id_usuario = %s
+                    AND s.fecha >= %s
+                """
+
+                valores = [
+                    self.id_usuario,
+                    self.fecha_inicio
+                ]
+
+                if self.fecha_fin:
+                    sql += " AND s.fecha <= %s"
+                    valores.append(self.fecha_fin)
+
+                cursor.execute(sql, valores)
+
+                resultado = cursor.fetchone()
+
+                progreso = resultado["total_dias"] or 0
+
+            # -------------------------------------------------
+            # LIBROS
+            # -------------------------------------------------
+
+            elif self.tipo == "libros":
+
+                sql = """
+                    SELECT COUNT(DISTINCT l.id_libro) AS total
+                    FROM sesiones s
+                    INNER JOIN lecturas l
+                        ON s.id_lectura = l.id_lectura
+                    INNER JOIN libros b
+                        ON l.id_libro = b.id_libro
+                    WHERE s.id_usuario = %s
+                    AND s.fecha >= %s
+                    AND l.estado = 'He terminado el libro'
+                """
+
+                valores = [
+                    self.id_usuario,
+                    self.fecha_inicio
+                ]
+
+                if self.fecha_fin:
+                    sql += " AND s.fecha <= %s"
+                    valores.append(self.fecha_fin)
+
+                sql, valores = self._aplicar_condicion(
+                    sql,
+                    valores
+                )
+
+                cursor.execute(sql, valores)
+
+                resultado = cursor.fetchone()
+
+                progreso = resultado["total"] or 0
+
+
+            # -------------------------------------------------
+            # PÁGINAS
+            # -------------------------------------------------
+
+            elif self.tipo == "paginas":
+
+                sql = """
+                    SELECT COALESCE(
+                        SUM(s.paginas_leidas_sesion),
+                        0
+                    ) AS total
+                    FROM sesiones s
+                    INNER JOIN lecturas l
+                        ON s.id_lectura = l.id_lectura
+                    INNER JOIN libros b
+                        ON l.id_libro = b.id_libro
+                    WHERE s.id_usuario = %s
+                    AND s.fecha >= %s
+                """
+
+                valores = [
+                    self.id_usuario,
+                    self.fecha_inicio
+                ]
+
+                if self.fecha_fin:
+                    sql += " AND s.fecha <= %s"
+                    valores.append(self.fecha_fin)
+
+                sql, valores = self._aplicar_condicion(
+                    sql,
+                    valores
+                )
+
+                cursor.execute(sql, valores)
+
+                resultado = cursor.fetchone()
+
+                progreso = resultado["total"] or 0
+
+            # -------------------------------------------------
+            # TIEMPO
+            # -------------------------------------------------
+
+            elif self.tipo == "tiempo":
+
+                sql = """
+                    SELECT COALESCE(
+                        SUM(s.tiempo_minutos),
+                        0
+                    ) AS total
+                    FROM sesiones s
+                    INNER JOIN lecturas l
+                        ON s.id_lectura = l.id_lectura
+                    INNER JOIN libros b
+                        ON l.id_libro = b.id_libro
+                    WHERE s.id_usuario = %s
+                    AND s.fecha >= %s
+                """
+
+                valores = [
+                    self.id_usuario,
+                    self.fecha_inicio
+                ]
+
+                if self.fecha_fin:
+                    sql += " AND s.fecha <= %s"
+                    valores.append(self.fecha_fin)
+
+                sql, valores = self._aplicar_condicion(
+                    sql,
+                    valores
+                )
+
+                cursor.execute(sql, valores)
+
+                resultado = cursor.fetchone()
+
+                progreso = resultado["total"] or 0
+            
+            else:
+
+                progreso = 0
+
+            # -------------------------------------------------
+            # LIMITAR A LA META
+            # -------------------------------------------------
+
+            progreso = min(
+                progreso,
+                self.meta
+            )
+
+            self.progreso_actual = progreso
+
+            # -------------------------------------------------
+            # COMPLETADO
+            # -------------------------------------------------
+
+            if self.progreso_actual >= self.meta:
+
+                self.progreso_actual = self.meta
+                self.completado = True
+                self.estado = "completado"
+
+            else:
+
+                self.completado = False
+                self.estado = "activo"
+
+            return self.progreso_actual
+
+        finally:
+
+            cursor.close()
+            conexion.close()
+
+    def _aplicar_condicion(self, sql, valores):
+
+        condicion = self.condicion_tipo
+        valor = self.condicion_valor
+
+        # ---------------------------------------------
+        # SIN CONDICIÓN
+        # ---------------------------------------------
+
+        if not condicion or condicion == "ninguna":
+            return sql, valores
+
+        # ---------------------------------------------
+        # GÉNERO
+        # ---------------------------------------------
+
+        if condicion == "genero":
+
+            sql += """
+                AND b.genero LIKE %s
+            """
+
+            valores.append(
+                f"%{valor}%"
+            )
+
+        # ---------------------------------------------
+        # AUTOR
+        # ---------------------------------------------
+
+        elif condicion == "autor":
+
+            sql += """
+                AND b.autor LIKE %s
+            """
+
+            valores.append(
+                f"%{valor}%"
+            )
+
+        # ---------------------------------------------
+        # FORMATO
+        # ---------------------------------------------
+
+        elif condicion == "formato":
+
+            sql += """
+                AND b.formato LIKE %s
+            """
+
+            valores.append(
+                f"%{valor}%"
+            )
+
+        # ---------------------------------------------
+        # LIBRO
+        # ---------------------------------------------
+
+        elif condicion == "libro":
+
+            sql += """
+                AND b.titulo LIKE %s
+            """
+
+            valores.append(
+                f"%{valor}%"
+            )
+
+        return sql, valores
+
+    def recalcular_y_guardar(self):
+
+        self.calcular_progreso()
+
+        conexion = obtener_conexion()
+        cursor = conexion.cursor()
+
+        sql = """
+            UPDATE objetivos_personales
+            SET
+                progreso_actual = %s,
+                completado = %s,
+                estado = %s,
+                porcentaje = %s
+            WHERE id_objetivo = %s
+        """
+
+        porcentaje = self.obtener_porcentaje()
+
+        valores = (
+            self.progreso_actual,
+            self.completado,
+            self.estado,
+            porcentaje,
+            self.id_objetivo
+        )
+
+        cursor.execute(
+            sql,
+            valores
+        )
+
+        conexion.commit()
+
+        cursor.close()
+        conexion.close()
+
+        return self
+
 
     def obtener_porcentaje(self):
 
@@ -183,9 +481,12 @@ class Objetivo:
 
             print("TIPO DEL OBJETO:", objetivo.tipo)
 
+            objetivo.calcular_progreso()
+
             objetivos.append(
                 objetivo.to_dict()
             )
+
 
         return objetivos
 
@@ -338,7 +639,3 @@ class Objetivo:
 
 
         return eliminado
-
-
-
-
