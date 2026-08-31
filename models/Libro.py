@@ -198,7 +198,6 @@ class Libro:
 
         return libros
 
-
     @staticmethod
     def eliminar(
         id_libro,
@@ -206,6 +205,16 @@ class Libro:
     ):
         conexion = obtener_conexion()
         cursor = conexion.cursor()
+
+        # Borrar notas manuales del libro antes de borrar el libro
+        cursor.execute("""
+            DELETE FROM notas_usuario
+            WHERE id_libro = %s
+            AND id_usuario = %s
+        """, (
+            id_libro,
+            id_usuario
+        ))
 
         cursor.execute("""
             DELETE FROM libros
