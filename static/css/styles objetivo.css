@@ -1787,4 +1787,1262 @@
     }
 }
 
+/* =====================================================
+   OBJETIVOS COMPLETADOS
+   Estilo inspirado en las filas de Estadísticas
+   ===================================================== */
+
+   #completed-goals-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+
+/* =====================================================
+   CADA OBJETIVO COMPLETADO
+   ===================================================== */
+
+#completed-goals-container .completed-goal-item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 14px 16px;
+
+    background: rgba(255, 255, 255, 0.4);
+
+    border: 1px solid rgba(90, 35, 20, 0.15);
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    margin-bottom: 0;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+/* =====================================================
+   EFECTO AL PASAR EL MOUSE
+   ===================================================== */
+
+#completed-goals-container .completed-goal-item:hover {
+
+    background: rgba(255, 255, 255, 0.75);
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 5px 12px rgba(90, 35, 20, 0.12);
+}
+
+
+/* =====================================================
+   ICONO
+   ===================================================== */
+
+#completed-goals-container .completed-goal-icon {
+
+    font-size: 22px;
+
+    flex-shrink: 0;
+}
+
+
+/* =====================================================
+   TÍTULO
+   ===================================================== */
+
+#completed-goals-container .completed-goal-title {
+
+    flex: 1;
+
+    min-width: 0;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    color: #5a1c11;
+
+    line-height: 1.4;
+
+    overflow-wrap: break-word;
+}
+
+
+/* =====================================================
+   FLECHA
+   ===================================================== */
+
+#completed-goals-container .completed-goal-arrow {
+
+    font-size: 22px;
+
+    font-weight: bold;
+
+    color: #7a2618;
+
+    flex-shrink: 0;
+
+    transition:
+        transform 0.25s ease;
+}
+
+
+/* =====================================================
+   ANIMACIÓN DE LA FLECHA
+   ===================================================== */
+
+#completed-goals-container
+.completed-goal-item:hover
+.completed-goal-arrow {
+
+    transform: translateX(3px);
+}
+
+/* =====================================================
+   METAS ACTIVAS — DISEÑO VISUAL
+   ===================================================== */
+
+/* Contenedor general de la tarjeta */
+
+#empty-goals-card {
+    position: relative;
+    overflow: hidden !important;
+}
+
+
+/* =====================================================
+   CUERPO INTERNO
+   ===================================================== */
+
+#empty-goals-card .db-diagram-box {
+    width: 90% !important;
+    margin: 0 auto !important;
+
+    background: rgba(255,255,255,.72);
+
+    border: 1px solid rgba(90,28,17,.16);
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 4px 14px rgba(90,35,20,.06);
+
+    overflow: hidden !important;
+}
+
+
+/* =====================================================
+   CABECERA "MIS OBJETIVOS"
+   ===================================================== */
+
+#empty-goals-card .diagram-header {
+
+    padding: 13px 15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #faf7f2,
+            #f3ede4
+        );
+
+    color: #5a1c11;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    letter-spacing: .4px;
+
+    border-bottom: 1px solid #e5d9c9;
+}
+
+
+/* Icono */
+
+#empty-goals-card .db-icon {
+
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: #efe3cf;
+
+    border-radius: 7px;
+
+    font-size: 14px;
+
+    opacity: 1;
+}
+
+
+/* =====================================================
+   CUADRICULADO INTERNO
+   ===================================================== */
+
+#empty-goals-card .diagram-body {
+
+    position: relative;
+
+    background: #fff;
+
+    padding: 18px;
+
+    overflow: hidden !important;
+}
+
+
+/*
+   Cuadritos decorativos tipo estadísticas.
+   No interfieren con el contenido.
+*/
+
+#empty-goals-card .diagram-body::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background-image:
+        linear-gradient(
+            rgba(122,38,24,.035) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(122,38,24,.035) 1px,
+            transparent 1px
+        );
+
+    background-size: 22px 22px;
+
+    pointer-events: none;
+}
+
+
+/* =====================================================
+   ESTADO VACÍO
+   ===================================================== */
+
+#empty-goals-card .empty-goals {
+
+    position: relative;
+
+    z-index: 1;
+
+    min-height: 225px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 20px;
+
+    box-sizing: border-box;
+}
+
+
+/* =====================================================
+   ICONO
+   ===================================================== */
+
+#empty-goals-card .empty-goals-icon {
+
+    width: 62px;
+    height: 62px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 14px;
+
+    background: #f7efe3;
+
+    border: 1px solid #e5d5c2;
+
+    border-radius: 12px;
+
+    font-size: 28px;
+
+    box-shadow:
+        0 5px 14px rgba(90,35,20,.07);
+}
+
+
+/* =====================================================
+   TITULO
+   ===================================================== */
+
+#empty-goals-card .empty-goals-title {
+
+    margin-bottom: 7px;
+
+    color: #4a1f14;
+
+    font-family: 'Cinzel', serif;
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    letter-spacing: .5px;
+}
+
+
+/* =====================================================
+   DESCRIPCIÓN
+   ===================================================== */
+
+#empty-goals-card .empty-goals-description {
+
+    max-width: 250px;
+
+    margin-bottom: 18px;
+
+    color: #7d6b67;
+
+    font-family:
+        'Plus Jakarta Sans',
+        system-ui,
+        sans-serif;
+
+    font-size: 11.5px;
+
+    line-height: 1.5;
+}
+
+
+/* =====================================================
+   BOTÓN CREAR
+   ===================================================== */
+
+#empty-goals-card .empty-create-btn {
+
+    width: auto !important;
+
+    height: auto !important;
+
+    display: flex;
+
+    flex-direction: row;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 9px;
+
+    padding: 8px 14px;
+
+    border: 1px solid #dfd0bd;
+
+    border-radius: 9px;
+
+    background: #faf6ef;
+
+    box-shadow:
+        0 3px 8px rgba(90,35,20,.05);
+
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+
+/* =====================================================
+   CÍRCULO +
+   ===================================================== */
+
+#empty-goals-card .plus-circle {
+
+    width: 30px;
+    height: 30px;
+
+    flex-shrink: 0;
+
+    border-radius: 8px;
+
+    background: #7a2618;
+
+    border: none;
+
+    box-shadow: none;
+
+    transition:
+        transform .2s ease,
+        background .2s ease;
+}
+
+
+#empty-goals-card .plus-sign {
+
+    font-size: 20px;
+
+    line-height: 1;
+
+    color: #fff;
+}
+
+
+/* =====================================================
+   TEXTO DEL BOTÓN
+   ===================================================== */
+
+#empty-goals-card .btn-subtext {
+
+    font-size: 11.5px;
+
+    font-weight: 700;
+
+    color: #5a1c11;
+}
+
+
+/* =====================================================
+   HOVER
+   ===================================================== */
+
+#empty-goals-card .empty-create-btn:hover {
+
+    background: #f3e8d8;
+
+    border-color: #cdb9a0;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 6px 14px rgba(90,35,20,.10);
+}
+
+
+#empty-goals-card .empty-create-btn:hover .plus-circle {
+
+    transform: scale(1.08);
+
+    background: #4d140d;
+}
+
+
+/* =====================================================
+   PEQUEÑOS CUADROS DECORATIVOS
+   ===================================================== */
+
+#empty-goals-card .diagram-body::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 7px;
+    height: 7px;
+
+    top: 16px;
+    right: 18px;
+
+    background: #7a2618;
+
+    border-radius: 2px;
+
+    opacity: .25;
+
+    box-shadow:
+        -14px 0 rgba(122,38,24,.12),
+        0 14px rgba(122,38,24,.12),
+        -14px 14px rgba(122,38,24,.08);
+
+    pointer-events: none;
+}
+
+/* =====================================================
+   METAS ACTIVAS — SIN BARRA DE SCROLL
+   ===================================================== */
+
+   #main-goals-container #empty-goals-card .diagram-body {
+    overflow-y: hidden !important;
+    overflow-x: hidden !important;
+    max-height: none !important;
+    height: auto !important;
+}
+
+/* =====================================================
+   METAS ACTIVAS — TARJETA DE DATOS
+   ===================================================== */
+
+#main-goals-container .goals-main-card .db-diagram-box {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    width: 92% !important;
+}
+
+
+/* =====================================================
+   CABECERA INTERNA
+   ===================================================== */
+
+#main-goals-container .goals-main-card .diagram-header {
+
+    background: linear-gradient(
+        135deg,
+        #faf7f2,
+        #f3ede4
+    );
+
+    border: 1px solid #e5d9c9;
+
+    border-radius: 10px;
+
+    margin-bottom: 12px;
+
+    padding: 11px 13px;
+
+    font-size: 12px;
+
+    color: #5a1c11;
+}
+
+
+/* =====================================================
+   CUERPO
+   ===================================================== */
+
+#main-goals-container .goals-main-card .diagram-body {
+
+    display: grid !important;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 9px;
+
+    padding: 4px !important;
+
+    background: transparent !important;
+
+    overflow-y: auto !important;
+
+    max-height: 250px !important;
+}
+
+
+/* =====================================================
+   CADA DATO COMO CUADRITO
+   ===================================================== */
+
+#main-goals-container .goals-main-card .diagram-row {
+
+    display: flex !important;
+
+    flex-direction: column !important;
+
+    align-items: flex-start !important;
+
+    justify-content: center !important;
+
+    gap: 4px !important;
+
+    min-height: 58px;
+
+    padding: 10px 11px !important;
+
+    box-sizing: border-box;
+
+    background: rgba(255,255,255,.75);
+
+    border: 1px solid #e5d9c9;
+
+    border-radius: 9px;
+
+    box-shadow:
+        0 2px 6px rgba(90,35,20,.04);
+}
+
+
+/* =====================================================
+   NOMBRE DEL DATO
+   ===================================================== */
+
+#main-goals-container .goals-main-card .diag-field {
+
+    width: 100% !important;
+
+    max-width: none !important;
+
+    min-width: 0 !important;
+
+    color: #8b7770;
+
+    font-size: 9px !important;
+
+    font-weight: 700 !important;
+
+    text-transform: uppercase;
+
+    letter-spacing: .6px;
+
+    white-space: normal !important;
+}
+
+
+/* =====================================================
+   VALOR
+   ===================================================== */
+
+#main-goals-container .goals-main-card .diag-value {
+
+    width: 100% !important;
+
+    max-width: none !important;
+
+    color: #4a1f14;
+
+    font-size: 13px !important;
+
+    font-weight: 700 !important;
+
+    text-align: left !important;
+
+    white-space: normal !important;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* =====================================================
+   ELEMENTOS DESTACADOS
+   ===================================================== */
+
+#main-goals-container
+.goals-main-card
+.item-highlight {
+
+    grid-column: 1 / -1;
+
+    background: #f7efe3;
+
+    border-color: #d9c5ad;
+}
+
+
+/* =====================================================
+   DESCRIPCIÓN
+   ===================================================== */
+
+#main-goals-container
+.goals-main-card
+.description-text {
+
+    width: 100% !important;
+
+    max-width: none !important;
+
+    text-align: left !important;
+
+    color: #6f625d;
+
+    font-size: 11px !important;
+
+    line-height: 1.4;
+}
+
+
+/* =====================================================
+   PROGRESO
+   ===================================================== */
+
+#main-goals-container
+.goals-main-card
+.goal-progress-wrapper {
+
+    grid-column: 1 / -1;
+
+    width: 100%;
+
+    padding: 10px 11px;
+
+    box-sizing: border-box;
+
+    background: rgba(255,255,255,.75);
+
+    border: 1px solid #e5d9c9;
+
+    border-radius: 9px;
+
+    gap: 7px;
+}
+
+
+#main-goals-container
+.goals-main-card
+.goal-progress-bar {
+
+    width: 100%;
+
+    height: 9px;
+
+    background: #e5ddd3;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+}
+
+
+#main-goals-container
+.goals-main-card
+.goal-progress-fill {
+
+    height: 100%;
+    background:
+        linear-gradient(
+            90deg,
+            #9a4a22,
+            #7a2618
+        );
+
+    border-radius: 10px;
+
+    transition: width .4s ease;
+}
+
+
+/* =====================================================
+   ESTADO
+   ===================================================== */
+
+#main-goals-container
+.goals-main-card
+.diag-status {
+
+    width: auto !important;
+
+    align-self: flex-start;
+
+    padding: 4px 9px;
+
+    font-size: 9px;
+
+    letter-spacing: .5px;
+
+    border-radius: 20px;
+
+    transform: none !important;
+}
+
+
+/* =====================================================
+   SEPARADOR
+   ===================================================== */
+
+#main-goals-container
+.goals-main-card
+.border-top-dash {
+
+    grid-column: 1 / -1;
+
+    border-top: 1px dashed #d9cbb9 !important;
+
+    padding-top: 8px !important;
+
+    margin-top: 2px !important;
+
+    min-height: auto;
+
+    background: transparent;
+
+    border-radius: 0;
+
+    box-shadow: none;
+}
+
+
+/* =====================================================
+   HOVER DE LOS CUADRITOS
+   ===================================================== */
+
+#main-goals-container
+.goals-main-card
+.diagram-row:not(.border-top-dash) {
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        border-color .2s ease;
+}
+
+
+#main-goals-container
+.goals-main-card
+.diagram-row:not(.border-top-dash):hover {
+
+    transform: translateY(-2px);
+
+    border-color: #cdb79f;
+
+    box-shadow:
+        0 5px 12px rgba(90,35,20,.08);
+}
+
+
+/* =====================================================
+   MÓVIL
+   ===================================================== */
+
+@media (max-width: 700px) {
+
+    #main-goals-container
+    .goals-main-card
+    .diagram-body {
+
+        grid-template-columns: 1fr;
+    }
+
+    #main-goals-container
+    .goals-main-card
+    .item-highlight {
+
+        grid-column: auto;
+    }
+
+    #main-goals-container
+    .goals-main-card
+    .goal-progress-wrapper {
+
+        grid-column: auto;
+    }
+}
+
+/* =====================================================
+   AJUSTE — MÁS ESPACIO PARA LOS DATOS
+   ===================================================== */
+
+   #main-goals-container
+   .goals-main-card
+   .diagram-row {
+   
+       min-height: 64px;
+   
+       padding: 11px 12px !important;
+   
+       gap: 6px !important;
+   }
+   
+   
+   /* Valores un poco más cómodos */
+   
+   #main-goals-container
+   .goals-main-card
+   .diag-value {
+   
+       line-height: 1.35;
+   
+       font-size: 12.5px !important;
+   }
+   
+   
+   /* Las etiquetas no ocupan tanto */
+   
+   #main-goals-container
+   .goals-main-card
+   .diag-field {
+   
+       line-height: 1.2;
+   
+       font-size: 8.5px !important;
+   }
+   
+   
+   /* =====================================================
+      DATOS QUE NECESITAN MÁS ESPACIO
+      ===================================================== */
+   
+   /*
+      Descripciones, objetivos largos y similares
+      pueden ocupar las dos columnas.
+   */
+   
+   #main-goals-container
+   .goals-main-card
+   .description-text {
+   
+       grid-column: 1 / -1;
+   
+       line-height: 1.45;
+   
+       padding-top: 2px;
+   }
+   
+   
+   /* =====================================================
+      PROGRESO — MÁS RESPIRACIÓN
+      ===================================================== */
+   
+   #main-goals-container
+   .goals-main-card
+   .goal-progress-wrapper {
+   
+       padding: 12px !important;
+   
+       margin-top: 2px;
+   }
+   
+   
+   /* =====================================================
+      CUANDO EL TEXTO ES MUY LARGO
+      ===================================================== */
+   
+   #main-goals-container
+   .goals-main-card
+   .diag-value.wrap-text {
+   
+       white-space: normal !important;
+   
+       overflow-wrap: break-word !important;
+   
+       word-break: normal !important;
+   
+       line-height: 1.4;
+   }
+
+/* =====================================================
+   OBJETIVOS - TEXTO QUE NO DESBORDA
+   Mantiene intacto el tamaño de la tarjeta
+===================================================== */
+
+/* Título del objetivo */
+#main-goals-container .goals-main-card .diag-value {
+    min-width: 0 !important;
+    max-width: 100% !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+
+    display: block !important;
+}
+
+/* Descripción */
+#main-goals-container .goals-main-card .description-text {
+    min-width: 0 !important;
+    max-width: 100% !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+
+    display: block !important;
+}
+
+/* Valores de las filas */
+#main-goals-container .goals-main-card .diagram-row {
+    min-width: 0 !important;
+    overflow: hidden !important;
+}
+
+/* Etiquetas: META, PROGRESO, etc. */
+#main-goals-container .goals-main-card .diag-field {
+    min-width: 0 !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* Valores largos como:
+   "10000 páginas"
+   "29 de agosto de 2026"
+   etc.
+*/
+#main-goals-container .goals-main-card .diag-value,
+#main-goals-container .goals-main-card .description-text {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* Status / estado del objetivo */
+#main-goals-container .goals-main-card .diag-status {
+    max-width: 100% !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+
+    display: block !important;
+}
+
+/* Cualquier texto interno que pueda crecer */
+#main-goals-container .goals-main-card span,
+#main-goals-container .goals-main-card strong {
+    min-width: 0;
+    max-width: 100%;
+}
+
+/* Evita que palabras gigantes rompan la tarjeta */
+#main-goals-container .goals-main-card * {
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+}
+   
+/* =====================================================
+   PROGRESO FINAL - TARJETA DE OBJETIVO
+===================================================== */
+
+/* La fila de progreso pasa a ser vertical */
+#main-goals-container .goals-main-card
+.diagram-row.border-top-dash:has(.goal-progress-wrapper) {
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    align-items: center !important;
+    justify-content: flex-start !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    box-sizing: border-box !important;
+
+    gap: 6px !important;
+
+    overflow: hidden !important;
+}
+
+
+/* "PROGRESO" */
+#main-goals-container .goals-main-card
+.diagram-row.border-top-dash:has(.goal-progress-wrapper)
+.diag-field {
+
+    display: block !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    min-width: 0 !important;
+
+    text-align: center !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+
+    box-sizing: border-box !important;
+
+    margin: 0 !important;
+}
+
+
+/* CONTENEDOR DEL PROGRESO */
+#main-goals-container .goals-main-card
+.goal-progress-wrapper {
+
+    position: relative !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    align-items: stretch !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    min-width: 0 !important;
+
+    box-sizing: border-box !important;
+
+    gap: 0 !important;
+
+    overflow: hidden !important;
+}
+
+
+/* FONDO DE LA BARRA */
+#main-goals-container .goals-main-card
+.goal-progress-wrapper::before {
+
+    content: "" !important;
+
+    display: block !important;
+
+    width: 100% !important;
+    height: 10px !important;
+
+    background: #e3ddd5 !important;
+
+    border-radius: 10px !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* PARTE LLENA DE LA BARRA */
+#main-goals-container .goals-main-card
+.goal-progress-fill {
+
+    position: absolute !important;
+
+    left: 0 !important;
+    top: 0 !important;
+
+    height: 10px !important;
+
+    max-width: 100% !important;
+
+    background: #8b5e3c !important;
+
+    border-radius: 10px !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* TEXTO "EN PROGRESO (40%)" */
+#main-goals-container .goals-main-card
+.goal-progress-wrapper .diag-status {
+
+    display: block !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    min-width: 0 !important;
+
+    box-sizing: border-box !important;
+
+    margin: 5px 0 0 !important;
+    padding: 0 !important;
+
+    position: static !important;
+
+    transform: none !important;
+
+    text-align: center !important;
+
+    white-space: nowrap !important;
+
+    overflow: hidden !important;
+
+    text-overflow: ellipsis !important;
+
+    color: #8b5e3c !important;
+
+    font-size: 11px !important;
+}
+
+#main-goals-container .progress-container {
+    height: auto;
+    overflow: visible !important;
+    background: transparent;
+    border: none;
+}
+
+#main-goals-container .progress-bar {
+    height: 12px;
+    width: 100%;
+    border-radius: 6px;
+}
+
+#main-goals-container .progress-percentage {
+    display: block;
+    width: 100%;
+    margin-top: 6px;
+    text-align: center;
+
+    font-size: 11px;
+    font-weight: 700;
+    color: #8b5e3c;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* =====================================================
+   METAS ACTIVAS - TARJETA VACÍA
+   Restaurar centrado original
+===================================================== */
+
+#main-goals-container #empty-goals-card .diagram-body {
+    display: flex !important;
+    flex-direction: column !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    box-sizing: border-box !important;
+
+    text-align: center !important;
+}
+
+#main-goals-container #empty-goals-card .empty-goals {
+    display: flex !important;
+    flex-direction: column !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    margin-left: auto !important;
+    margin-right: auto !important;
+
+    box-sizing: border-box !important;
+
+    text-align: center !important;
+}
+
+#main-goals-container #empty-goals-card .empty-goals-title,
+#main-goals-container #empty-goals-card .empty-goals-description {
+    width: 100% !important;
+    max-width: 360px !important;
+
+    margin-left: auto !important;
+    margin-right: auto !important;
+
+    text-align: center !important;
+}
+
+#main-goals-container #empty-goals-card .empty-create-btn {
+    width: auto !important;
+    align-self: center !important;
+}
+
+
 
