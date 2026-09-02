@@ -73,6 +73,8 @@ class SeccionLectura:
         conexion.close()
 
     def guardar(self):
+        from datetime import datetime
+
         conexion = obtener_conexion()
         cursor = conexion.cursor(dictionary=True)
         cursor.execute("""
@@ -96,13 +98,15 @@ class SeccionLectura:
                   self.estado, self.fecha_fin, existente["id_lectura"]))
             self.id_lectura = existente["id_lectura"]
         else:
+            ahora = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
             cursor.execute("""
                 INSERT INTO lecturas
                 (id_usuario, id_libro, tiempo_minutos, estado, fecha_inicio, fecha_fin,
                  paginas_leidas, pagina_actual, capitulos_leidos)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
             """, (self.id_usuario, self.id_libro, self.tiempo_minutos, self.estado,
-                  self.fecha_fin, self.fecha_fin, self.paginas_leidas, self.pagina_actual,
+                  ahora, self.fecha_fin, self.paginas_leidas, self.pagina_actual,
                   self.capitulos_leidos))
             self.id_lectura = cursor.lastrowid
 
@@ -110,7 +114,7 @@ class SeccionLectura:
         cursor.close()
         conexion.close()
         return self.id_lectura
-
+    
     def guardar_sesion(self, como_te_sientes=None):
         print("GUARDANDO SESION:", self.id_lectura, self.id_usuario, self.fecha_fin)
         conexion = obtener_conexion()
