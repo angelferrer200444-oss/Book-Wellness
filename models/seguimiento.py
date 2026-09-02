@@ -1,6 +1,30 @@
+from datetime import datetime
+
 from db import obtener_conexion
 
 class Seguimiento:
+
+
+    @staticmethod
+    def _clave_orden(ev):
+        """
+        Extrae una fecha/hora comparable de un evento para poder
+        ordenarlos cronológicamente, sin importar su tipo.
+        """
+        valor = ev.get('fecha') or ev.get('fecha_limite') or ev.get('fecha_fin')
+
+        if not valor:
+            return datetime.min
+
+        try:
+            if ' ' in valor:
+                return datetime.strptime(valor, '%Y-%m-%d %H:%M:%S')
+            else:
+                return datetime.strptime(valor, '%Y-%m-%d')
+        except (ValueError, TypeError):
+            return datetime.min
+
+
 
     @staticmethod
     def obtener_eventos_por_fecha(id_usuario, fecha):
@@ -96,4 +120,7 @@ class Seguimiento:
             if ev.get('fecha_fin'):
                 ev['fecha_fin'] = str(ev['fecha_fin'])
 
-        return primeras_sesiones + sesiones + limites + concluidos
+        todos_eventos = primeras_sesiones + sesiones + limites + concluidos
+        todos_eventos.sort(key=Seguimiento._clave_orden)
+
+        return todos_eventos
