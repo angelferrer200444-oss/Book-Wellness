@@ -98,7 +98,7 @@ def registrar_rutas(app):
 
                     pagina_actual = lectura['pagina_actual']
                     capitulos_leidos = lectura['capitulos_leidos']
-                    fecha_inicio = lectura['fecha_inicio']
+                    fecha_inicio = lectura['fecha_inicio'].date() if lectura['fecha_inicio'] else None
                     fecha_fin = lectura['fecha_fin']
                     fecha_limite = lectura['fecha_limite']
 
