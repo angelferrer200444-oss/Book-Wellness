@@ -732,8 +732,16 @@ document.addEventListener("DOMContentLoaded", () => {
                             <span class="diag-value">${objetivo.progreso_actual} / ${objetivo.meta} ${objetivo.unidad}</span>
                         </div>
                         <div class="progress-container">
-                            <div class="progress-bar" style="width: ${objetivo.porcentaje}%;"></div>
+                            <div
+                                class="progress-bar"
+                                style="width: ${objetivo.porcentaje || 0}%;">
+                            </div>
+
+                            <span class="progress-percentage">
+                                ${estadoTexto} (${Number(objetivo.porcentaje || 0).toFixed(0)}%)
+                            </span>
                         </div>
+
                         <div class="diagram-row">
                             <span class="diag-field">Inicio</span>
                             <span class="diag-value">${objetivo.fecha_inicio || "Sin fecha"}</span>
@@ -750,24 +758,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             <span class="diag-field">Frecuencia</span>
                             <span class="diag-value">${frecuenciaTexto}</span>
                         </div>
-                        <div class="diagram-row border-top-dash">
-                            <span class="diag-field">Progreso</span>
-
-                            <div class="goal-progress-wrapper">
-
-                            <div
-                                class="goal-progress-fill"
-                                style="width: ${objetivo.porcentaje || 0}%;">
-                            </div>
                         
-
-                                <span class="diag-status ${estadoClase}">
-                                    ${estadoTexto} (${Number(objetivo.porcentaje || 0).toFixed(0)}%)
-                                </span>
-
-
-                            </div>
-                        </div>
 
                     </div>
                 </div>
@@ -864,11 +855,6 @@ document.addEventListener("DOMContentLoaded", () => {
     
                                 <div class="empty-goals-title">
                                     Aún no tienes objetivos activos
-                                </div>
-    
-                                <div class="empty-goals-description">
-                                    Crea un nuevo objetivo para comenzar
-                                    a construir tu hábito de lectura.
                                 </div>
     
                                 <button
