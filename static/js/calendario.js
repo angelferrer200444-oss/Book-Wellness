@@ -4,6 +4,15 @@ const months = [
     "Septiembre", "Octubre", "Noviembre", "Diciembre"
 ];
 
+const iconosAnimo = {
+    'Feliz': '😊',
+    'Tranquilo': '😌',
+    'Reflexivo': '🤔',
+    'Sorprendido': '😮',
+    'Triste': '😢',
+    'Ansioso': '😰'
+};
+
 let currentDate = new Date();
 let fechasMarcadas = {};
 
@@ -147,16 +156,25 @@ async function abrirModal(fecha) {
             : esExpirada ? 'status-expired'
             : 'status-pending';
             
+                const fechaStr = ev.fecha_inicio || ev.fecha || ev.fecha_limite || ev.fecha_fin || '';
+        const [anioEv, mesEv, diaEv] = fechaStr.split(' ')[0].split('-');
+        const diaNum = parseInt(diaEv);
+        const mesNom = months[parseInt(mesEv)-1].substring(0,3).toUpperCase();
+
+        let horaEv = '';
+        if(fechaStr.includes(' ')) {
+            horaEv = fechaStr.split(' ')[1].substring(0, 5);
+        }
+
         const desc = esSesion
-            ? `${ev.tipo === 'primera_sesion' ? '🌟 Primera sesión · ' : ''}📖 ${ev.paginas_leidas || 0} páginas · ⏱️ ${Math.floor((ev.tiempo_minutos||0)/60)}h ${(ev.tiempo_minutos||0)%60}m${ev.como_te_sientes ? ' · ' + ev.como_te_sientes : ''}`
+            ? `${ev.tipo === 'primera_sesion' ? '🌟 Primera sesión · ' : ''}${horaEv ? '🕐 ' + horaEv + ' · ' : ''}📖 ${ev.paginas_leidas || 0} páginas · ⏱️ ${Math.floor((ev.tiempo_minutos || 0) / 60)}h ${(ev.tiempo_minutos || 0) % 60}m${ev.como_te_sientes ? ' · ' + (iconosAnimo[ev.como_te_sientes] || '') + ' ' + ev.como_te_sientes : ''}`
             : esConcluido
             ? `🎉 Libro terminado · 📖 ${ev.paginas_leidas || 0} páginas totales`
             : descLimite;
-
-        const fechaStr = ev.fecha_inicio || ev.fecha || ev.fecha_limite || ev.fecha_fin || '';
-        const [anioEv, mesEv, diaEv] = fechaStr.split('-');
-        const diaNum = parseInt(diaEv);
-        const mesNom = months[parseInt(mesEv)-1].substring(0,3).toUpperCase();
+            
+        if(fechaStr.includes(' ')) {
+            horaEv = fechaStr.split(' ')[1].substring(0, 5);
+        }
 
                 return `
                     <div class="timeline-item ${badgeClass}">
