@@ -152,8 +152,8 @@
     color: #27ae60 !important;
 }
 
-.week-item.primera-sesion-day .day-number {
-    border: 2px solid #f39c12 !important;
+.week-item.sesion-day .day-number {
+    border: 2px solid rgba(124,31,22,0.45) !important;
     font-weight: bold;
 }
 
@@ -161,6 +161,10 @@
     border: 2px solid #888 !important;
     color: #888 !important;
     text-decoration: line-through;
+}
+.week-item.primera-sesion-day .day-number {
+    border: 2px solid #f39c12 !important;
+    font-weight: bold;
 }
 .week-item.fecha-limite-day,
 .week-item.expirada-day,
