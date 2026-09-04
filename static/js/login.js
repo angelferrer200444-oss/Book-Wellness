@@ -12,7 +12,7 @@ document.getElementById('formulario-login').addEventListener('submit', async (e)
 
     try {
         
-        const respuesta = await fetch('http://127.0.0.1:5000/api/login', {
+        const respuesta = await fetch('/api/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -46,7 +46,7 @@ document.getElementById('formulario-login').addEventListener('submit', async (e)
                 "true"
             );
             
-            fetch('http://127.0.0.1:5000/api/recomendacion-inicial', {
+            fetch('/api/recomendacion-inicial',  {
                 method: 'POST'
             })
             .then(async respuestaInicial => {
