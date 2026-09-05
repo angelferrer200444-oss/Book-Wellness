@@ -3,3 +3,4 @@ flask-cors
 mysql-connector-python
 requests
 APScheduler
+cloudinary
