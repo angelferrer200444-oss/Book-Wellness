@@ -1,12 +1,15 @@
+import os
 import requests
 
 from routes.utilidades import obtener_json
+
 
 class GoogleBooksAPI:
 
     def __init__(self):
         self.url_base = "https://www.googleapis.com/books/v1/volumes"
-        self.api_key = "LA KEY NO SE PUBLICA"
+        self.api_key = os.environ.get("GOOGLE_BOOKS_API_KEY")
+
 
 
     def buscar_libros(self, texto):
