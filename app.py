@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask
 from flask_cors import CORS
 
@@ -16,13 +18,14 @@ from models.notificaciones import notificaciones_bp, iniciar_scheduler_backgroun
 
 app = Flask(__name__)
 
-app.secret_key = "ilovesucklemons" # clave secretosa
+# Clave secreta
+app.secret_key = os.environ.get("SECRET_KEY", "ilovesucklemons")
 
 # Registrar Blueprints
 app.register_blueprint(ia_bp)
 app.register_blueprint(recomendador_bp)
 app.register_blueprint(notificaciones_bp)
-app.register_blueprint(objetivos_bp) 
+app.register_blueprint(objetivos_bp)
 
 CORS(app)
 
@@ -37,7 +40,10 @@ seguimiento_routes(app)
 iniciar_scheduler_background()
 
 if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+
     app.run(
-        debug=True,
-        port=5000
+        host="0.0.0.0",
+        port=port,
+        debug=False
     )
