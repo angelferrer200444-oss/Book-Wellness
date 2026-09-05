@@ -1,9 +1,11 @@
+import os
 import json
 import requests
 
 import db
 
-API_KEY = "LA KEY NO SE PUBLICA"
+API_KEY = os.environ.get("GEMINI_API_KEY")
+
 
 class OrquestadorIA:
 
