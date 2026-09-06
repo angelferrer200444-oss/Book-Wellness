@@ -1,13 +1,18 @@
 # database.py
+import os
 import mysql.connector
+from dotenv import load_dotenv
+
+load_dotenv()  # lee el archivo .env cuando corres localmente; en Render no hace nada porque las variables ya están puestas en el dashboard
 
 def obtener_conexion():
     return mysql.connector.connect(
-        user='root',
-        password='',
-        host='localhost',
-        database='proyectowellness',
-        port=3306
+        user=os.environ.get('DB_USER', 'root'),
+        password=os.environ.get('DB_PASSWORD', ''),
+        host=os.environ.get('DB_HOST', 'localhost'),
+        database=os.environ.get('DB_NAME', 'proyectowellness'),
+        port=int(os.environ.get('DB_PORT', 3306)),
+        ssl_ca=os.environ.get('DB_SSL_CA')  
     )
 
 
@@ -169,6 +174,8 @@ def obtener_historial(id_usuario, limite=20):
     conexion.close()
 
     historial.reverse()
+
+    return historial
 
     return historial
 
