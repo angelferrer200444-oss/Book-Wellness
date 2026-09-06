@@ -166,7 +166,7 @@ def registrar_rutas(app):
     @app.route("/seguimiento")
     def seguimiento():
         return render_template(
-            "seguimiento/seguimiento.html"
+            "seguimiento/Seguimiento.html"
         )
 
 
