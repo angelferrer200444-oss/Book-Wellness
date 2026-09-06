@@ -4,3 +4,4 @@ mysql-connector-python
 requests
 APScheduler
 cloudinary
+python-dotenv
