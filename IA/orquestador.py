@@ -12,7 +12,7 @@ class OrquestadorIA:
     def __init__(
         self,
         api_key=None,
-        modelo="gemini-3.5-flash",
+        modelo="gemini-3.1-flash-lite",
         timeout=120
     ):
 
