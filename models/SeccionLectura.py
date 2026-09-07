@@ -116,39 +116,23 @@ class SeccionLectura:
         return self.id_lectura
 
     def guardar_sesion(self, como_te_sientes=None):
-        from datetime import datetime
-    
-        print("GUARDANDO SESION:", self.id_lectura, self.id_usuario)
-    
+        print("GUARDANDO SESION:", self.id_lectura, self.id_usuario, self.fecha_fin)
         conexion = obtener_conexion()
         cursor = conexion.cursor()
-    
-        fecha_sesion = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    
         cursor.execute("""
             INSERT INTO sesiones
-            (
-                id_lectura,
-                id_usuario,
-                fecha,
-                paginas_leidas_sesion,
-                tiempo_minutos,
-                capitulos_leidos,
-                como_te_sientes
-            )
+            (id_lectura, id_usuario, fecha, paginas_leidas_sesion, tiempo_minutos, capitulos_leidos, como_te_sientes)
             VALUES (%s, %s, %s, %s, %s, %s, %s)
         """, (
             self.id_lectura,
             self.id_usuario,
-            fecha_sesion,
+            self.fecha_fin,
             self.paginas_leidas,
             self.tiempo_minutos,
             self.capitulos_leidos,
             como_te_sientes
         ))
-    
         conexion.commit()
         cursor.close()
         conexion.close()
-
         
