@@ -33,6 +33,37 @@ document.addEventListener("DOMContentLoaded", () => {
     const goalStatus =
         document.getElementById("index-goal-status");
 
+    const goalLoader =
+        document.getElementById("index-goal-loader");
+    
+
+    function mostrarLoader() {
+
+        if (goalLoader) {
+            goalLoader.style.display = "flex";
+        }
+    
+        if (noGoal) {
+            noGoal.style.display = "none";
+        }
+    
+        if (goalTitleRow) {
+            goalTitleRow.classList.add("hidden");
+        }
+    
+        if (goalProgressRow) {
+            goalProgressRow.classList.add("hidden");
+        }
+    
+        if (goalBarRow) {
+            goalBarRow.classList.add("hidden");
+        }
+    
+        if (goalStatusRow) {
+            goalStatusRow.classList.add("hidden");
+        }
+    }
+        
 
     // =====================================================
     // CARGAR OBJETIVO MÁS RECIENTE
@@ -41,6 +72,8 @@ document.addEventListener("DOMContentLoaded", () => {
     async function cargarObjetivoIndex() {
 
         console.log("EJECUTANDO cargarObjetivoIndex");
+
+        mostrarLoader();
 
         if (!noGoal) {
             console.error(
@@ -187,6 +220,10 @@ document.addEventListener("DOMContentLoaded", () => {
             "MOSTRANDO: NO HAY OBJETIVOS"
         );
 
+        if (goalLoader) {
+            goalLoader.style.display = "none";
+        }
+
         noGoal.style.display = "";
 
 
@@ -218,6 +255,11 @@ document.addEventListener("DOMContentLoaded", () => {
             "MOSTRANDO OBJETIVO EN INDEX:",
             objetivo
         );
+
+        if (goalLoader) {
+            goalLoader.style.display = "none";
+        }
+        
 
 
         // Ocultar mensaje de "no hay objetivos"
@@ -354,4 +396,6 @@ document.addEventListener("DOMContentLoaded", () => {
     cargarObjetivoIndex();
 
 });
+
+
 
