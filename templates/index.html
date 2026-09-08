@@ -522,61 +522,181 @@ Book Wellness
                 
                 </div>
         
-                <!-- COLUMNA OBJETIVO ACTUAL -->
-                <div class="sidebar-column">
-                    <div class="card-container-design">
-                        <div class="card-header-brown">Metas Activas</div>
-                        
-                        <div class="db-diagram-box">
-                            <div class="diagram-header">
-                                <span class="db-icon">📊</span> Objetivos Global
-                            </div>
-                            <div class="diagram-body">
-
-                                <!-- SIN OBJETIVOS -->
-                                <div class="diagram-row item-highlight" id="index-no-goal">
-                                    <span class="diag-value">No hay objetivos agregados</span>
-                                </div>
-                            
-                                <!-- CON OBJETIVO -->
-                                <div class="diagram-row item-highlight" id="index-goal-title-row">
-                                    <span class="diag-field">Meta actual</span>
-                                    <span class="diag-value" id="index-goal-title"></span>
-                                </div>
-                            
-                                <div class="diagram-row" id="index-goal-progress-row">
-                                    <span class="diag-field">Progreso</span>
-                                    <span class="diag-value" id="index-goal-progress"></span>
-                                </div>
-                            
-                                <div class="progress-container" id="index-goal-bar-row">
-                                    <div
-                                        class="progress-bar"
-                                        id="index-goal-progress-bar">
-                                    </div>
-                                </div>
-                            
-                                <div class="diagram-row border-top-dash" id="index-goal-status-row">
-                                    <span class="diag-field">Estado</span>
-                                    <span
-                                        class="diag-status status-pending"
-                                        id="index-goal-status">
-                                    </span>
-                                </div>
-                            
-                                <a href="{{ url_for('objetivo') }}">
-                                    <button class="btn-objetivos">
-                                        OBJETIVOS
-                                    </button>
-                                </a>
-                            
-                            </div>
-                            
-                        </div>
-                    </div>
-        
-        
-                </div>
+                <!-- =====================================================
+                    COLUMNA OBJETIVO ACTUAL
+               ====================================================== -->
+               
+               <div class="sidebar-column">
+               
+                   <div class="card-container-design">
+               
+                       <div class="card-header-brown">
+                           Metas Activas
+                       </div>
+               
+                       <div class="db-diagram-box">
+               
+                           <!-- =================================================
+                                ENCABEZADO
+                           ================================================== -->
+               
+                           <div class="diagram-header">
+                               <span class="db-icon">📊</span>
+                               Objetivos Global
+                           </div>
+               
+               
+                           <div class="diagram-body">
+               
+                               <!-- =================================================
+                                    LOADER OBJETIVOS
+                               ================================================== -->
+               
+                               <div
+                                   class="loader-container"
+                                   id="index-goal-loader"
+                               >
+               
+                                   <div class="loader"></div>
+               
+                                   <span id="texto-carga">
+                                       Cargando objetivos...
+                                   </span>
+               
+                               </div>
+               
+               
+                               <!-- =================================================
+                                    CONTENIDO DE OBJETIVOS
+                                    OCULTO MIENTRAS CARGA
+                               ================================================== -->
+               
+                               <div
+                                   id="index-goal-content"
+                                   style="display: none;"
+                               >
+               
+               
+                                   <!-- =================================================
+                                        SIN OBJETIVOS
+                                   ================================================== -->
+               
+                                   <div
+                                       class="diagram-row item-highlight"
+                                       id="index-no-goal"
+                                   >
+               
+                                       <span class="diag-value">
+                                           No hay objetivos agregados
+                                       </span>
+               
+                                   </div>
+               
+               
+                                   <!-- =================================================
+                                        OBJETIVO ACTUAL
+                                   ================================================== -->
+               
+                                   <div
+                                       class="diagram-row item-highlight"
+                                       id="index-goal-title-row"
+                                   >
+               
+                                       <span class="diag-field">
+                                           Meta actual
+                                       </span>
+               
+                                       <span
+                                           class="diag-value"
+                                           id="index-goal-title"
+                                       >
+                                       </span>
+               
+                                   </div>
+               
+               
+                                   <!-- =================================================
+                                        PROGRESO
+                                   ================================================== -->
+               
+                                   <div
+                                       class="diagram-row"
+                                       id="index-goal-progress-row"
+                                   >
+               
+                                       <span class="diag-field">
+                                           Progreso
+                                       </span>
+               
+                                       <span
+                                           class="diag-value"
+                                           id="index-goal-progress"
+                                       >
+                                       </span>
+               
+                                   </div>
+               
+               
+                                   <!-- =================================================
+                                        BARRA DE PROGRESO
+                                   ================================================== -->
+               
+                                   <div
+                                       class="progress-container"
+                                       id="index-goal-bar-row"
+                                   >
+               
+                                       <div
+                                           class="progress-bar"
+                                           id="index-goal-progress-bar"
+                                       >
+                                       </div>
+               
+                                   </div>
+                                    <!-- =================================================
+                                        ESTADO
+                                   ================================================== -->
+               
+                                   <div
+                                       class="diagram-row border-top-dash"
+                                       id="index-goal-status-row"
+                                   >
+               
+                                       <span class="diag-field">
+                                           Estado
+                                       </span>
+               
+                                       <span
+                                           class="diag-status status-pending"
+                                           id="index-goal-status"
+                                       >
+                                       </span>
+               
+                                   </div>
+               
+               
+                                   <!-- =================================================
+                                        BOTÓN OBJETIVOS
+                                   ================================================== -->
+               
+                                   <a href="{{ url_for('objetivo') }}">
+               
+                                       <button class="btn-objetivos">
+                                           OBJETIVOS
+                                       </button>
+               
+                                   </a>
+               
+               
+                               </div>
+               
+                           </div>
+               
+                       </div>
+               
+                   </div>
+               
+               </div>
         
         
         
@@ -644,5 +764,8 @@ Book Wellness
 <script src="{{ url_for('static', filename='js/objetivo-index.js') }}"></script>
 
 {% endblock %}
+
+
+
 
 
