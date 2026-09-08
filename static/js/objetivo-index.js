@@ -35,6 +35,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const goalLoader =
         document.getElementById("index-goal-loader");
+
+    const goalContent =
+        document.getElementById("index-goal-content");
     
 
     function mostrarLoader() {
@@ -86,6 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const respuesta =
                 await fetch("/api/objetivos");
+
 
             console.log(
                 "RESPUESTA API:",
@@ -220,9 +224,14 @@ document.addEventListener("DOMContentLoaded", () => {
             "MOSTRANDO: NO HAY OBJETIVOS"
         );
 
+        if (goalContent) {
+            goalContent.style.display = "block";
+        }
+        
         if (goalLoader) {
             goalLoader.style.display = "none";
         }
+        
 
         noGoal.style.display = "";
 
@@ -256,9 +265,14 @@ document.addEventListener("DOMContentLoaded", () => {
             objetivo
         );
 
+        if (goalContent) {
+            goalContent.style.display = "block";
+        }
+        
         if (goalLoader) {
             goalLoader.style.display = "none";
         }
+        
         
 
 
@@ -396,6 +410,8 @@ document.addEventListener("DOMContentLoaded", () => {
     cargarObjetivoIndex();
 
 });
+
+
 
 
 
