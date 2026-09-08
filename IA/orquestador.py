@@ -1,18 +1,18 @@
 import os
 import json
 import requests
+import time
 
 import db
 
 API_KEY = os.environ.get("GEMINI_API_KEY")
-
 
 class OrquestadorIA:
 
     def __init__(
         self,
         api_key=None,
-        modelo="gemini-2.5-flash",
+        modelo="gemini-3.7-flash",
         timeout=120
     ):
 
@@ -72,28 +72,50 @@ class OrquestadorIA:
             ]
         }
 
-        respuesta = requests.post(
+        MAX_REINTENTOS = 3
 
-            self.url,
+        for intento in range(MAX_REINTENTOS):
 
-            params={
-                "key": self.api_key
-            },
+            respuesta = requests.post(
+                self.url,
+                params={
+                    "key": self.api_key
+                },
+                json=body,
+                timeout=self.timeout
+            )
 
-            json=body,
+            # Si Gemini responde 503, reintentar
+            if respuesta.status_code == 503:
 
-            timeout=self.timeout
+                # Si todavía quedan intentos
+                if intento < MAX_REINTENTOS - 1:
 
-        )
+                    espera = 2 ** intento
 
-        respuesta.raise_for_status()
+                    print(
+                        f"Gemini respondió 503. "
+                        f"Reintentando en {espera} segundos..."
+                    )
 
-        datos = respuesta.json()
+                    time.sleep(espera)
 
-        return (
-            datos["candidates"][0]
-            ["content"]["parts"][0]["text"]
-        )
+                    continue
+
+                # Ya no quedan intentos
+                print("Gemini continúa respondiendo 503 después de 3 intentos.")
+
+            # Cualquier respuesta que NO sea 503
+            # se procesa normalmente.
+            respuesta.raise_for_status()
+
+            datos = respuesta.json()
+
+            return (
+                datos["candidates"][0]
+                ["content"]["parts"][0]["text"]
+            )
+
 
     ##########################################################
     # GENERAR TEXTO (CON MEMORIA)
@@ -196,4 +218,5 @@ class OrquestadorIA:
         finally:
 
             self.timeout = timeout_original
+
 
