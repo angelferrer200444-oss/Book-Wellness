@@ -2,13 +2,22 @@
 import mysql.connector
 
 def obtener_conexion():
-    return mysql.connector.connect(
-        user='root',
-        password='',
-        host='localhost',
-        database='proyectowellness',
-        port=3306
+    conexion = mysql.connector.connect(
+        user=os.environ.get('DB_USER', 'root'),
+        password=os.environ.get('DB_PASSWORD', ''),
+        host=os.environ.get('DB_HOST', 'localhost'),
+        database=os.environ.get('DB_NAME', 'proyectowellness'),
+        port=int(os.environ.get('DB_PORT', 3306)),
+        ssl_ca=os.environ.get('DB_SSL_CA')
     )
+
+
+    zona_horaria = os.environ.get('DB_TIMEZONE', '-04:00')
+    cursor_tz = conexion.cursor()
+    cursor_tz.execute("SET time_zone = %s", (zona_horaria,))
+    cursor_tz.close()
+
+    return conexion
 
 
 def guardar_recomendaciones(id_usuario, libros):
