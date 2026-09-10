@@ -1731,40 +1731,110 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function cargarObjetivos() {
 
+        const loader =
+            document.getElementById("goals-loader");
+    
+        const mainContainer =
+            document.getElementById("main-goals-container");
+    
+    
+        // =====================================================
+        // MOSTRAR LOADER
+        // =====================================================
+    
+        if (loader) {
+            loader.style.display = "flex";
+        }
+    
+        // Ocultar todas las tarjetas mientras cargan
+    
+        if (mainContainer) {
+            mainContainer.style.setProperty("display", "none", "important");
+        }
+        
+    
+    
         try {
-
+    
             const respuesta =
                 await fetch(
                     "/api/objetivos"
                 );
-
-
+    
+    
+            if (!respuesta.ok) {
+    
+                throw new Error(
+                    `Error HTTP: ${respuesta.status}`
+                );
+    
+            }
+    
+    
             const objetivos =
                 await respuesta.json();
-
-
+    
+            // =================================================
+            // RENDERIZAR OBJETIVOS
+            // =================================================
+    
             objetivos.forEach(
                 (objetivo) => {
-            
+    
                     renderizarObjetivo(
                         objetivo
                     );
-            
+    
                 }
             );
-                
-
-
+    
+    
+            // =================================================
+            // TERMINÓ CORRECTAMENTE
+            // =================================================
+    
+            if (loader) {
+                loader.style.display = "none";
+            }
+    
+            if (mainContainer) {
+                mainContainer.style.removeProperty("display");
+            }
+            
+    
+    
         }
-
+    
         catch (error) {
-
+    
             console.error(
                 "Error cargando objetivos:",
                 error
             );
+    
+            // Si hubo error, mantenemos la pantalla
+            // de carga para no mostrar tarjetas incompletas.
+    
+            if (loader) {
+    
+                loader.style.display = "flex";
+    
+                const texto =
+                    loader.querySelector("#texto-carga");
+    
+                if (texto) {
+                    texto.textContent =
+                        "No se pudieron cargar los objetivos.";
+                }
+    
+            }
+    
+            if (mainContainer) {
+                mainContainer.style.display = "none";
+            }
         }
     }
+    
 
     // =====================================================
     // ASISTENTE IA OBJETIVOS
