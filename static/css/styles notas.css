@@ -298,3 +298,15 @@
 #note-content-input {
     min-height: 140px;
 }
+
+/* =====================================================
+   POSICIÓN DEL LOADER - NOTAS
+   ===================================================== */
+
+   #notes-loader {
+    transform: translateY(120px);
+}
+
+.saved-notes-scroll {
+    overflow: visible !important;
+}
