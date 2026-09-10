@@ -69,39 +69,141 @@ if(window.idLibroFiltro) {
     // FILTRADO
     // ========================
 async function filterNotes(categoria, idLibro) {
-    const params = new URLSearchParams();
-    if(idLibro) params.append('id_libro', idLibro);
-    if(categoria && categoria !== 'Todos') params.append('categoria', categoria);
 
-    const res = await fetch(`/api/notas?${params.toString()}`);
-    const notas = await res.json();
-
+    const loader = document.getElementById('notes-loader');
     const lista = document.getElementById('notes-list-layout');
-    
-    if(notas.length === 0) {
-        lista.innerHTML = '<p style="opacity:0.5; padding:20px;">Sin notas para este filtro.</p>';
-        return;
+
+    // ==========================================
+    // MOSTRAR LOADER
+    // ==========================================
+
+    if (loader) {
+        loader.style.display = 'flex';
     }
 
-    lista.innerHTML = notas.map(nota => `
-        <div class="note-card" data-category="${nota.categoria}" data-id="${nota.id_nota}" data-tipo="manual" data-libro="${nota.id_libro || ''}">
-            <div class="note-header">
-                <div class="note-title-wrapper">
-                    <h3 class="note-title">${nota.titulo}</h3>
-                    <span class="note-category-badge">${nota.categoria}</span>
-                </div>
-                <span class="note-date">${nota.fecha_creacion}</span>
-            </div>
-            <div class="note-body"><p>${nota.contenido}</p></div>
-            <div class="note-footer">
-                <button class="note-action-btn edit-btn">Editar</button>
-                <button class="note-action-btn delete-btn">Borrar</button>
-            </div>
-        </div>
-    `).join('');
+    // Ocultar las notas mientras cargan
+    if (lista) {
+        lista.style.display = 'none';
+    }
 
-    document.querySelectorAll('.note-card').forEach(card => asignarEventos(card));
+    const params = new URLSearchParams();
+
+    if (idLibro) {
+        params.append('id_libro', idLibro);
+    }
+
+    if (categoria && categoria !== 'Todos') {
+        params.append('categoria', categoria);
+    }
+
+    try {
+
+        const res = await fetch(
+            `/api/notas?${params.toString()}`
+        );
+
+        if (!res.ok) {
+            throw new Error(`Error HTTP: ${res.status}`);
+        }
+
+        const notas = await res.json();
+
+        // ==========================================
+        // MOSTRAR RESULTADOS
+        // ==========================================
+
+        if (notas.length === 0) {
+
+            lista.innerHTML =
+                '<p style="opacity:0.5; padding:20px;">Sin notas para este filtro.</p>';
+
+        } else {
+
+            lista.innerHTML = notas.map(nota => `
+                <div class="note-card"
+                        data-category="${nota.categoria}"
+                        data-id="${nota.id_nota}"
+                        data-tipo="manual"
+                        data-libro="${nota.id_libro || ''}">
+
+                    <div class="note-header">
+
+                        <div class="note-title-wrapper">
+
+                            <h3 class="note-title">
+                                ${nota.titulo}
+                            </h3>
+
+                            <span class="note-category-badge">
+                                ${nota.categoria}
+                            </span>
+
+                        </div>
+
+                        <span class="note-date">
+                            ${nota.fecha_creacion}
+                        </span>
+
+                    </div>
+
+                    <div class="note-body">
+                        <p>${nota.contenido}</p>
+                    </div>
+
+                    <div class="note-footer">
+
+                        <button class="note-action-btn edit-btn">
+                            Editar
+                        </button>
+
+                        <button class="note-action-btn delete-btn">
+                            Borrar
+                        </button>
+
+                    </div>
+
+                </div>
+            `).join('');
+
+            lista.querySelectorAll('.note-card')
+                .forEach(card => asignarEventos(card));
+        }
+
+        // ==========================================
+        // TERMINÓ LA CARGA
+        // ==========================================
+
+        if (lista) {
+            lista.style.display = '';
+        }
+
+    } catch (error) {
+
+        console.error(
+            'ERROR CARGANDO NOTAS:',
+            error
+        );
+
+        if (lista) {
+
+            lista.style.display = '';
+
+            lista.innerHTML =
+                '<p style="opacity:0.5; padding:20px;">No se pudieron cargar las notas.</p>';
+        }
+
+    } finally {
+
+        // ==========================================
+        // OCULTAR LOADER SIEMPRE
+        // ==========================================
+
+        if (loader) {
+            loader.style.display = 'none';
+        }
+    }
 }
+    
     dropdownFilterBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         dropdownMenuOptions.classList.toggle('show-menu');
@@ -346,4 +448,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     actualizarPlaceholder();
 });
+
+
+
 
