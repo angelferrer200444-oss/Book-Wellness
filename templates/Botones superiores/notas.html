@@ -6,6 +6,9 @@ Book Wellness - Notas
 
 {% block css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/styles notas.css') }}">
+
+<!-- CSS detalle-libro para reutilizar la bolita de carga -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/detalle-libro.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -106,110 +109,365 @@ window.idLibroFiltro = {{ id_libro_filtro or 'null' }};
                 </div>
 
                 <div class="saved-notes-scroll">
-                    <div id="notes-list-layout" class="notes-list-layout">
-                        <!-- Notas de sesión -->
-                        {% for nota in notas_sesion %}
-                        {% if nota.como_te_sientes %}
-                        <div class="note-card" data-category="Estado de Ánimo" data-id="{{ nota.id_nota }}" data-tipo="sesion" data-campo="como_te_sientes" data-libro="{{ nota.id_libro or '' }}">
-                            <div class="note-header">
-                                <div class="note-title-wrapper">
-                                    <h3 class="note-title">{{ nota.libro_titulo }} — Estado de ánimo</h3>
-                                    <span class="note-category-badge">Estado de Ánimo</span>
-                                </div>
-                                <span class="note-date">{{ nota.fecha_creacion }}</span>
-                            </div>
-                            <div class="note-body"><p>{{ nota.como_te_sientes }}</p></div>
-                            <div class="note-footer">
-                                <button class="note-action-btn edit-btn">Editar</button>
-                                <button class="note-action-btn delete-btn" disabled style="opacity:0.4;">Borrar</button>
-                            </div>
-                        </div>
-                        {% endif %}
-                        {% if nota.que_aprendiste %}
-                        <div class="note-card" data-category="Aprendizaje" data-id="{{ nota.id_nota }}" data-tipo="sesion" data-campo="que_aprendiste" data-libro="{{ nota.id_libro or '' }}">
-                            <div class="note-header">
-                                <div class="note-title-wrapper">
-                                    <h3 class="note-title">{{ nota.libro_titulo }} — Aprendizaje</h3>
-                                    <span class="note-category-badge">Aprendizaje</span>
-                                </div>
-                                <span class="note-date">{{ nota.fecha_creacion }}</span>
-                            </div>
-                            <div class="note-body"><p>{{ nota.que_aprendiste }}</p></div>
-                            <div class="note-footer">
-                                <button class="note-action-btn edit-btn">Editar</button>
-                                <button class="note-action-btn delete-btn" disabled style="opacity:0.4;">Borrar</button>
-                            </div>
-                        </div>
-                        {% endif %}
-                        {% if nota.escena_impacto %}
-                        <div class="note-card" data-category="Escenas" data-id="{{ nota.id_nota }}" data-tipo="sesion" data-campo="escena_impacto" data-libro="{{ nota.id_libro or '' }}">
-                            <div class="note-header">
-                                <div class="note-title-wrapper">
-                                    <h3 class="note-title">{{ nota.libro_titulo }} — Escena impactante</h3>
-                                    <span class="note-category-badge">Escenas</span>
-                                </div>
-                                <span class="note-date">{{ nota.fecha_creacion }}</span>
-                            </div>
-                            <div class="note-body"><p>{{ nota.escena_impacto }}</p></div>
-                            <div class="note-footer">
-                                <button class="note-action-btn edit-btn">Editar</button>
-                                <button class="note-action-btn delete-btn" disabled style="opacity:0.4;">Borrar</button>
-                            </div>
-                        </div>
-                        {% endif %}
-                        {% if nota.recuerdo_vida %}
-                        <div class="note-card" data-category="Mi Vida" data-id="{{ nota.id_nota }}" data-tipo="sesion" data-campo="recuerdo_vida" data-libro="{{ nota.id_libro or '' }}">
-                            <div class="note-header">
-                                <div class="note-title-wrapper">
-                                    <h3 class="note-title">{{ nota.libro_titulo }} — Conexión personal</h3>
-                                    <span class="note-category-badge">Mi Vida</span>
-                                </div>
-                                <span class="note-date">{{ nota.fecha_creacion }}</span>
-                            </div>
-                            <div class="note-body"><p>{{ nota.recuerdo_vida }}</p></div>
-                            <div class="note-footer">
-                                <button class="note-action-btn edit-btn">Editar</button>
-                                <button class="note-action-btn delete-btn" disabled style="opacity:0.4;">Borrar</button>
-                            </div>
-                        </div>
-                        {% endif %}
-                        {% if nota.notas_observaciones %}
-                        <div class="note-card" data-category="Reflexiones" data-id="{{ nota.id_nota }}" data-tipo="sesion" data-campo="notas_observaciones" data-libro="{{ nota.id_libro or '' }}">
-                            <div class="note-header">
-                                <div class="note-title-wrapper">
-                                    <h3 class="note-title">{{ nota.libro_titulo }} — Observaciones</h3>
-                                    <span class="note-category-badge">Reflexiones</span>
-                                </div>
-                                <span class="note-date">{{ nota.fecha_creacion }}</span>
-                            </div>
-                            <div class="note-body"><p>{{ nota.notas_observaciones }}</p></div>
-                            <div class="note-footer">
-                                <button class="note-action-btn edit-btn">Editar</button>
-                                <button class="note-action-btn delete-btn" disabled style="opacity:0.4;">Borrar</button>
-                            </div>
-                        </div>
-                        {% endif %}
-                        {% endfor %}
 
-                        <!-- Notas manuales -->
-                        {% for nota in notas_manuales %}
-                        <div class="note-card" data-category="{{ nota.categoria }}" data-id="{{ nota.id_nota }}" data-tipo="manual"data-libro="{{ nota.id_libro or '' }}">
-                            <div class="note-header">
-                                <div class="note-title-wrapper">
-                                    <h3 class="note-title">{{ nota.titulo }}</h3>
-                                    <span class="note-category-badge">{{ nota.categoria }}</span>
-                                </div>
-                                <span class="note-date">{{ nota.fecha_creacion }}</span>
-                            </div>
-                            <div class="note-body"><p>{{ nota.contenido }}</p></div>
-                            <div class="note-footer">
-                                <button class="note-action-btn edit-btn">Editar</button>
-                                <button class="note-action-btn delete-btn">Borrar</button>
-                            </div>
-                        </div>
-                        {% endfor %}
-
+                    <!-- =====================================================
+                         LOADER DE NOTAS
+                    ====================================================== -->
+                
+                    <div
+                        class="loader-container"
+                        id="notes-loader"
+                        style="display: flex;"
+                    >
+                
+                        <div class="loader"></div>
+                
+                        <span id="texto-carga">
+                            Cargando notas...
+                        </span>
+                
                     </div>
+                
+                
+                    <!-- =====================================================
+                         CONTENIDO DE NOTAS
+                         OCULTO MIENTRAS CARGA
+                    ====================================================== -->
+                
+                    <div
+                        id="notes-list-layout"
+                        class="notes-list-layout"
+                        style="display: none;"
+                    >
+                
+                        <!-- Notas de sesión -->
+                
+                        {% for nota in notas_sesion %}
+                
+                        {% if nota.como_te_sientes %}
+                
+                        <div class="note-card"
+                             data-category="Estado de Ánimo"
+                             data-id="{{ nota.id_nota }}"
+                             data-tipo="sesion"
+                             data-campo="como_te_sientes"
+                             data-libro="{{ nota.id_libro or '' }}">
+                
+                            <div class="note-header">
+                
+                                <div class="note-title-wrapper">
+                
+                                    <h3 class="note-title">
+                                        {{ nota.libro_titulo }} — Estado de ánimo
+                                    </h3>
+                
+                                    <span class="note-category-badge">
+                                        Estado de Ánimo
+                                    </span>
+                
+                                </div>
+                
+                                <span class="note-date">
+                                    {{ nota.fecha_creacion }}
+                                </span>
+                
+                            </div>
+                
+                            <div class="note-body">
+                                <p>{{ nota.como_te_sientes }}</p>
+                            </div>
+                
+                            <div class="note-footer">
+                
+                                <button class="note-action-btn edit-btn">
+                                    Editar
+                                </button>
+                
+                                <button
+                                    class="note-action-btn delete-btn"
+                                    disabled
+                                    style="opacity:0.4;"
+                                >
+                                    Borrar
+                                </button>
+                
+                            </div>
+                
+                        </div>
+                
+                        {% endif %}
+                
+                
+                        {% if nota.que_aprendiste %}
+                
+                        <div class="note-card"
+                             data-category="Aprendizaje"
+                             data-id="{{ nota.id_nota }}"
+                             data-tipo="sesion"
+                             data-campo="que_aprendiste"
+                             data-libro="{{ nota.id_libro or '' }}">
+                
+                            <div class="note-header">
+                
+                                <div class="note-title-wrapper">
+                
+                                    <h3 class="note-title">
+                                        {{ nota.libro_titulo }} — Aprendizaje
+                                    </h3>
+                
+                                    <span class="note-category-badge">
+                                        Aprendizaje
+                                    </span>
+                
+                                </div>
+                
+                                <span class="note-date">
+                                    {{ nota.fecha_creacion }}
+                                </span>
+                
+                            </div>
+                
+                            <div class="note-body">
+                                <p>{{ nota.que_aprendiste }}</p>
+                            </div>
+                
+                            <div class="note-footer">
+                
+                                <button class="note-action-btn edit-btn">
+                                    Editar
+                                </button>
+                
+                                <button
+                                    class="note-action-btn delete-btn"
+                                    disabled
+                                    style="opacity:0.4;"
+                                >
+                                    Borrar
+                                </button>
+                
+                            </div>
+                
+                        </div>
+                
+                        {% endif %}
+                
+                
+                        {% if nota.escena_impacto %}
+                
+                        <div class="note-card"
+                             data-category="Escenas"
+                             data-id="{{ nota.id_nota }}"
+                             data-tipo="sesion"
+                             data-campo="escena_impacto"
+                             data-libro="{{ nota.id_libro or '' }}">
+                
+                            <div class="note-header">
+                
+                                <div class="note-title-wrapper">
+                
+                                    <h3 class="note-title">
+                                        {{ nota.libro_titulo }} — Escena impactante
+                                    </h3>
+                
+                                    <span class="note-category-badge">
+                                        Escenas
+                                    </span>
+                
+                                </div>
+                                <span class="note-date">
+                                    {{ nota.fecha_creacion }}
+                                </span>
+                
+                            </div>
+                
+                            <div class="note-body">
+                                <p>{{ nota.escena_impacto }}</p>
+                            </div>
+                
+                            <div class="note-footer">
+                
+                                <button class="note-action-btn edit-btn">
+                                    Editar
+                                </button>
+                
+                                <button
+                                    class="note-action-btn delete-btn"
+                                    disabled
+                                    style="opacity:0.4;"
+                                >
+                                    Borrar
+                                </button>
+                
+                            </div>
+                
+                        </div>
+                
+                        {% endif %}
+                
+                
+                        {% if nota.recuerdo_vida %}
+                
+                        <div class="note-card"
+                             data-category="Mi Vida"
+                             data-id="{{ nota.id_nota }}"
+                             data-tipo="sesion"
+                             data-campo="recuerdo_vida"
+                             data-libro="{{ nota.id_libro or '' }}">
+                
+                            <div class="note-header">
+                
+                                <div class="note-title-wrapper">
+                
+                                    <h3 class="note-title">
+                                        {{ nota.libro_titulo }} — Conexión personal
+                                    </h3>
+                
+                                    <span class="note-category-badge">
+                                        Mi Vida
+                                    </span>
+                
+                                </div>
+                
+                                <span class="note-date">
+                                    {{ nota.fecha_creacion }}
+                                </span>
+                
+                            </div>
+                
+                            <div class="note-body">
+                                <p>{{ nota.recuerdo_vida }}</p>
+                            </div>
+                
+                            <div class="note-footer">
+                
+                                <button class="note-action-btn edit-btn">
+                                    Editar
+                                </button>
+                
+                                <button
+                                    class="note-action-btn delete-btn"
+                                    disabled
+                                    style="opacity:0.4;"
+                                >
+                                    Borrar
+                                </button>
+                
+                            </div>
+                
+                        </div>
+                
+                        {% endif %}
+                
+                
+                        {% if nota.notas_observaciones %}
+                
+                        <div class="note-card"
+                             data-category="Reflexiones"
+                             data-id="{{ nota.id_nota }}"
+                             data-tipo="sesion"
+                             data-campo="notas_observaciones"
+                             data-libro="{{ nota.id_libro or '' }}">
+                
+                            <div class="note-header">
+                
+                                <div class="note-title-wrapper">
+                
+                                    <h3 class="note-title">
+                                        {{ nota.libro_titulo }} — Observaciones
+                                    </h3>
+                
+                                    <span class="note-category-badge">
+                                        Reflexiones
+                                    </span>
+                
+                                </div>
+                
+                                <span class="note-date">
+                                    {{ nota.fecha_creacion }}
+                                </span>
+                
+                            </div>
+                
+                            <div class="note-body">
+                                <p>{{ nota.notas_observaciones }}</p>
+                            </div>
+                
+                            <div class="note-footer">
+                
+                                <button class="note-action-btn edit-btn">
+                                    Editar
+                                </button>
+                
+                                <button
+                                    class="note-action-btn delete-btn"
+                                    disabled
+                                    style="opacity:0.4;"
+                                >
+                                    Borrar
+                                </button>
+                
+                            </div>
+                
+                        </div>
+                
+                        {% endif %}
+                
+                        {% endfor %}
+                
+                
+                        <!-- Notas manuales -->
+                
+                        {% for nota in notas_manuales %}
+                
+                        <div
+                            class="note-card"
+                            data-category="{{ nota.categoria }}"
+                            data-id="{{ nota.id_nota }}"
+                            data-tipo="manual"
+                            data-libro="{{ nota.id_libro or '' }}"
+                        >
+                
+                            <div class="note-header">
+                
+                                <div class="note-title-wrapper">
+                
+                                    <h3 class="note-title">
+                                        {{ nota.titulo }}
+                                    </h3>
+                
+                                    <span class="note-category-badge">
+                                        {{ nota.categoria }}
+                                    </span>
+                
+                                </div>
+                
+                                <span class="note-date">
+                                    {{ nota.fecha_creacion }}
+                                </span>
+                            </div>
+                
+                            <div class="note-body">
+                                <p>{{ nota.contenido }}</p>
+                            </div>
+                
+                            <div class="note-footer">
+                
+                                <button class="note-action-btn edit-btn">
+                                    Editar
+                                </button>
+                
+                                <button class="note-action-btn delete-btn">
+                                    Borrar
+                                </button>
+                
+                            </div>
+                
+                        </div>
+                
+                        {% endfor %}
+                
+                    </div>
+                
                 </div>
             </div>
 
