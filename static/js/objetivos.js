@@ -51,6 +51,10 @@ document.addEventListener("DOMContentLoaded", () => {
     
     const aiSend =
         document.getElementById("ai-chat-send");
+
+    const aiLoader =
+        document.getElementById("ai-chat-loader");
+    
     
     
 
@@ -1883,23 +1887,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const texto = aiInput.value.trim();
     
-    
         if(!texto){
             return;
         }
-    
     
         agregarMensajeIA(
             texto,
             "usuario"
         );
     
-    
         aiInput.value = "";
     
+        // =====================================================
+        // MOSTRAR BOLITA DE CARGA
+        // =====================================================
+    
+        if(aiLoader){
+            aiLoader.style.display = "flex";
+        }
+    
+        // Desactivar botón mientras Am responde
+    
+        if(aiSend){
+            aiSend.disabled = true;
+        }
     
         try{
-    
     
             const respuesta = await fetch(
                 "/api/ia",
@@ -1917,18 +1930,26 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             );
     
-    
             const datos = await respuesta.json();
     
+            // =================================================
+            // OCULTAR BOLITA
+            // =================================================
+    
+            if(aiLoader){
+                aiLoader.style.display = "none";
+            }
+    
+            // =================================================
+            // MOSTRAR RESPUESTA DE AM
+            // =================================================
     
             agregarMensajeIA(
                 datos.respuesta,
                 "ia"
             );
     
-    
         }
-    
     
         catch(error){
     
@@ -1937,6 +1958,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 error
             );
     
+            // Ocultar bolita aunque haya error
+    
+            if(aiLoader){
+                aiLoader.style.display = "none";
+            }
     
             agregarMensajeIA(
                 "No pude conectarme con Am en este momento.",
@@ -1945,7 +1971,18 @@ document.addEventListener("DOMContentLoaded", () => {
     
         }
     
+        finally{
+    
+            // Volver a activar botón
+    
+            if(aiSend){
+                aiSend.disabled = false;
+            }
+    
+        }
     }
+    
+    
 
     function formatearMensajeIA(texto){
 
@@ -2007,3 +2044,4 @@ document.addEventListener("DOMContentLoaded", () => {
     cargarObjetivos();
 
 });
+
