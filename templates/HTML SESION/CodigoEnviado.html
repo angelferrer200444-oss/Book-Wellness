@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Wellness</title>
-
     <link rel="stylesheet" href="{{ url_for('static', filename='css/formulario.css') }}">
 </head>
 <body>
@@ -15,22 +14,12 @@
 
         <div class="leaf">🍂</div>
 
-        <h1>ENVIADO</h1>
-        <h3>Revise su correo electronico, e ingrese el código de verficación</h3>
+        <h1>¡CORREO ENVIADO!</h1>
+        <h3>Revise su bandeja de entrada y haga clic en el enlace de confirmación para restablecer su contraseña.</h3>
 
-        <form>
-
-            <input
-                type=""
-                placeholder="Código de verficación"
-                required
-            >
-
-            <button type="submit">
-                Enviar
-            </button>
-
-        </form>
+        <div class="links" style="margin-top: 20px;">
+            <a href="/sesion">Volver al inicio de sesión</a>
+        </div>
 
     </div>
 

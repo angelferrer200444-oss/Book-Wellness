@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Wellness - Nueva Contraseña</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/formulario.css') }}">
+</head>
+<body>
+
+    <div class="background"></div>
+
+    <div class="login-container">
+
+        <div class="leaf">🍂</div>
+
+        <h1>NUEVA CONTRASEÑA</h1>
+
+        <form action="{{ url_for('recuperacion.restablecer_contrasena', token=token) }}" method="POST">
+
+            <input
+                type="password"
+                name="password"
+                placeholder="Ingresa tu nueva contraseña"
+                required
+            >
+
+            <button type="submit">
+                Guardar Contraseña
+            </button>
+
+        </form>
+
+    </div>
+
+</body>
+</html>

@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Wellness</title>
-
     <link rel="stylesheet" href="{{ url_for('static', filename='css/formulario.css') }}">
 </head>
 <body>
@@ -15,22 +14,23 @@
 
         <div class="leaf">🍂</div>
 
-        <h1>CÓDIGO DE RECUPERACIÓN</h1>
+        <h1>RECUPERAR CONTRASEÑA</h1>
 
-        <form action="CodigoEnviado.html" method="#"></form>
+        <form action="{{ url_for('recuperacion.solicitar_recuperacion') }}" method="POST">
 
             <input
-                type="text"
-                placeholder="Correo Electronico"
+                type="email"
+                name="correo"
+                placeholder="Correo Electrónico"
                 required
             >
 
             <button type="submit">
-                Enviar
+                Enviar Enlace
             </button>
 
             <div class="links">
-                <a href="/sesion">Iniciar sesion</a>
+                <a href="/sesion">Iniciar sesión</a>
             </div>
 
         </form>
