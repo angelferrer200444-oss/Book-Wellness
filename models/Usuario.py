@@ -1,5 +1,4 @@
 import mysql.connector
-
 from db import obtener_conexion
 
 
@@ -13,20 +12,14 @@ class Usuario:
         password=None,
         nivel_actual=None
     ):
-
         self.id_usuario = id_usuario
         self.nombre = nombre
         self.correo = correo
         self.password = password
         self.nivel_actual = nivel_actual
 
-
     def registrar(self):
-        """
-        Registra el usuario en la base de datos y
-        devuelve el ID asignado.
-        """
-
+        """Registra el usuario en la base de datos."""
         conexion = obtener_conexion()
         cursor = conexion.cursor()
 
@@ -46,20 +39,12 @@ class Usuario:
             self.nivel_actual
         ))
 
-
         conexion.commit()
-
         self.id_usuario = cursor.lastrowid
 
-        # Guarda temporalmente el usuario para la encuesta.
+        cursor.execute("DELETE FROM usuario_encuesta_temporal")
         cursor.execute("""
-            DELETE FROM usuario_encuesta_temporal
-        """)
-
-        cursor.execute("""
-            INSERT INTO usuario_encuesta_temporal
-            (id_usuario)
-            VALUES (%s)
+            INSERT INTO usuario_encuesta_temporal (id_usuario) VALUES (%s)
         """, (self.id_usuario,))
 
         conexion.commit()
@@ -69,14 +54,9 @@ class Usuario:
 
         return self.id_usuario
 
-
     @classmethod
     def iniciar_sesion(cls, correo, password):
-        """
-        Busca un usuario en la base de datos.
-        Si existe, devuelve un objeto Usuario.
-        """
-
+        """Valida credenciales y dispara las notificaciones pendientes."""
         conexion = obtener_conexion()
         cursor = conexion.cursor(dictionary=True)
 
@@ -94,7 +74,6 @@ class Usuario:
             password
         ))
 
-
         datos = cursor.fetchone()
 
         cursor.close()
@@ -103,28 +82,60 @@ class Usuario:
         if not datos:
             return None
 
-        return cls(
+        usuario_logeado = cls(
             id_usuario=datos["id_usuario"],
             nombre=datos["nombre"],
             correo=datos["correo"]
         )
 
+        # Import local para evitar el import circular
+        try:
+            try:
+                from .notificaciones import procesar_notificaciones_al_iniciar_sesion
+            except (ImportError, ModuleNotFoundError):
+                from models.notificaciones import procesar_notificaciones_al_iniciar_sesion
 
-    # @classmethod
-    # def recuperar_password(cls, correo):
-    #     """
-    #     Busca un usuario mediante su correo y
-    #     comienza el proceso de recuperación de contraseña.
-    #     (Pendiente de implementar)
-    #     """
-    #     
+            procesar_notificaciones_al_iniciar_sesion(usuario_logeado.id_usuario)
+        except Exception as e:
+            print(f"[ADVERTENCIA] No se pudieron enviar las notificaciones en login: {e}")
 
+        return usuario_logeado
+
+    @staticmethod
+    def obtener_estado_notificaciones(id_usuario):
+        """Devuelve True si el usuario tiene notificaciones activas en BD, False si no."""
+        conexion = obtener_conexion()
+        cursor = conexion.cursor(dictionary=True)
+
+        cursor.execute("""
+            SELECT notificaciones_activadas 
+            FROM usuarios 
+            WHERE id_usuario = %s
+        """, (id_usuario,))
+
+        resultado = cursor.fetchone()
+        cursor.close()
+        conexion.close()
+
+        if resultado and resultado.get("notificaciones_activadas") is not None:
+            return bool(resultado["notificaciones_activadas"])
+        return True
+
+    @staticmethod
+    def cambiar_estado_notificaciones(id_usuario, nuevo_estado):
+        """Actualiza la preferencia de notificaciones en la base de datos."""
+        conexion = obtener_conexion()
+        cursor = conexion.cursor()
+
+        cursor.execute("""
+            UPDATE usuarios 
+            SET notificaciones_activadas = %s 
+            WHERE id_usuario = %s
+        """, (1 if nuevo_estado else 0, id_usuario))
+
+        conexion.commit()
+        cursor.close()
+        conexion.close()
 
     def cerrar_sesion(self):
-        """
-        Actualmente Flask maneja la sesión.
-        Se deja este método reservado para futuras
-        implementaciones.
-        """
         pass
-

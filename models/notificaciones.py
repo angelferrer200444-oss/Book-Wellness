@@ -4,21 +4,25 @@ from datetime import date
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from apscheduler.schedulers.background import BackgroundScheduler
-from apscheduler.schedulers.blocking import BlockingScheduler
 from flask import Blueprint, jsonify, session
 
-# Importación flexible de Calendario según el entorno de ejecución
+# Importación flexible de módulos usando la ruta relativa del paquete
 try:
     from .calendario import Calendario
+    from .Objetivo import Objetivo
+    from .Usuario import Usuario
 except (ImportError, ModuleNotFoundError):
     try:
-        from calendario import Calendario
+        from models.calendario import Calendario
+        from models.Objetivo import Objetivo
+        from models.Usuario import Usuario
     except (ImportError, ModuleNotFoundError):
         DIR_RAIZ = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
         if DIR_RAIZ not in sys.path:
             sys.path.insert(0, DIR_RAIZ)
         from calendario import Calendario
+        from Objetivo import Objetivo
+        from Usuario import Usuario
 
 # ==========================================
 # BLUEPRINT DE FLASK PARA NOTIFICACIONES
@@ -27,75 +31,34 @@ notificaciones_bp = Blueprint('notificaciones', __name__)
 
 @notificaciones_bp.route('/notificaciones/estado', methods=['GET'])
 def estado_notificaciones():
-    """Consulta si el usuario tiene activas las notificaciones en su sesión."""
-    estado_actual = session.get('notificaciones_activas', True)
-    return jsonify({'activadas': estado_actual}), 200
+    """Consulta el estado de las notificaciones desde MySQL."""
+    id_usuario = session.get('usuario_id') or session.get('id_usuario')
+    
+    if not id_usuario:
+        return jsonify({'activadas': True}), 200
+
+    activadas = Usuario.obtener_estado_notificaciones(id_usuario)
+    return jsonify({'activadas': activadas}), 200
 
 
 @notificaciones_bp.route('/notificaciones/toggle', methods=['POST'])
 def toggle_notificaciones():
-    """Alterna el estado del botón de notificaciones en la sesión del usuario."""
-    estado_actual = session.get('notificaciones_activas', True)
+    """Alterna el estado de las notificaciones y lo guarda en MySQL."""
+    id_usuario = session.get('usuario_id') or session.get('id_usuario')
+    
+    if not id_usuario:
+        return jsonify({'error': 'Usuario no autenticado'}), 401
+
+    estado_actual = Usuario.obtener_estado_notificaciones(id_usuario)
     nuevo_estado = not estado_actual
+
+    Usuario.cambiar_estado_notificaciones(id_usuario, nuevo_estado)
     session['notificaciones_activas'] = nuevo_estado
+
+    print(f"[NOTIFICACIONES] Estado actualizado a {nuevo_estado} para el usuario ID {id_usuario}")
+
     return jsonify({'activadas': nuevo_estado}), 200
 
-
-@notificaciones_bp.route('/notificaciones/ejecutar-ahora')
-def ejecutar_notificaciones_ahora():
-    """Ejecuta inmediatamente el envío de notificaciones del día para todos los usuarios."""
-    try:
-        procesar_notificaciones_diarias()
-        return "✅ Notificaciones procesadas y enviadas para todos los usuarios con actividades hoy.", 200
-    except Exception as e:
-        return f"❌ Error ejecutando notificaciones: {e}", 500
-
-
-@notificaciones_bp.route('/notificaciones/ejecutar-usuario/<int:id_usuario>')
-def ejecutar_notificacion_usuario(id_usuario):
-    """Ejecuta el proceso del día de hoy para un único usuario mediante su ID."""
-    hoy = date.today().strftime('%Y-%m-%d')
-    usuarios_notificar = Calendario.obtener_actividades_usuarios_por_fecha(hoy)
-
-    if not usuarios_notificar:
-        return f"⚠️ No hay actividades programadas para ningún usuario hoy ({hoy}).", 200
-
-    usuario = next((u for u in usuarios_notificar if u.get('id_usuario') == id_usuario), None)
-
-    if not usuario:
-        return f"⚠️ El usuario ID {id_usuario} no tiene actividades programadas para hoy ({hoy}).", 404
-
-    # Verificar si tiene las notificaciones activadas
-    notif_activas_sesion = session.get('notificaciones_activas', True) if session else True
-    if not notif_activas_sesion or not usuario.get('notificaciones_activas', True):
-        return f"🔕 Notificación omitida: El usuario {usuario['nombre']} tiene las notificaciones desactivadas.", 200
-
-    exito = _construir_y_enviar_correo_usuario(usuario, hoy)
-
-    if exito:
-        return f"✅ Notificación enviada con éxito a {usuario['nombre']} ({usuario['correo']}).", 200
-    return f"❌ Error al enviar el correo a {usuario['correo']}.", 500
-
-
-@notificaciones_bp.route('/notificaciones/enviar-reporte-hoy/<string:correo>')
-def enviar_reporte_hoy_correo(correo):
-    """Ejecuta el proceso del día de hoy para un único usuario mediante su correo."""
-    hoy = date.today().strftime('%Y-%m-%d')
-    usuarios_notificar = Calendario.obtener_actividades_usuarios_por_fecha(hoy)
-
-    if not usuarios_notificar:
-        return f"⚠️ No hay actividades registradas en el calendario para hoy ({hoy}).", 200
-
-    usuario = next((u for u in usuarios_notificar if u['correo'].lower() == correo.lower()), None)
-
-    if not usuario:
-        return f"⚠️ El correo '{correo}' no tiene actividades programadas para hoy ({hoy}).", 404
-
-    exito = _construir_y_enviar_correo_usuario(usuario, hoy)
-
-    if exito:
-        return f"✅ Reporte diario enviado a {usuario['nombre']} ({correo}).", 200
-    return f"❌ Error enviando correo a {correo}.", 500
 
 # ==========================================
 # CONFIGURACIÓN DE GMAIL Y ENVÍO DE CORREOS
@@ -103,7 +66,7 @@ def enviar_reporte_hoy_correo(correo):
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
 CORREO_EMISOR = "bookwellnesscontacto@gmail.com"
-PASSWORD_EMISOR = "elrv wdvx wbhv oeep"  # Contraseña de aplicación de Gmail
+PASSWORD_EMISOR = "elrv wdvx wbhv oeep"
 
 
 def enviar_correo(destinatario, asunto, cuerpo):
@@ -128,7 +91,7 @@ def enviar_correo(destinatario, asunto, cuerpo):
 
 
 def _construir_y_enviar_correo_usuario(usuario, fecha_str):
-    """Función auxiliar interna para armar la plantilla y enviar el correo."""
+    """Arma la plantilla del calendario y envía el correo."""
     nombre = usuario['nombre']
     correo = usuario['correo']
     eventos = usuario['eventos']
@@ -146,65 +109,37 @@ def _construir_y_enviar_correo_usuario(usuario, fecha_str):
     return enviar_correo(correo, asunto, cuerpo)
 
 
-def procesar_notificaciones_diarias():
-    """Consulta MySQL y envía las notificaciones diarias reales a todos los usuarios correspondientes."""
-    hoy = date.today().strftime('%Y-%m-%d')
-    print(f"\n[INICIO] Buscando actividades para la fecha: {hoy}...")
-
-    # Consultar estado en sesión si existe contexto de Flask
-    try:
-        notif_activas_sesion = session.get('notificaciones_activas', True)
-    except RuntimeError:
-        notif_activas_sesion = True
-
-    # CORRECCIÓN: Se usa el método correcto definido en Calendario
-    usuarios_notificar = Calendario.obtener_actividades_usuarios_por_fecha(hoy)
-
-    if not usuarios_notificar:
-        print("[NOTIFICACIÓN] No hay actividades o fechas límite registradas para el día de hoy.")
+# ==========================================
+# DISPARADOR AL INICIAR SESIÓN
+# ==========================================
+def procesar_notificaciones_al_iniciar_sesion(id_usuario):
+    """Consulta MySQL y envía notificaciones únicamente si están activadas en BD."""
+    
+    # Comprobar el estado en la base de datos
+    if not Usuario.obtener_estado_notificaciones(id_usuario):
+        print(f"[NOTIFICACIÓN] El usuario ID {id_usuario} tiene notificaciones desactivadas. Omitiendo envío.")
         return
 
-    for u in usuarios_notificar:
-        if not notif_activas_sesion or not u.get('notificaciones_activas', True):
-            print(f"[NOTIFICACIÓN] Omitiendo envío a {u.get('correo')}: Notificaciones desactivadas.")
-            continue
+    hoy = date.today().strftime('%Y-%m-%d')
+    print(f"\n[LOGIN] Procesando notificaciones para el usuario ID {id_usuario} ({hoy})...")
 
-        _construir_y_enviar_correo_usuario(u, hoy)
+    # 1. Notificaciones del Calendario
+    usuarios_cal = Calendario.obtener_actividades_usuarios_por_fecha(hoy)
+    usuario_cal = next((u for u in usuarios_cal if u.get('id_usuario') == id_usuario), None)
 
-# ==========================================
-# INICIALIZADOR EN SEGUNDO PLANO (FLASK)
-# ==========================================
-scheduler_instancia = None
+    if usuario_cal:
+        _construir_y_enviar_correo_usuario(usuario_cal, hoy)
 
-def iniciar_scheduler_background():
-    """Inicia el temporizador de notificaciones en segundo plano a las 08:00 AM al arrancar Flask."""
-    global scheduler_instancia
-    
-    if os.environ.get('WERKZEUG_RUN_MAIN') == 'true' or not os.environ.get('FLASK_RUN_FROM_CLI'):
-        if scheduler_instancia is None:
-            scheduler_instancia = BackgroundScheduler()
-            scheduler_instancia.add_job(
-                procesar_notificaciones_diarias, 
-                'cron', 
-                hour=8, 
-                minute=0, 
-                id='notificaciones_diarias_job',
-                replace_existing=True
-            )
-            scheduler_instancia.start()
-            print("[SISTEMA] Servicio de notificaciones programado en segundo plano (Diario a las 08:00 AM).")
+    # 2. Notificaciones de Objetivos por Vencer
+    usuarios_obj = Objetivo.obtener_usuarios_con_objetivos_por_vencer(hoy)
+    usuario_obj = next((u for u in usuarios_obj if u.get('id_usuario') == id_usuario), None)
 
-# ==========================================
-# MODO DE EJECUCIÓN DIRECTA
-# ==========================================
-if __name__ == "__main__":
-    if len(sys.argv) > 1 and sys.argv[1] == "hoy":
-        procesar_notificaciones_diarias()
-    else:
-        print("Iniciando servicio automático de notificaciones independiente...")
-        scheduler = BlockingScheduler()
-        scheduler.add_job(procesar_notificaciones_diarias, 'cron', hour=8, minute=0)
-        try:
-            scheduler.start()
-        except (KeyboardInterrupt, SystemExit):
-            print("\nServicio de notificaciones detenido.")
+    if usuario_obj:
+        cuerpo = f"Hola {usuario_obj['nombre']},\n\nTe recordamos que hoy ({hoy}) vence la fecha límite de tus siguientes objetivos personales de lectura:\n\n"
+        for obj_titulo in usuario_obj['objetivos']:
+            cuerpo += f"  • 🎯 Objetivo: {obj_titulo}\n"
+
+        cuerpo += "\n¡Da el último esfuerzo para alcanzar tus metas de lectura!\n\nAtentamente,\nEl equipo de Book Wellness"
+        asunto = f"🎯 Book Wellness - ¡Hoy vence tu objetivo de lectura! ({hoy})"
+
+        enviar_correo(usuario_obj['correo'], asunto, cuerpo)
