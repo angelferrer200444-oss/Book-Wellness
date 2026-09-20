@@ -1,20 +1,8 @@
 import sys
 import os
-import socket
 from datetime import date
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+import resend
 from flask import Blueprint, jsonify, session
-
-# Patch para forzar resolución a IPv4 en entornos como Render
-_getaddrinfo_original = socket.getaddrinfo
-
-def _getaddrinfo_ipv4(*args, **kwargs):
-    respuestas = _getaddrinfo_original(*args, **kwargs)
-    return [r for r in respuestas if r[0] == socket.AF_INET]
-
-socket.getaddrinfo = _getaddrinfo_ipv4
 
 # Importación flexible de módulos usando la ruta relativa del paquete
 try:
@@ -71,51 +59,34 @@ def toggle_notificaciones():
 
 
 # ==========================================
-# CONFIGURACIÓN DE GMAIL Y ENVÍO DE CORREOS
+# CONFIGURACIÓN Y ENVÍO DE CORREOS (RESEND API)
 # ==========================================
+RESEND_API_KEY = os.environ.get("RESEND_API_KEY")
+CORREO_EMISOR = "Book Wellness <onboarding@resend.dev>"  # Cambiar por tu dominio verificado si tienes uno
 
-SMTP_SERVER = "smtp.gmail.com"
-SMTP_PORT = 587
-
-CORREO_EMISOR = os.environ.get(
-    "CORREO_EMISOR",
-    "bookwellnesscontacto@gmail.com"
-)
-
-PASSWORD_EMISOR = os.environ.get("PASSWORD_EMISOR")
-
+if RESEND_API_KEY:
+    resend.api_key = RESEND_API_KEY
 
 
 def enviar_correo(destinatario, asunto, cuerpo):
-    """Envía un correo electrónico mediante smtplib con fallback de puerto para Render."""
-    msg = MIMEMultipart()
-    msg['From'] = f"Book Wellness <{CORREO_EMISOR}>"
-    msg['To'] = destinatario
-    msg['Subject'] = asunto
-    msg.attach(MIMEText(cuerpo, 'plain', 'utf-8'))
+    """Envía un correo electrónico mediante la API HTTP de Resend (compatible con Render)."""
+    if not RESEND_API_KEY:
+        print("[ERROR NOTIFICACIÓN] No se detectó RESEND_API_KEY en las variables de entorno.")
+        return False
 
-    # Intento 1: Puerto 587 (STARTTLS)
+    params = {
+        "from": CORREO_EMISOR,
+        "to": [destinatario],
+        "subject": asunto,
+        "text": cuerpo,
+    }
+
     try:
-        server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT, timeout=12)
-        server.starttls()
-        server.login(CORREO_EMISOR, PASSWORD_EMISOR)
-        server.send_message(msg)
-        server.quit()
-        print(f"[NOTIFICACIÓN] Correo enviado exitosamente (Puerto 587) a: {destinatario}")
+        response = resend.Emails.send(params)
+        print(f"[NOTIFICACIÓN] Correo enviado exitosamente vía Resend API a {destinatario}. ID: {response.get('id')}")
         return True
     except Exception as e:
-        print(f"[ADVERTENCIA NOTIFICACIÓN] Falló envío por puerto 587 ({e}). Intentando por puerto 465 (SSL)...")
-
-    # Intento 2: Puerto 465 (SSL) en caso de que el puerto 587 esté bloqueado
-    try:
-        server_ssl = smtplib.SMTP_SSL(SMTP_SERVER, 465, timeout=12)
-        server_ssl.login(CORREO_EMISOR, PASSWORD_EMISOR)
-        server_ssl.send_message(msg)
-        server_ssl.quit()
-        print(f"[NOTIFICACIÓN] Correo enviado exitosamente (Puerto 465) a: {destinatario}")
-        return True
-    except Exception as e_ssl:
-        print(f"[ERROR NOTIFICACIÓN] No se pudo enviar el correo a {destinatario}: {e_ssl}")
+        print(f"[ERROR NOTIFICACIÓN] Falló el envío vía API Resend a {destinatario}: {e}")
         return False
 
 
@@ -144,7 +115,6 @@ def _construir_y_enviar_correo_usuario(usuario, fecha_str):
 def procesar_notificaciones_al_iniciar_sesion(id_usuario):
     """Consulta MySQL y envía notificaciones únicamente si están activadas en BD."""
     
-    # Comprobar el estado en la base de datos
     if not Usuario.obtener_estado_notificaciones(id_usuario):
         print(f"[NOTIFICACIÓN] El usuario ID {id_usuario} tiene notificaciones desactivadas. Omitiendo envío.")
         return
