@@ -22,61 +22,100 @@ serializer = URLSafeTimedSerializer(SECRET_KEY)
 
 @recuperacion_bp.route('/recuperar', methods=['GET', 'POST'])
 def solicitar_recuperacion():
+
+    print("========== RECUPERACIÓN: RUTA EJECUTADA ==========", flush=True)
+
     if request.method == 'POST':
+
         correo = request.form.get('correo')
+
+        print(f"[RECUPERACIÓN] Correo recibido: {correo}", flush=True)
 
         # 1. Verificar si el usuario existe en MySQL
         conexion = obtener_conexion()
         cursor = conexion.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM usuarios WHERE correo = %s", (correo,))
+
+        cursor.execute(
+            "SELECT * FROM usuarios WHERE correo = %s",
+            (correo,)
+        )
+
         usuario = cursor.fetchone()
+
         cursor.close()
         conexion.close()
 
+        print(f"[RECUPERACIÓN] Resultado de búsqueda: {usuario is not None}", flush=True)
+
         if usuario:
-            print(f"[RECUPERACIÓN] Usuario encontrado: {correo}")
-        
+            print(f"[RECUPERACIÓN] Usuario encontrado: {correo}", flush=True)
+
             # 2. Generar token firmado con el correo del usuario
-            token = serializer.dumps(correo, salt='recuperar-contrasena')
-        
-            print("[RECUPERACIÓN] Token generado correctamente")
-        
-            # 3. Crear enlace absoluto de confirmación
+            token = serializer.dumps(
+                correo,
+                salt='recuperar-contrasena'
+            )
+
+            print("[RECUPERACIÓN] Token generado correctamente", flush=True)
+
+            # 3. Crear enlace absoluto
             link_recuperacion = url_for(
                 'recuperacion.restablecer_contrasena',
                 token=token,
                 _external=True
             )
-        
-            print(f"[RECUPERACIÓN] Enlace generado: {link_recuperacion}")
-        
+
+            print(
+                f"[RECUPERACIÓN] Enlace generado: {link_recuperacion}",
+                flush=True
+            )
+
             # 4. Preparar correo
             asunto = "🔐 Book Wellness - Restablecer Contraseña"
-        
+
             cuerpo = (
                 f"Hola {usuario['nombre']},\n\n"
-                f"Hemos recibido una solicitud para cambiar tu contraseña en Book Wellness.\n"
+                f"Hemos recibido una solicitud para cambiar tu contraseña "
+                f"en Book Wellness.\n"
                 f"Haz clic en el siguiente enlace para restablecerla "
                 f"(válido por 15 minutos):\n\n"
                 f"{link_recuperacion}\n\n"
-                f"Si no solicitaste este cambio, puedes ignorar este mensaje de forma segura.\n\n"
-                f"Atentamente,\nEl equipo de Book Wellness"
+                f"Si no solicitaste este cambio, puedes ignorar este "
+                f"mensaje de forma segura.\n\n"
+                f"Atentamente,\n"
+                f"El equipo de Book Wellness"
             )
-        
-            print("[RECUPERACIÓN] Intentando enviar correo...")
-        
-            resultado = enviar_correo(correo, asunto, cuerpo)
-        
-            print(f"[RECUPERACIÓN] Resultado de enviar_correo(): {resultado}")
-        
+
+            print(
+                "[RECUPERACIÓN] Intentando enviar correo...",
+                flush=True
+            )
+
+            resultado = enviar_correo(
+                correo,
+                asunto,
+                cuerpo
+            )
+
+            print(
+                f"[RECUPERACIÓN] Resultado de enviar_correo(): {resultado}",
+                flush=True
+            )
+
         else:
-            print(f"[RECUPERACIÓN] Usuario NO encontrado: {correo}")
+            print(
+                f"[RECUPERACIÓN] Usuario NO encontrado: {correo}",
+                flush=True
+            )
 
+        return render_template(
+            'HTML SESION/CodigoEnviado.html'
+        )
 
-        # Renderizar la vista dentro de la carpeta HTML SESION
-        return render_template('HTML SESION/CodigoEnviado.html')
+    return render_template(
+        'HTML SESION/¿OlvidasteContrasena.html'
+    )
 
-    return render_template('HTML SESION/¿OlvidasteContrasena.html')
 
 
 @recuperacion_bp.route('/restablecer/<token>', methods=['GET', 'POST'])
