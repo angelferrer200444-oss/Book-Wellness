@@ -639,3 +639,42 @@ class Objetivo:
 
 
         return eliminado
+
+    @staticmethod
+    def obtener_usuarios_con_objetivos_por_vencer(fecha):
+        """
+        Consulta usuarios que tienen objetivos personales con fecha limite (fecha_fin)
+        en la fecha especificada y que no están completados.
+        """
+        conexion = obtener_conexion()
+        cursor = conexion.cursor(dictionary=True)
+
+        cursor.execute("""
+            SELECT u.id_usuario, u.nombre, u.correo,
+                   1 AS notificaciones_activadas,
+                   o.titulo
+            FROM objetivos_personales o
+            JOIN usuarios u ON o.id_usuario = u.id_usuario
+            WHERE DATE(o.fecha_fin) = %s 
+              AND o.fecha_fin IS NOT NULL
+              AND o.estado != 'completado'
+        """, (fecha,))
+
+        filas = cursor.fetchall()
+        cursor.close()
+        conexion.close()
+
+        usuarios = {}
+        for fila in filas:
+            uid = fila['id_usuario']
+            if uid not in usuarios:
+                usuarios[uid] = {
+                    'id_usuario': uid,
+                    'nombre': fila['nombre'],
+                    'correo': fila['correo'],
+                    'notificaciones_activadas': bool(fila['notificaciones_activadas']),
+                    'objetivos': []
+                }
+            usuarios[uid]['objetivos'].append(fila['titulo'])
+
+        return list(usuarios.values())
