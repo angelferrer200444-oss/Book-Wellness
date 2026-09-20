@@ -73,10 +73,17 @@ def toggle_notificaciones():
 # ==========================================
 # CONFIGURACIÓN DE GMAIL Y ENVÍO DE CORREOS
 # ==========================================
+
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
-CORREO_EMISOR = "bookwellnesscontacto@gmail.com"
-PASSWORD_EMISOR = "elrv wdvx wbhv oeep"
+
+CORREO_EMISOR = os.environ.get(
+    "CORREO_EMISOR",
+    "bookwellnesscontacto@gmail.com"
+)
+
+PASSWORD_EMISOR = os.environ.get("PASSWORD_EMISOR")
+
 
 
 def enviar_correo(destinatario, asunto, cuerpo):
