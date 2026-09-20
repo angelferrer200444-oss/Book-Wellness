@@ -15,6 +15,7 @@ from routes.objetivos import objetivos_bp
 from IA.recomendador import recomendador_bp
 from IA.asistente import ia_bp
 from models.notificaciones import notificaciones_bp, iniciar_scheduler_background
+from models.recuperacion import recuperacion_bp
 
 app = Flask(__name__)
 
@@ -26,6 +27,7 @@ app.register_blueprint(ia_bp)
 app.register_blueprint(recomendador_bp)
 app.register_blueprint(notificaciones_bp)
 app.register_blueprint(objetivos_bp)
+app.register_blueprint(recuperacion_bp)
 
 CORS(app)
 
@@ -47,3 +49,4 @@ if __name__ == "__main__":
         port=port,
         debug=False
     )
+
