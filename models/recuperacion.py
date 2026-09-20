@@ -34,24 +34,44 @@ def solicitar_recuperacion():
         conexion.close()
 
         if usuario:
+            print(f"[RECUPERACIÓN] Usuario encontrado: {correo}")
+        
             # 2. Generar token firmado con el correo del usuario
             token = serializer.dumps(correo, salt='recuperar-contrasena')
-
+        
+            print("[RECUPERACIÓN] Token generado correctamente")
+        
             # 3. Crear enlace absoluto de confirmación
-            link_recuperacion = url_for('recuperacion.restablecer_contrasena', token=token, _external=True)
-
-            # 4. Enviar correo electrónico
+            link_recuperacion = url_for(
+                'recuperacion.restablecer_contrasena',
+                token=token,
+                _external=True
+            )
+        
+            print(f"[RECUPERACIÓN] Enlace generado: {link_recuperacion}")
+        
+            # 4. Preparar correo
             asunto = "🔐 Book Wellness - Restablecer Contraseña"
+        
             cuerpo = (
                 f"Hola {usuario['nombre']},\n\n"
                 f"Hemos recibido una solicitud para cambiar tu contraseña en Book Wellness.\n"
-                f"Haz clic en el siguiente enlace para restablecerla (válido por 15 minutos):\n\n"
+                f"Haz clic en el siguiente enlace para restablecerla "
+                f"(válido por 15 minutos):\n\n"
                 f"{link_recuperacion}\n\n"
                 f"Si no solicitaste este cambio, puedes ignorar este mensaje de forma segura.\n\n"
                 f"Atentamente,\nEl equipo de Book Wellness"
             )
+        
+            print("[RECUPERACIÓN] Intentando enviar correo...")
+        
+            resultado = enviar_correo(correo, asunto, cuerpo)
+        
+            print(f"[RECUPERACIÓN] Resultado de enviar_correo(): {resultado}")
+        
+        else:
+            print(f"[RECUPERACIÓN] Usuario NO encontrado: {correo}")
 
-            enviar_correo(correo, asunto, cuerpo)
 
         # Renderizar la vista dentro de la carpeta HTML SESION
         return render_template('HTML SESION/CodigoEnviado.html')
