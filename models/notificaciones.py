@@ -1,10 +1,20 @@
 import sys
 import os
+import socket
 from datetime import date
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from flask import Blueprint, jsonify, session
+
+# Patch para forzar resolución a IPv4 en entornos como Render
+_getaddrinfo_original = socket.getaddrinfo
+
+def _getaddrinfo_ipv4(*args, **kwargs):
+    respuestas = _getaddrinfo_original(*args, **kwargs)
+    return [r for r in respuestas if r[0] == socket.AF_INET]
+
+socket.getaddrinfo = _getaddrinfo_ipv4
 
 # Importación flexible de módulos usando la ruta relativa del paquete
 try:
@@ -63,37 +73,42 @@ def toggle_notificaciones():
 # ==========================================
 # CONFIGURACIÓN DE GMAIL Y ENVÍO DE CORREOS
 # ==========================================
-
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
-
-CORREO_EMISOR = os.environ.get(
-    "CORREO_EMISOR",
-    "bookwellnesscontacto@gmail.com"
-)
-
-PASSWORD_EMISOR = os.environ.get("PASSWORD_EMISOR")
-
+CORREO_EMISOR = "bookwellnesscontacto@gmail.com"
+PASSWORD_EMISOR = "elrv wdvx wbhv oeep"
 
 
 def enviar_correo(destinatario, asunto, cuerpo):
-    """Envía un correo electrónico mediante smtplib."""
+    """Envía un correo electrónico mediante smtplib con fallback de puerto para Render."""
     msg = MIMEMultipart()
     msg['From'] = f"Book Wellness <{CORREO_EMISOR}>"
     msg['To'] = destinatario
     msg['Subject'] = asunto
     msg.attach(MIMEText(cuerpo, 'plain', 'utf-8'))
 
+    # Intento 1: Puerto 587 (STARTTLS)
     try:
-        server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+        server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT, timeout=12)
         server.starttls()
         server.login(CORREO_EMISOR, PASSWORD_EMISOR)
         server.send_message(msg)
         server.quit()
-        print(f"[NOTIFICACIÓN] Correo enviado exitosamente a: {destinatario}")
+        print(f"[NOTIFICACIÓN] Correo enviado exitosamente (Puerto 587) a: {destinatario}")
         return True
     except Exception as e:
-        print(f"[ERROR NOTIFICACIÓN] No se pudo enviar el correo a {destinatario}: {e}")
+        print(f"[ADVERTENCIA NOTIFICACIÓN] Falló envío por puerto 587 ({e}). Intentando por puerto 465 (SSL)...")
+
+    # Intento 2: Puerto 465 (SSL) en caso de que el puerto 587 esté bloqueado
+    try:
+        server_ssl = smtplib.SMTP_SSL(SMTP_SERVER, 465, timeout=12)
+        server_ssl.login(CORREO_EMISOR, PASSWORD_EMISOR)
+        server_ssl.send_message(msg)
+        server_ssl.quit()
+        print(f"[NOTIFICACIÓN] Correo enviado exitosamente (Puerto 465) a: {destinatario}")
+        return True
+    except Exception as e_ssl:
+        print(f"[ERROR NOTIFICACIÓN] No se pudo enviar el correo a {destinatario}: {e_ssl}")
         return False
 
 
