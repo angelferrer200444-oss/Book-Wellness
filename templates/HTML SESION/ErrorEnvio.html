@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Wellness - Error de Envío</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/formulario.css') }}">
+</head>
+<body>
+
+    <div class="background"></div>
+
+    <div class="login-container">
+
+        <div class="leaf">🍂</div>
+
+        <h1 style="color: #e74c3c;">NO SE PUDO ENVIAR EL CORREO</h1>
+        
+        <h3>
+            Ocurrió un inconveniente al intentar entregar el mensaje a tu casilla de correo.
+        </h3>
+
+        <div style="text-align: left; background: rgba(0, 0, 0, 0.2); padding: 15px; border-radius: 8px; margin: 20px 0; font-size: 0.9em; line-height: 1.5;">
+            <p><strong>Sugerencias para resolverlo:</strong></p>
+            <ul style="margin-left: 20px; margin-top: 8px;">
+                <li>Verifica que la dirección ingresada sea correcta.</li>
+                <li>Revisa tus carpetas de <em>Spam</em> o <em>Correo no deseado</em>.</li>
+                <li>Comprueba si las notificaciones están activadas en tus preferencias de cuenta.</li>
+            </ul>
+        </div>
+
+        <div class="links" style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
+            <a href="{{ url_for('recuperacion.solicitar_recuperacion') }}">Reintentar recuperación</a>
+            <a href="/sesion">Volver al inicio de sesión</a>
+        </div>
+
+    </div>
+
+</body>
+</html>
