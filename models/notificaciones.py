@@ -192,16 +192,6 @@ def obtener_credenciales_gmail():
                     Request()
                 )
 
-                # Guardamos el token actualizado.
-                with open(
-                    TOKEN_FILE,
-                    "w"
-                ) as archivo_token:
-
-                    archivo_token.write(
-                        credenciales.to_json()
-                    )
-
                 print(
                     "[GMAIL] Access token renovado correctamente."
                 )
