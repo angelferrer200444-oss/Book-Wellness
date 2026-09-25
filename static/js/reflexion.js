@@ -97,11 +97,26 @@ function actualizarInterfaz() {
    FINALIZAR REFLEXIÓN
 ========================================================== */
 
+let guardandoReflexion = false;
+
 async function finalizarReflexion() {
 
-   
-    
-    
+    // =====================================================
+    // EVITAR ENVÍOS DUPLICADOS
+    // =====================================================
+
+    if (guardandoReflexion) {
+        return;
+    }
+
+    guardandoReflexion = true;
+
+    // Desactivar inmediatamente el botón
+    btnContinuar.disabled = true;
+
+    // Cambiar apariencia/texto mientras se guarda
+    btnContinuar.textContent = "Guardando...";
+
 
     const params =
         new URLSearchParams(window.location.search);
@@ -143,9 +158,20 @@ async function finalizarReflexion() {
             "estadoAnimo"
         ).value;
 
-   const notaTitulo = document.getElementById("note-title-input")?.value || '';
-    const notas = document.getElementById("note-content-input")?.value || '';
-    const notaCategoria = document.getElementById("note-category-select")?.value || '';
+    const notaTitulo =
+        document.getElementById(
+            "note-title-input"
+        )?.value || '';
+
+    const notas =
+        document.getElementById(
+            "note-content-input"
+        )?.value || '';
+
+    const notaCategoria =
+        document.getElementById(
+            "note-category-select"
+        )?.value || '';
 
     const respuestaAleatoria =
         preguntaAleatoria.querySelector(
@@ -154,86 +180,139 @@ async function finalizarReflexion() {
 
     const idPreguntaAleatoria =
         preguntaAleatoria.dataset.id;
-    const categoriaAleatoria = mapaCategorias[idPreguntaAleatoria] || 'Reflexiones';
-        
-        try {
 
-            const resp = await fetch("/api/guardar_lectura", {
-    
-                method: "POST",
-    
-                headers: {
-    
-                    "Content-Type": "application/json"
-    
-                },
-    
-                body: JSON.stringify({
-    
-                    id_libro: id_libro,
-    
-                    tiempo_minutos: tiempo_minutos,
-    
-                    estado: continuar,
-    
-                    fecha_fin: (() => {
-                        const d = new Date();
-                        const pad = n => String(n).padStart(2, '0');
-                        return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
-                    })(),
-    
-                    paginas_leidas: paginasLeidasSesion,
-    
-                    pagina_actual: paginaActual,
-    
-                    capitulos_leidos: capitulosLeidosHoy,
-    
-                    estado_animo: estadoAnimo,
-    
-                    notas: notas,
-                    nota_titulo: notaTitulo,
-                    nota_categoria: notaCategoria,
-    
-                    tipo_reflexion: idPreguntaAleatoria,
+    const categoriaAleatoria =
+        mapaCategorias[idPreguntaAleatoria]
+        || 'Reflexiones';
 
-                    respuesta_reflexion: respuestaAleatoria,
 
-                    respuesta_aleatoria_categoria: categoriaAleatoria
+    try {
 
-    
-                })
-    
-            });
+        const resp =
+            await fetch(
+                "/api/guardar_lectura",
+                {
+                    method: "POST",
 
-            
-    
-            const data = await resp.json();
-    
-            console.log(
-                "RESPUESTA SERVIDOR:",
-                resp.status,
-                data
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        id_libro:
+                            id_libro,
+
+                        tiempo_minutos:
+                            tiempo_minutos,
+
+                        estado:
+                            continuar,
+
+                        fecha_fin: (() => {
+
+                            const d =
+                                new Date();
+
+                            const pad =
+                                n =>
+                                    String(n)
+                                        .padStart(2, '0');
+
+                            return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+
+                        })(),
+
+                        paginas_leidas:
+                            paginasLeidasSesion,
+
+                        pagina_actual:
+                            paginaActual,
+
+                        capitulos_leidos:
+                            capitulosLeidosHoy,
+
+                        estado_animo:
+                            estadoAnimo,
+
+                        notas:
+                            notas,
+
+                        nota_titulo:
+                            notaTitulo,
+
+                        nota_categoria:
+                            notaCategoria,
+
+                        tipo_reflexion:
+                            idPreguntaAleatoria,
+
+                        respuesta_reflexion:
+                            respuestaAleatoria,
+
+                        respuesta_aleatoria_categoria:
+                            categoriaAleatoria
+
+                    })
+                }
             );
-    
-            localStorage.removeItem(
-                "tiempo_lectura"
+
+
+        const data =
+            await resp.json();
+
+
+        console.log(
+            "RESPUESTA SERVIDOR:",
+            resp.status,
+            data
+        );
+
+
+        if (!resp.ok) {
+
+            throw new Error(
+                data.error ||
+                "No se pudo guardar la lectura."
             );
-    
-            window.location.href = "/";
-    
+
         }
-    
-        catch (error) {
-    
-            console.error(error);
-    
-            alert(
-                "Error al guardar la lectura."
-            );
-    
-        }
-    
+
+
+        localStorage.removeItem(
+            "tiempo_lectura"
+        );
+
+
+        window.location.href = "/";
+
+
     }
+
+    catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Error al guardar la lectura."
+        );
+
+
+        // =================================================
+        // SI FALLA, PERMITIR REINTENTAR
+        // =================================================
+
+        guardandoReflexion = false;
+
+        btnContinuar.disabled = false;
+
+        btnContinuar.textContent = "Finalizar";
+
+    }
+
+}
+
     
     /* ==========================================================
        CONTINUAR
@@ -298,4 +377,6 @@ async function finalizarReflexion() {
     ========================================================== */
     
     actualizarInterfaz();
+    
+
     
