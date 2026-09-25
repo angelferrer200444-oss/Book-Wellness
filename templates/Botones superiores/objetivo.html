@@ -29,16 +29,27 @@ Book Wellness - Objetivos
         <h2 class="section-title">
             Logros en Progreso
         </h2>
-
-        <div class="info-cards" id="simulation-goals-container">
-
+    
+        <!-- Loader de Logros -->
+        <div id="logros-loader" class="loader-container">
+            <div class="loader"></div>
+        </div>
+    
+        <!-- Logros ocultos mientras se realizan los cálculos -->
+        <div
+            class="info-cards"
+            id="simulation-goals-container"
+            style="display: none;"
+        >
+    
             {% include "Ob_Logros/logros1.html" %}
             {% include "Ob_Logros/logros2.html" %}
             {% include "Ob_Logros/logros3.html" %}
-
+    
         </div>
-
+    
     </section>
+    
 
 </main>
 
@@ -54,6 +65,10 @@ Book Wellness - Objetivos
 <script src="{{ url_for('static', filename='js/objetivos.js') }}"></script>
 
 {% endblock %}
+
+
+
+
 
 
 
